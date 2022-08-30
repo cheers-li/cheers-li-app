@@ -11,7 +11,7 @@ export default function Index() {
           htmlFor="email"
           className="block text-sm font-medium text-gray-700"
         >
-            Search candidates
+          Search candidates
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">
           <div className="relative flex flex-grow items-stretch focus-within:z-10">

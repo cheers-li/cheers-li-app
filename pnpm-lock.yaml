@@ -1,6 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@headlessui/react': ^1.6.6
+  '@heroicons/react': ^2.0.8
+  '@tailwindcss/forms': ^0.5.2
   '@types/react': ^18.0.17
   '@types/react-dom': ^18.0.6
   '@vitejs/plugin-react': ^2.0.1
@@ -13,10 +16,13 @@ specifiers:
   vite: ^3.0.7
 
 dependencies:
+  '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
+  '@heroicons/react': 2.0.8_react@18.2.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
 
 devDependencies:
+  '@tailwindcss/forms': 0.5.2_tailwindcss@3.1.8
   '@types/react': 18.0.17
   '@types/react-dom': 18.0.6
   '@vitejs/plugin-react': 2.0.1_vite@3.0.9
@@ -304,6 +310,25 @@ packages:
     dev: true
     optional: true
 
+  /@headlessui/react/1.6.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-MFJtmj9Xh/hhBMhLccGbBoSk+sk61BlP6sJe4uQcVMtXZhCgGqd2GyIQzzmsdPdTEWGSF434CBi8mnhR6um46Q==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@heroicons/react/2.0.8_react@18.2.0:
+    resolution: {integrity: sha512-nJNOMjXQH0Ngk6Y7QllYBH5VLB3+HMJyGBVQPZYUXGalYmN9kgEcVIxMjOiVjwuzee0GvZzmMRB0VQRJPHe8eg==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
     engines: {node: '>=6.0.0'}
@@ -361,6 +386,15 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+    dev: true
+
+  /@tailwindcss/forms/0.5.2_tailwindcss@3.1.8:
+    resolution: {integrity: sha512-pSrFeJB6Bg1Mrg9CdQW3+hqZXAKsBrSG9MAfFLKy1pVA4Mb4W7C0k7mEhlmS2Dfo/otxrQOET7NJiJ9RrS563w==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.1.8_postcss@8.4.16
     dev: true
 
   /@types/prop-types/15.7.5:
@@ -951,6 +985,11 @@ packages:
     dependencies:
       braces: 3.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /mini-svg-data-uri/1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
     dev: true
 
   /minimist/1.2.6:

@@ -2,10 +2,11 @@
   "name": "cheers.li",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
+    "format": "eslint --fix --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,11 +25,20 @@
     "@tailwindcss/forms": "^0.5.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
     "@vitejs/plugin-react": "^2.0.1",
     "autoprefixer": "^10.4.8",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
     "tailwindcss": "^3.1.8",
-    "typescript": "^4.6.4",
+    "typescript": "^4.8.2",
     "vite": "^3.0.7",
     "vite-plugin-pages": "^0.25.0"
   }

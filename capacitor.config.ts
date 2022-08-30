@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'cheers.li',
   appName: 'cheers.li',
   webDir: 'dist',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
 };
 
 export default config;

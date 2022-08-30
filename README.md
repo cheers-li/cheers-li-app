@@ -37,3 +37,19 @@ If you want to open the project in the native IDE (Xcode or Android Studio), you
 ```bash
 pnpm cap open ios/android # choose one of them
 ```
+
+## Code style
+
+We are using ESLint and Prettier to lint and format the code. An husky pre-commit hook is also configured to run the linter and the formatter before each commit on the staged files.
+
+If you want to lint the entire codebase manually, you can run the following command:
+
+```bash
+pnpm lint
+```
+
+And If you want to fix the whole codebase code style, you can run:
+
+```bash
+pnpm format
+```

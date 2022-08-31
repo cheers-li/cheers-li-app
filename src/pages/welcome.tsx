@@ -1,6 +1,17 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { LinkButton } from '../components/button';
+import { supabase } from '../services/supabase-client';
 
 const Welcome = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(() => {
+      navigate('/');
+    });
+  }, [navigate]);
+
   return (
     <div className="flex w-full flex-col justify-center gap-8 py-8 px-8">
       <h1 className="text-5xl font-bold">

@@ -1,7 +1,7 @@
-import { Provider } from '@supabase/supabase-js';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button, LinkButton } from '../components/button';
+import { ExternalProviderLogin } from '../components/external-provider-login';
 import { Input } from '../components/input';
 import { supabase } from '../services/supabase-client';
 
@@ -32,19 +32,6 @@ const Login = () => {
       navigate('/');
     });
   }, [navigate]);
-
-  const handleExternalProviderLogin = async (provider: Provider) => {
-    try {
-      setLoading(true);
-      const { error: loginError } = await supabase.auth.signIn({ provider });
-      if (loginError) throw error;
-      navigate('/');
-    } catch (err: unknown) {
-      setError('Something went wrong while signing you in.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex w-full flex-col gap-6 py-8 px-8">
@@ -79,29 +66,12 @@ const Login = () => {
       </form>
       <hr />
       <p className="text-center text-sm text-gray-500">or sign in with</p>
-      <div className="flex flex-col gap-4">
-        <Button
-          link
-          width="full"
-          onClick={() => handleExternalProviderLogin('google')}
-        >
-          Continue with Google
-        </Button>
-        <Button
-          link
-          width="full"
-          onClick={() => handleExternalProviderLogin('apple')}
-        >
-          Continue with Apple
-        </Button>
-        <Button
-          link
-          width="full"
-          onClick={() => handleExternalProviderLogin('facebook')}
-        >
-          Continue with Facebook
-        </Button>
-      </div>
+      <ExternalProviderLogin
+        loading={loading}
+        setLoading={setLoading}
+        error={error}
+        setError={setError}
+      />
     </div>
   );
 };

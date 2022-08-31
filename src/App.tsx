@@ -3,6 +3,8 @@ import { useRoutes, useLocation, useNavigate } from 'react-router-dom';
 import routes from '~react-pages';
 import { supabase } from './services/supabase-client';
 
+const publicPages = ['/welcome', '/login', '/register', '/email-login'];
+
 export default function App() {
   const [session, setSession] = useState(supabase.auth.session());
   const location = useLocation();
@@ -15,22 +17,14 @@ export default function App() {
 
     const path = location.pathname;
 
-    if (
-      !session &&
-      !(
-        path === '/welcome' ||
-        path === '/login' ||
-        path === '/register' ||
-        path === '/email-login'
-      )
-    ) {
+    if (!session && !publicPages.includes(path)) {
       navigate('/welcome');
     }
   }, [session, location, setSession, navigate]);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <div className="flex h-[100vh] w-[100vw] bg-gray-50">
+      <div className="flex h-screen w-screen bg-gray-50">
         {useRoutes(routes)}
       </div>
     </Suspense>

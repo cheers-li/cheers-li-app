@@ -14,7 +14,7 @@ const Navigation = () => {
           <ul className="flex h-full items-center space-x-12">
             <li>
               <NavLink
-                to="map"
+                to="/map"
                 className={({ isActive }) =>
                   isActive ? 'text-blue-200' : undefined
                 }
@@ -24,7 +24,7 @@ const Navigation = () => {
             </li>
             <li>
               <NavLink
-                to="search"
+                to="/search"
                 className={({ isActive }) =>
                   isActive ? 'text-blue-200' : undefined
                 }
@@ -34,7 +34,7 @@ const Navigation = () => {
             </li>
             <li>
               <NavLink
-                to="messages"
+                to="/messages"
                 className={({ isActive }) =>
                   isActive ? 'text-blue-200' : undefined
                 }
@@ -45,7 +45,7 @@ const Navigation = () => {
           </ul>
         </nav>
         <NavLink
-          to="sessions/new"
+          to="/sessions/new"
           className={({ isActive }) =>
             isActive ? 'text-blue-200' : 'text-white'
           }

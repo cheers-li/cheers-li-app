@@ -1,5 +1,12 @@
+import Navigation from '../../components/navigation';
+
 const MessagesIndex = () => {
-  return <>List all messages</>;
+  return (
+    <>
+      <Navigation />
+      List all messages
+    </>
+  );
 };
 
 export default MessagesIndex;

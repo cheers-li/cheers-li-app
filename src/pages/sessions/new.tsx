@@ -1,5 +1,12 @@
+import Navigation from '../../components/navigation';
+
 const NewSession = () => {
-  return <>New Session</>;
+  return (
+    <>
+      <Navigation />
+      New Session
+    </>
+  );
 };
 
 export default NewSession;

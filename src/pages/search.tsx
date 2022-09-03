@@ -1,5 +1,12 @@
+import Navigation from '../components/navigation';
+
 const Search = () => {
-  return <>Search here</>;
+  return (
+    <>
+      <Navigation />
+      Search here
+    </>
+  );
 };
 
 export default Search;

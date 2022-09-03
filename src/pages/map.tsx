@@ -4,6 +4,7 @@ import { Tag } from '../components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '../components/navigation';
+import store from '../store';
 
 const MapView = () => {
   // TODO: take in from db
@@ -27,6 +28,10 @@ const MapView = () => {
   ];
 
   const [activeTag, setActiveTag] = useState<string>();
+  const [isOpen, setIsOpen] = store.useState('menuOpen');
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   // TODO: add real map
   return (
@@ -50,7 +55,10 @@ const MapView = () => {
               options={['One', 'Two', 'Three']}
               onUpdate={() => console.log('select value changed')}
             ></Select>
-            <button className="ml-4 rounded-md bg-white px-3 py-3">
+            <button
+              onClick={toggleMenu}
+              className="ml-4 rounded-md bg-white px-3 py-3"
+            >
               <Bars2Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>

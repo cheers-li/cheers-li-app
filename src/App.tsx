@@ -27,7 +27,6 @@ export default function App() {
       <div className="flex h-screen w-screen bg-gray-50">
         {useRoutes(routes)}
       </div>
-      {/* {useRoutes(routes)} */}
     </Suspense>
   );
 }

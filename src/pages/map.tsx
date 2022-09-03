@@ -38,7 +38,7 @@ const MapView = () => {
     <>
       <Navigation />
       <div
-        className="h-screen w-screen bg-cover"
+        className="w-full bg-cover"
         style={{
           backgroundImage: `url(${'https://miro.medium.com/max/1400/1*wdwWv0g8r_uIwR0o7zLHnQ.jpeg'})`,
         }}

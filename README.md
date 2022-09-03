@@ -28,6 +28,7 @@ You also can just build the code with the following command: ```pnpm build``` if
 Everytime you change the code, you have to run these commands to update the app:
 
 ```bash
+pnpm build
 pnpm cap sync
 pnpm cap run ios/android # choose one of them
 ```

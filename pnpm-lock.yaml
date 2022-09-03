@@ -32,6 +32,7 @@ specifiers:
   react-router: ^6.3.0
   react-router-dom: ^6.3.0
   react-use: ^17.4.0
+  state-pool: ^0.7.1
   tailwindcss: ^3.1.8
   typescript: ^4.8.2
   vite: ^3.0.7
@@ -51,6 +52,7 @@ dependencies:
   react-router: 6.3.0_react@18.2.0
   react-router-dom: 6.3.0_biqbaboplfbrettd7655fr4n2y
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
+  state-pool: 0.7.1_react@18.2.0
 
 devDependencies:
   '@capacitor/cli': 4.1.0
@@ -2265,6 +2267,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immer/9.0.15:
+    resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
+    dev: false
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3511,6 +3517,15 @@ packages:
       error-stack-parser: 2.1.4
       stack-generator: 2.0.10
       stacktrace-gps: 3.1.2
+    dev: false
+
+  /state-pool/0.7.1_react@18.2.0:
+    resolution: {integrity: sha512-216KQC0Aos0q9VHQUzgJtCntFk2gSXgXs36aDJ9iCFswieKPf9o55wwDH2fdl9H2MM1CUfdv32cSLgv2mBBpMQ==}
+    peerDependencies:
+      react: '>=16.8.3'
+    dependencies:
+      immer: 9.0.15
+      react: 18.2.0
     dev: false
 
   /string-argv/0.3.1:

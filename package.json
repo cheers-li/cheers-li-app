@@ -23,7 +23,8 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
-    "react-use": "^17.4.0"
+    "react-use": "^17.4.0",
+    "state-pool": "^0.7.1"
   },
   "devDependencies": {
     "@capacitor/cli": "^4.1.0",

@@ -14,12 +14,16 @@
     "@capacitor/android": "^4.1.0",
     "@capacitor/core": "^4.1.0",
     "@capacitor/ios": "^4.1.0",
+    "@capacitor/preferences": "^4.0.1",
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^2.0.8",
+    "@supabase/supabase-js": "^1.35.6",
+    "classnames": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^4.1.0",

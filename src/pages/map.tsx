@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Select } from '../components/select';
 import { Tag } from '../components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '../components/navigation';
 import store from '../store';
+import mapboxgl from '../services/mapbox';
 
 const MapView = () => {
   // TODO: take in from db
@@ -33,16 +34,36 @@ const MapView = () => {
     setIsOpen(!isOpen);
   };
 
-  // TODO: add real map
+  // mapbox
+  // TODO: use real location
+  const mapContainer = useRef(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const [lng] = useState(-70.9);
+  const [lat] = useState(42.35);
+  const [zoom] = useState(9);
+
+  useEffect(() => {
+    if (map.current) return;
+    map.current = new mapboxgl.Map({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      container: mapContainer.current!,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [lng, lat],
+      zoom: zoom,
+    });
+  });
+
+  map.current?.on('style.load', () => {
+    map.current?.setFog({}); // Set the default atmosphere style
+  });
+
   return (
     <>
+      <div className="absolute inset-0 h-full w-full">
+        <div ref={mapContainer} className="map-container h-full w-full"></div>
+      </div>
       <Navigation />
-      <div
-        className="w-full bg-cover"
-        style={{
-          backgroundImage: `url(${'https://miro.medium.com/max/1400/1*wdwWv0g8r_uIwR0o7zLHnQ.jpeg'})`,
-        }}
-      >
+      <div className="relative w-full">
         <div className="mt-8 space-y-3 px-6">
           <div className="flex justify-between">
             <Select

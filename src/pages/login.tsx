@@ -34,7 +34,7 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className="flex w-full flex-col gap-6 py-8 px-8">
+    <div className="flex h-full w-full flex-col justify-center gap-6 py-8 px-8">
       <h1 className="text-center text-xl font-bold">Sign in</h1>
       <p className="text-sm text-gray-500">
         Sign in using your E-Mail. We will send you a magic link to log into

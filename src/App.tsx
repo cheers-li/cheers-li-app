@@ -24,9 +24,7 @@ export default function App() {
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <div className="flex h-screen w-screen bg-gray-50">
-        {useRoutes(routes)}
-      </div>
+      <div className="h-screen w-screen bg-gray-50">{useRoutes(routes)}</div>
     </Suspense>
   );
 }

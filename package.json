@@ -8,7 +8,8 @@
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
     "format": "eslint --fix --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "android": "pnpm build && pnpm exec cap sync && pnpm exec cap run android"
   },
   "dependencies": {
     "@capacitor/android": "^4.1.0",

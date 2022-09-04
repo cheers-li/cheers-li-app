@@ -4,6 +4,7 @@ specifiers:
   '@capacitor/android': ^4.1.0
   '@capacitor/cli': ^4.1.0
   '@capacitor/core': ^4.1.0
+  '@capacitor/geolocation': ^4.0.1
   '@capacitor/ios': ^4.1.0
   '@capacitor/preferences': ^4.0.1
   '@headlessui/react': ^1.6.6
@@ -43,6 +44,7 @@ specifiers:
 dependencies:
   '@capacitor/android': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/core': 4.1.0
+  '@capacitor/geolocation': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/ios': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/preferences': 4.0.1_@capacitor+core@4.1.0
   '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
@@ -396,6 +398,14 @@ packages:
     resolution: {integrity: sha512-bMYFnC5l5n11D/kLTz9TOOJfUH+nQqYRwzG7h5h4AXIm8aFxH5ZY3iFlDZd7R4xcyrlnfxzfoooSH9trPjRBLA==}
     dependencies:
       tslib: 2.4.0
+    dev: false
+
+  /@capacitor/geolocation/4.0.1_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-5dxXfDU1rCkn8xrXk6cQwUr+F2ZRycZoU5zi8MFVnH7JvHruV3B152Uz+urRkF/GtKQrgvxEW78GbejOW+nfYw==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
     dev: false
 
   /@capacitor/ios/4.1.0_@capacitor+core@4.1.0:

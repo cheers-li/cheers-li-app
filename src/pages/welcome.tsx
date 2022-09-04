@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import Navigation from '../components/navigation';
 import { LinkButton } from '../components/button';
 import { supabase } from '../services/supabase-client';
 
@@ -30,6 +31,7 @@ const Welcome = () => {
           I already have an account
         </LinkButton>
       </div>
+      <Navigation />
     </div>
   );
 };

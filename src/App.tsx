@@ -3,7 +3,7 @@ import { useRoutes, useLocation, useNavigate } from 'react-router-dom';
 import routes from '~react-pages';
 import { supabase } from './services/supabase-client';
 
-const publicPages = ['/welcome', '/login', '/register', '/email-login'];
+const publicPages = ['/welcome', '/login', '/register', '/email-login', '/map'];
 
 export default function App() {
   const [session, setSession] = useState(supabase.auth.session());

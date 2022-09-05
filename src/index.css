@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Map */
+.marker {
+  @apply relative h-4 w-4 rounded-full border-2 border-white bg-blue-500;
+  transform-style: preserve-3d;
+}
+
+.marker::after {
+  content: '';
+  @apply absolute h-5 w-5 rounded-full bg-blue-500;
+  filter: blur(8px);
+  transform: translate3d(-4px, -4px, -1px);
+}

@@ -15,7 +15,22 @@ const MapContainer = () => {
     const pos = await Geolocation.getCurrentPosition();
     setLat(pos.coords.latitude);
     setLng(pos.coords.longitude);
-    map.current?.setCenter([pos.coords.longitude, pos.coords.latitude]);
+    const coords: [number, number] = [
+      pos.coords.longitude,
+      pos.coords.latitude,
+    ];
+
+    if (!map.current) return;
+
+    // Center map on user location
+    map.current?.setCenter(coords);
+
+    // Add User marker
+    const el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el).setLngLat(coords).addTo(map.current);
   };
 
   useEffect(() => {

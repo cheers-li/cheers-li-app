@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Geolocation } from '@capacitor/geolocation';
-import mapboxgl from '../services/mapbox';
+import mapboxgl, { add3DBuildingsLayer } from '../services/mapbox';
 
 const MapContainer = () => {
   // Mapbox
@@ -19,18 +19,25 @@ const MapContainer = () => {
   };
 
   useEffect(() => {
-    if (map.current) return;
+    if (map.current || !mapContainer.current) return;
 
     map.current = new mapboxgl.Map({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      container: mapContainer.current!,
+      container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [lng, lat],
       zoom: zoom,
+      pitch: 45,
+      bearing: -17.6,
     });
 
     map.current?.on('style.load', () => {
       map.current?.setFog({}); // Set the default atmosphere style
+    });
+
+    map.current?.on('load', () => {
+      if (map.current) {
+        add3DBuildingsLayer(map.current);
+      }
     });
 
     getCurrentPosition();

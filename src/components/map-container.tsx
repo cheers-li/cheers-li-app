@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Geolocation } from '@capacitor/geolocation';
 import mapboxgl, { add3DBuildingsLayer } from '../services/mapbox';
+import store from '../store';
 
 const MapContainer = () => {
+  const [theme] = store.useState('theme');
+
   // Mapbox
   const mapContainer = useRef(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -36,9 +39,12 @@ const MapContainer = () => {
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
+    const style = theme === 'dark' ? 'dark-v10' : 'streets-v11';
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
+      projection: { name: 'globe' },
+      style: `mapbox://styles/mapbox/${style}`,
       center: [lng, lat],
       zoom: zoom,
       pitch: 45,
@@ -46,7 +52,10 @@ const MapContainer = () => {
     });
 
     map.current?.on('style.load', () => {
-      map.current?.setFog({}); // Set the default atmosphere style
+      map.current?.setFog({
+        color: 'rgb(186, 210, 235)', // Lower atmosphere
+        'horizon-blend': 0.02, // Atmosphere thickness (default 0.2 at low zooms)
+      });
     });
 
     map.current?.on('load', () => {

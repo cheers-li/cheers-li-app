@@ -5,7 +5,7 @@ import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '../components/navigation';
 import store from '../store';
-import MapContainer from '../components/map-container';
+import MapContainer from '../components/map/map-container';
 
 const MapView = () => {
   // TODO: take in from db

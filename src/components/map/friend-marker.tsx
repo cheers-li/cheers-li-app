@@ -1,4 +1,4 @@
-import { Friend } from './map-container';
+import { Friend } from '~/components/map/map-container';
 
 interface FriendMarkerProps {
   user: Friend;

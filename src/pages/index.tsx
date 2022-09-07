@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Navigation from '../components/navigation';
-import { Button } from '../components/button';
-import { supabase } from '../services/supabase-client';
+import Navigation from '~/components/navigation';
+import { Button } from '~/components/button';
+import { supabase } from '~/services/supabase-client';
 
 const Index = () => {
   const logout = () => supabase.auth.signOut();

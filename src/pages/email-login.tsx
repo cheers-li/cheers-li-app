@@ -1,4 +1,4 @@
-import { LinkButton } from '../components/button';
+import { LinkButton } from '~/components/button';
 
 const EmailLogin = () => {
   return (

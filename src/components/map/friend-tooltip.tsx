@@ -1,4 +1,4 @@
-import { Friend } from './map-container';
+import { Friend } from '~/components/map/map-container';
 import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 

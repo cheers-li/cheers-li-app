@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { supabase } from '../services/supabase-client';
-import { LinkButton } from '../components/button';
+import { supabase } from '~/services/supabase-client';
+import { LinkButton } from '~/components/button';
 
 const LoginCallback = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import { useState, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router';
-import { supabase } from '../services/supabase-client';
-import { Button, LinkButton } from '../components/button';
-import { ExternalProviderLogin } from '../components/external-provider-login';
-import { Input } from '../components/input';
-import { validateEmail } from '../helper/validator';
+import { supabase } from '~/services/supabase-client';
+import { Button, LinkButton } from '~/components/button';
+import { ExternalProviderLogin } from '~/components/external-provider-login';
+import { Input } from '~/components/input';
+import { validateEmail } from '~/helper/validator';
 
 const Register = () => {
   const [email, setEmail] = useState('');

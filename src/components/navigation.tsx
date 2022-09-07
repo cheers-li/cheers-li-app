@@ -5,7 +5,7 @@ import {
   PlusCircleIcon,
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
-import SideMenu from './side-menu';
+import SideMenu from '~/components/side-menu';
 
 const Navigation = () => {
   return (

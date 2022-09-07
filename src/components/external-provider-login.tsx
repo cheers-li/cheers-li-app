@@ -1,7 +1,7 @@
 import { Provider } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
-import { supabase } from '../services/supabase-client';
-import { Button } from './button';
+import { supabase } from '~/services/supabase-client';
+import { Button } from '~/components/button';
 
 interface ExternalProviderLoginProps {
   loading: boolean;

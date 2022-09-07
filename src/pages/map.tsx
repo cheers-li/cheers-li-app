@@ -46,7 +46,7 @@ const MapView = () => {
             <Select
               leftIcon={
                 <MapPinIcon
-                  className="h-5 w-5 text-blue-400"
+                  className="h-5 w-5 text-sky-400"
                   aria-hidden="true"
                 />
               }

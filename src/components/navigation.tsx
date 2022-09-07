@@ -18,7 +18,7 @@ const Navigation = () => {
               <NavLink
                 to="/map"
                 className={({ isActive }) =>
-                  isActive ? 'text-blue-200' : undefined
+                  isActive ? 'text-sky-200' : undefined
                 }
               >
                 <MapIcon className="h-6 w-6" aria-hidden="true" />
@@ -28,7 +28,7 @@ const Navigation = () => {
               <NavLink
                 to="/search"
                 className={({ isActive }) =>
-                  isActive ? 'text-blue-200' : undefined
+                  isActive ? 'text-sky-200' : undefined
                 }
               >
                 <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
@@ -38,7 +38,7 @@ const Navigation = () => {
               <NavLink
                 to="/messages"
                 className={({ isActive }) =>
-                  isActive ? 'text-blue-200' : undefined
+                  isActive ? 'text-sky-200' : undefined
                 }
               >
                 <EnvelopeIcon className="h-6 w-6" aria-hidden="true" />
@@ -49,10 +49,10 @@ const Navigation = () => {
         <NavLink
           to="/sessions/new"
           className={({ isActive }) =>
-            isActive ? 'text-blue-200' : 'text-white'
+            isActive ? 'text-sky-200' : 'text-white'
           }
         >
-          <button className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-400 p-3 hover:bg-blue-300">
+          <button className="flex h-20 w-20 items-center justify-center rounded-full bg-sky-400 p-3 hover:bg-sky-300">
             <PlusCircleIcon className="h-12 w-12" aria-hidden="true" />
           </button>
         </NavLink>

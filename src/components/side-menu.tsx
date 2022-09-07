@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 const getLinkClasses = (isActive: boolean) =>
   classNames('block border-l-4  py-2 pl-3 pr-4 text-base font-medium', {
-    'border-blue-500 bg-blue-50 text-blue-700': isActive,
+    'border-sky-500 bg-sky-50 text-sky-700': isActive,
     'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700':
       !isActive,
   });
@@ -31,7 +31,7 @@ const SideMenu = () => {
                 <div className="flex items-center">
                   <button
                     onClick={toggleMenu}
-                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500"
                   >
                     <span className="sr-only">Open main menu</span>
                     {isOpen ? (
@@ -47,7 +47,7 @@ const SideMenu = () => {
               <NavLink
                 to="/map"
                 onClick={toggleMenu}
-                className="block border-l-4 border-blue-500 bg-blue-50 py-2 pl-3 pr-4 text-base font-medium text-blue-700"
+                className="block border-l-4 border-sky-500 bg-sky-50 py-2 pl-3 pr-4 text-base font-medium text-sky-700"
               >
                 Map
               </NavLink>
@@ -92,7 +92,7 @@ const SideMenu = () => {
                 </div>
                 <button
                   type="button"
-                  className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />

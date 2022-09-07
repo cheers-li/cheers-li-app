@@ -22,8 +22,8 @@ export const Button: React.FC<ButtonProps> = ({
 }) => (
   <button
     className={classNames('rounded-md px-8 py-3', {
-      'bg-indigo-500 text-white': primary && !disabled,
-      'bg-indigo-100 text-gray-800': secondary && !disabled,
+      'bg-sky-700 text-white': primary && !disabled,
+      'bg-sky-100 text-gray-800': secondary && !disabled,
       'bg-white text-gray-800': link && !disabled,
       'w-full': width === 'full',
       'bg-gray-300 text-gray-100': disabled,

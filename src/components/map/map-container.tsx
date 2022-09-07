@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Geolocation } from '@capacitor/geolocation';
 import mapboxgl, { add3DBuildingsLayer } from '../../services/mapbox';
 import store from '../../store';
-import Tooltip from './tooltip';
+import FriendTooltip from './friend-tooltip';
 import { createRoot } from 'react-dom/client';
 import FriendMarker from './friend-marker';
 import fakeData from './fake-data.json';
@@ -41,7 +41,7 @@ const addFriendsMarkers = (map: mapboxgl.Map) => {
     // Create tooltip node
     const tooltipNode = document.createElement('div');
     const tooltipRoot = createRoot(tooltipNode);
-    tooltipRoot.render(<Tooltip user={friend} />);
+    tooltipRoot.render(<FriendTooltip user={friend} />);
 
     // make a marker for each feature and add to the map
     new mapboxgl.Marker(markerNode)

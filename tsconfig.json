@@ -24,6 +24,7 @@
     "src",
     ".eslintrc.js",
     ".prettierrc.js",
+    "prettier.config.cjs",
     "postcss.config.cjs",
     "tailwind.config.cjs",
     "capacitor.config.ts",

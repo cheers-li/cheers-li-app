@@ -1,9 +1,9 @@
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Button, LinkButton } from '../components/button';
-import { ExternalProviderLogin } from '../components/external-provider-login';
-import { Input } from '../components/input';
-import { supabase } from '../services/supabase-client';
+import { Button, LinkButton } from '~/components/button';
+import { ExternalProviderLogin } from '~/components/external-provider-login';
+import { Input } from '~/components/input';
+import { supabase } from '~/services/supabase-client';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

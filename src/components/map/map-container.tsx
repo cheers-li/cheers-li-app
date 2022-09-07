@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Geolocation } from '@capacitor/geolocation';
-import mapboxgl, { add3DBuildingsLayer } from '../../services/mapbox';
-import store from '../../store';
-import FriendTooltip from './friend-tooltip';
+import mapboxgl, { add3DBuildingsLayer } from '~/services/mapbox';
+import store from '~/store';
+import FriendTooltip from '~/components/map/friend-tooltip';
 import { createRoot } from 'react-dom/client';
-import FriendMarker from './friend-marker';
-import fakeData from './fake-data.json';
+import FriendMarker from '~/components/map/friend-marker';
+import fakeData from '~/components/map/fake-data.json';
 
 // TODO: get this from DB
 export interface Friend {

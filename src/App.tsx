@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRoutes, useLocation, useNavigate } from 'react-router-dom';
 import routes from '~react-pages';
-import AppUrlListener from './AppUrlListener';
-import { supabase } from './services/supabase-client';
-import store from './store';
+import AppUrlListener from '~/AppUrlListener';
+import { supabase } from '~/services/supabase-client';
+import store from '~/store';
 
 const publicPages = [
   '/welcome',

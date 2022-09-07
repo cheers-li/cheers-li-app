@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Select } from '../components/select';
-import { Tag } from '../components/tag';
+import { Select } from '~/components/select';
+import { Tag } from '~/components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
-import Navigation from '../components/navigation';
-import store from '../store';
-import MapContainer from '../components/map/map-container';
+import Navigation from '~/components/navigation';
+import store from '~/store';
+import MapContainer from '~/components/map/map-container';
 
 const MapView = () => {
   // TODO: take in from db

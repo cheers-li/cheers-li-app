@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import store from '../store';
+import store from '~/store';
 import classNames from 'classnames';
-import { supabase } from '../services/supabase-client';
+import { supabase } from '~/services/supabase-client';
 import { useState } from 'react';
 
 const getLinkClasses = (isActive: boolean) =>

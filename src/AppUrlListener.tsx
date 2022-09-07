@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { useNavigate } from 'react-router';
-import { supabase } from './services/supabase-client';
+import { supabase } from '~/services/supabase-client';
 
 const ACCESS_TOKEN_MATCH = /(?:access_token=)([a-zA-Z0-9.-]*)/g;
 const REFRESH_TOKEN_MATCH = /(?:refresh_token=)([a-zA-Z0-9.-]*)/g;

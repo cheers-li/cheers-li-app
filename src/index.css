@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 /* Map */
+.tags-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tags-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .user-marker {
   @apply relative h-4 w-4 rounded-full border-2 border-white bg-blue-500;
   transform-style: preserve-3d;

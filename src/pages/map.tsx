@@ -60,7 +60,7 @@ const MapView = () => {
               <Bars2Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>
-          <ul className="flex items-center space-x-4 overflow-x-auto">
+          <ul className="tags-container flex items-center space-x-4 overflow-x-auto">
             {tags.map((tag) => (
               <li key={tag.name}>
                 <Tag

@@ -31,7 +31,7 @@ export const Select: React.FC<SelectProps> = ({
           id="location"
           name="location"
           className={classNames(
-            'flex-1 rounded-md border-0 py-2 pr-10 text-base focus:border-blue-500 focus:outline-none focus:ring-blue-500',
+            'flex-1 rounded-md border-0 py-2 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
             {
               'mt-1': label,
               'pl-12': leftIcon,

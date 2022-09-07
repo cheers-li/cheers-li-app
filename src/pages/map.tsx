@@ -5,6 +5,7 @@ import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '../components/navigation';
 import store from '../store';
+import MapContainer from '../components/map/map-container';
 
 const MapView = () => {
   // TODO: take in from db
@@ -33,22 +34,19 @@ const MapView = () => {
     setIsOpen(!isOpen);
   };
 
-  // TODO: add real map
   return (
     <>
+      <div className="absolute inset-0 h-full w-full">
+        <MapContainer />
+      </div>
       <Navigation />
-      <div
-        className="w-full bg-cover"
-        style={{
-          backgroundImage: `url(${'https://miro.medium.com/max/1400/1*wdwWv0g8r_uIwR0o7zLHnQ.jpeg'})`,
-        }}
-      >
+      <div className="relative w-full">
         <div className="mt-8 space-y-3 px-6">
           <div className="flex justify-between">
             <Select
               leftIcon={
                 <MapPinIcon
-                  className="h-5 w-5 text-blue-400"
+                  className="h-5 w-5 text-sky-400"
                   aria-hidden="true"
                 />
               }
@@ -62,7 +60,7 @@ const MapView = () => {
               <Bars2Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>
-          <ul className="flex items-center space-x-4 overflow-x-auto">
+          <ul className="tags-container flex items-center space-x-4 overflow-x-auto">
             {tags.map((tag) => (
               <li key={tag.name}>
                 <Tag

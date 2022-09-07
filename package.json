@@ -9,18 +9,22 @@
     "format": "eslint --fix --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
     "preview": "vite preview",
     "prepare": "husky install",
-    "run-ios": "pnpm build && pnpm cap sync && pnpm cap run ios"
+    "sync": "pnpm build && pnpm cap sync",
+    "deploy:android": "pnpm sync && pnpm cap run android",
+    "deploy:ios": "pnpm sync && pnpm cap run ios"
   },
   "dependencies": {
     "@capacitor/android": "^4.1.0",
     "@capacitor/app": "^4.0.1",
     "@capacitor/core": "^4.1.0",
+    "@capacitor/geolocation": "^4.0.1",
     "@capacitor/ios": "^4.1.0",
     "@capacitor/preferences": "^4.0.1",
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^2.0.8",
     "@supabase/supabase-js": "^1.35.6",
     "classnames": "^2.3.1",
+    "mapbox-gl": "^2.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
@@ -31,6 +35,7 @@
   "devDependencies": {
     "@capacitor/cli": "^4.1.0",
     "@tailwindcss/forms": "^0.5.2",
+    "@types/mapbox-gl": "^2.7.5",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.36.0",

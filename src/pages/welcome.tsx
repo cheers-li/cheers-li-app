@@ -2,7 +2,7 @@ import { LinkButton } from '../components/button';
 
 const Welcome = () => {
   return (
-    <div className="flex w-full flex-col justify-center gap-8 py-8 px-8">
+    <div className="flex h-full w-full flex-col justify-center gap-8 py-8 px-8">
       <h1 className="text-5xl font-bold">
         Hey!!
         <br />

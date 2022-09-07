@@ -1,10 +1,17 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRoutes, useLocation, useNavigate } from 'react-router-dom';
 import routes from '~react-pages';
+import AppUrlListener from './AppUrlListener';
 import { supabase } from './services/supabase-client';
 import store from './store';
 
-const publicPages = ['/welcome', '/login', '/register', '/email-login', '/map'];
+const publicPages = [
+  '/welcome',
+  '/login',
+  '/register',
+  '/email-login',
+  '/login-callback',
+];
 
 export default function App() {
   const [theme, setTheme] = store.useState('theme');
@@ -31,6 +38,7 @@ export default function App() {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, newSession) => {
+      console.log('Auth State Changes');
       setSession(newSession);
     });
 
@@ -43,7 +51,10 @@ export default function App() {
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <div className="h-screen w-screen bg-gray-50">{useRoutes(routes)}</div>
+      <AppUrlListener />
+      <div className="h-screen w-screen bg-gray-50 py-8">
+        {useRoutes(routes)}
+      </div>
     </Suspense>
   );
 }

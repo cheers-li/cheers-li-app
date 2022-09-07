@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, SyntheticEvent } from 'react';
+import { useNavigate } from 'react-router';
+import { supabase } from '../services/supabase-client';
 import { Button, LinkButton } from '../components/button';
 import { ExternalProviderLogin } from '../components/external-provider-login';
 import { Input } from '../components/input';
@@ -8,12 +10,25 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const register = () => {
+  const register = async (e: SyntheticEvent): Promise<void> => {
+    e.preventDefault();
     setError('');
     const isValidEmail = validateEmail(email);
     if (!isValidEmail) {
       setError('Not a valid E-Mail address');
+    }
+
+    try {
+      setLoading(true);
+      const { error: loginError } = await supabase.auth.signIn({ email });
+      if (loginError) throw error;
+      navigate('/email-login');
+    } catch (err: unknown) {
+      setError('Something went wrong while signing you in.');
+    } finally {
+      setLoading(false);
     }
   };
 

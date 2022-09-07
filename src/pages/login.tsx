@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Button, LinkButton } from '../components/button';
 import { ExternalProviderLogin } from '../components/external-provider-login';
@@ -26,12 +26,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(() => {
-      navigate('/');
-    });
-  }, [navigate]);
 
   return (
     <div className="flex h-full w-full flex-col justify-center gap-6 py-8 px-8">

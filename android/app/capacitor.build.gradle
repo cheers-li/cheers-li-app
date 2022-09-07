@@ -9,7 +9,11 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
+<<<<<<< HEAD
     implementation project(':capacitor-geolocation')
+=======
+    implementation project(':capacitor-app')
+>>>>>>> main
     implementation project(':capacitor-preferences')
 
 }

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@capacitor/android': ^4.1.0
+  '@capacitor/app': ^4.0.1
   '@capacitor/cli': ^4.1.0
   '@capacitor/core': ^4.1.0
   '@capacitor/geolocation': ^4.0.1
@@ -43,6 +44,7 @@ specifiers:
 
 dependencies:
   '@capacitor/android': 4.1.0_@capacitor+core@4.1.0
+  '@capacitor/app': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/core': 4.1.0
   '@capacitor/geolocation': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/ios': 4.1.0_@capacitor+core@4.1.0
@@ -362,6 +364,14 @@ packages:
 
   /@capacitor/android/4.1.0_@capacitor+core@4.1.0:
     resolution: {integrity: sha512-aYHvpYVlS6WC+bG9jJfwqgHMxTw3e8f3taNnl/y9qCjglmMmtFcZWFAVLlOleVK4Q7olSirqjx37f0ppvxRTLg==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
+    dev: false
+
+  /@capacitor/app/4.0.1_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-frPft9TMJL70jWq5jmxwGSBddZVvsWxX5Agj2i19WJerk37aTgljB05HRr/YLg6mF1G/NIXmmFJZDY8MEgirDg==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

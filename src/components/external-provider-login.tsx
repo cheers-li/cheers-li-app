@@ -1,4 +1,5 @@
 import { Provider } from '@supabase/supabase-js';
+import { Capacitor } from '@capacitor/core';
 import { supabase } from '../services/supabase-client';
 import { Button } from './button';
 
@@ -18,7 +19,15 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
   const handleExternalProviderLogin = async (provider: Provider) => {
     try {
       setLoading(true);
-      const { error: loginError } = await supabase.auth.signIn({ provider });
+
+      const redirectTo = Capacitor.isNativePlatform()
+        ? 'io.supabase.cheersli://login-callback'
+        : 'http://localhost:5173/login-callback';
+
+      const { error: loginError } = await supabase.auth.signIn(
+        { provider },
+        { redirectTo },
+      );
       if (loginError) throw error;
     } catch (err: unknown) {
       setError('Something went wrong while signing you in.');

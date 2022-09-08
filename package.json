@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^4.1.0",
+    "@julr/vite-plugin-validate-env": "^0.1.2",
     "@tailwindcss/forms": "^0.5.2",
     "@types/mapbox-gl": "^2.7.5",
     "@types/react": "^18.0.17",

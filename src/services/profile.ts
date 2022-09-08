@@ -25,3 +25,5 @@ export const createNewProfile = async (userId: string, userName: string) => {
 
   return { data, error };
 };
+
+export const getUserId = (): string => supabase.auth.user()?.id || 'UNKNOWN';

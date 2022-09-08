@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || '';
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 export const add3DBuildingsLayer = (map: mapboxgl.Map) => {
   // Insert the layer beneath any symbol layer.

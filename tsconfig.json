@@ -30,7 +30,8 @@
     "postcss.config.cjs",
     "tailwind.config.cjs",
     "capacitor.config.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "env.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -8,16 +8,23 @@
 - PNPM
 - IOS or Android development tools, see [here](https://capacitorjs.com/docs/getting-started/environment-setup) for more info.
 
-### React app
-
 ```bash
 git clone https://github.com/cheers-li/cheers-li-app
 cd https://github.com/cheers-li/cheers-li-app
 pnpm install # npm i -g pnpm (if you don't have it)
+cp .env .env.local # See below for more info
 pnpm dev
 ```
 
-### Native app
+### Env values
+
+Here are some explanation about the different values you need to set in your `.env.local` file:
+
+- **VITE_SUPABASE_URL**: On [app.supabase.com](https://app.supabase.com/), go to your project -> Settings tab -> API and copy the **Project URL**
+- **VITE_SUPABASE_KEY**: On [app.supabase.com](https://app.supabase.com/), go to your project -> Settings tab -> API and copy the **public** one in your **Project API keys**
+- **VITE_MAPBOX_TOKEN**: On [mapbox.com](https://mapbox.com/), go to your account -> Tokens -> Create a token
+
+## Native app
 
 Everytime you change the code, you have to run these commands to update the app:
 

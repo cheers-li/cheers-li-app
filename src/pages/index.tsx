@@ -5,6 +5,7 @@ import { useAsync } from 'react-use';
 import { getProfile } from '~/services/profile';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
+import { FriendList } from '~/components/friend-list';
 
 const Index = () => {
   const logout = () => supabase.auth.signOut();
@@ -19,11 +20,9 @@ const Index = () => {
     return null;
   });
 
-  console.log({ profile, user });
-
   return (
     <Page>
-      <PageHeader>Welcome black</PageHeader>
+      <PageHeader>Welcome black {profile.value?.username}</PageHeader>
       {profile.value?.avatar_url && (
         <img
           src={profile.value?.avatar_url}
@@ -34,6 +33,11 @@ const Index = () => {
       <p className="text-sm text-gray-500">
         You are currently logged in as: {user?.email}
       </p>
+
+      <hr />
+      <h1 className="text-xl font-bold">Your friends</h1>
+      <FriendList />
+      <hr />
 
       <Button primary onClick={logout}>
         Logout

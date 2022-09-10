@@ -20,6 +20,7 @@ specifiers:
   '@vitejs/plugin-react': ^2.0.1
   autoprefixer: ^10.4.8
   classnames: ^2.3.1
+  dayjs: ^1.11.5
   eslint: ^8.23.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.2.1
@@ -54,6 +55,7 @@ dependencies:
   '@heroicons/react': 2.0.8_react@18.2.0
   '@supabase/supabase-js': 1.35.6
   classnames: 2.3.1
+  dayjs: 1.11.5
   mapbox-gl: 2.10.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -1399,6 +1401,10 @@ packages:
     dependencies:
       es5-ext: 0.10.62
       type: 1.2.0
+    dev: false
+
+  /dayjs/1.11.5:
+    resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
     dev: false
 
   /debug/2.6.9:

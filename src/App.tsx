@@ -38,7 +38,6 @@ export default function App() {
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((_event, newSession) => {
-      console.log('Auth State Changes', newSession);
       setSession(newSession);
     });
 

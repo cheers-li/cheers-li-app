@@ -5,6 +5,8 @@ import { Button } from '~/components/button';
 import { User } from '@supabase/supabase-js';
 import { createNewProfile, getProfile } from '~/services/profile';
 import { Input } from '~/components/input';
+import { Page } from '~/components/page';
+import { PageHeader } from '~/components/page-header';
 
 const LoginCallback = () => {
   const navigate = useNavigate();
@@ -39,7 +41,6 @@ const LoginCallback = () => {
       loadProfile();
     }
     if (user && profile) {
-      console.log(profile);
       navigate('/');
     }
   }, [user, profile, navigate]);
@@ -69,42 +70,43 @@ const LoginCallback = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 py-8 px-8">
-      {!user && <h1 className="text-xl font-bold">One moment please...</h1>}
-      {user && requireNewProfile && (
-        <>
-          <h1 className="text-xl font-bold">Create a Profile</h1>
+    <Page>
+      <PageHeader>
+        {!user && <h1 className="text-xl font-bold">One moment please</h1>}
+        {user && requireNewProfile && (
+          <>
+            <h1 className="text-xl font-bold">Create a Profile</h1>
+            <p className="text-sm text-gray-500">
+              We need some more information to complete your profile.
+            </p>
+          </>
+        )}
+      </PageHeader>
+      <div className="flex w-full flex-col gap-6 px-8">
+        {!user && !requireNewProfile && (
           <p className="text-sm text-gray-500">
-            We need some more information to complete your profile.
+            We are currently fetching your profile.
           </p>
-        </>
-      )}
-      {!user && !requireNewProfile && (
-        <p className="text-sm text-gray-500">
-          We are currently fetching your profile.
-        </p>
-      )}
-      {requireNewProfile && (
-        <form onSubmit={submitProfileName} className="flex flex-col gap-6">
-          <Input
-            placeholder="How should we call you?"
-            label="Username"
-            value={userName}
-            error={userNameError}
-            onUpdate={setUserName}
-            disabled={isProfileLoading}
-          />
-          <div className="flex flex-col gap-4">
-            <Button primary width="full" disabled={isProfileLoading}>
-              Save Profile
-            </Button>
-          </div>
-        </form>
-      )}
-      {/* <LinkButton secondary width="full" href="/">
-        Go Home
-      </LinkButton> */}
-    </div>
+        )}
+        {requireNewProfile && (
+          <form onSubmit={submitProfileName} className="flex flex-col gap-6">
+            <Input
+              placeholder="How should we call you?"
+              label="Username"
+              value={userName}
+              error={userNameError}
+              onUpdate={setUserName}
+              disabled={isProfileLoading}
+            />
+            <div className="flex flex-col gap-4">
+              <Button primary width="full" disabled={isProfileLoading}>
+                Save Profile
+              </Button>
+            </div>
+          </form>
+        )}
+      </div>
+    </Page>
   );
 };
 

@@ -22,13 +22,15 @@ const NewSession = () => {
       if (!name || name.length == 0) {
         throw 'The name cannot be empty';
       }
-      console.log(name);
-      const { error: errorMessage } = await createNewSession(name, getUserId());
+      const { id, error: errorMessage } = await createNewSession(
+        name,
+        getUserId(),
+      );
 
       if (errorMessage) {
         throw errorMessage.message;
       }
-      navigate(`/sessions/${name}`);
+      navigate(`/sessions/${id}`);
     } catch (exception: any) {
       setError(exception);
     } finally {
@@ -39,23 +41,25 @@ const NewSession = () => {
   return (
     <Page>
       <PageHeader>Create a new Session</PageHeader>
-      <p className="text-sm text-gray-500">
-        Click on start to create a new session. Your friends will receive a
-        notification that you have started a session.
-      </p>
-      <form onSubmit={submit} className="flex flex-col gap-6">
-        <Input
-          placeholder="How should this session be called?"
-          label="Session Name"
-          value={name}
-          error={error}
-          onUpdate={setName}
-          disabled={isLoading}
-        />
-        <div className="flex flex-col gap-4">
-          <Button primary>Start Session</Button>
-        </div>
-      </form>
+      <div className="flex w-full flex-col gap-6 px-8">
+        <p className="text-sm text-gray-500">
+          Click on start to create a new session. Your friends will receive a
+          notification that you have started a session.
+        </p>
+        <form onSubmit={submit} className="flex flex-col gap-6">
+          <Input
+            placeholder="How should this session be called?"
+            label="Session Name"
+            value={name}
+            error={error}
+            onUpdate={setName}
+            disabled={isLoading}
+          />
+          <div className="flex flex-col gap-4">
+            <Button primary>Start Session</Button>
+          </div>
+        </form>
+      </div>
     </Page>
   );
 };

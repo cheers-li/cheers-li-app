@@ -1,11 +1,13 @@
+import { getLastActive } from '~/helper/time';
 import { supabase } from './supabase-client';
 
-export const getFriends = async (userId?: string): Promise<Friend[]> => {
+export const getFriends = async (userId?: string): Promise<Profile[]> => {
   const { data, error } = await supabase
     .from('friends')
     .select(
-      'user_1 ( id, username, avatar_url ), user_2 (id, username, avatar_url)',
+      'user_1 (id, username, avatar_url, active_at), user_2 (id, username, avatar_url, active_at)',
     )
+    .eq('accepted', true)
     .or(`user_1.eq.${userId},user_2.eq.${userId}`);
 
   if (error) {
@@ -18,10 +20,12 @@ export const getFriends = async (userId?: string): Promise<Friend[]> => {
         ? friendConnection.user_2
         : friendConnection.user_1;
 
-    const friend: Friend = {
+    const friend: Profile = {
       id: other.id,
       username: other.username,
       avatarUrl: other.avatar_url,
+      activeAt: other.active_at,
+      lastSeen: getLastActive(other.active_at),
     };
 
     return friend;
@@ -30,8 +34,10 @@ export const getFriends = async (userId?: string): Promise<Friend[]> => {
   return friendList || [];
 };
 
-export interface Friend {
+export interface Profile {
   id: string;
   username: string;
   avatarUrl: string;
+  activeAt?: string;
+  lastSeen?: string;
 }

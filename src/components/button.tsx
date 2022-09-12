@@ -5,6 +5,7 @@ interface ButtonProps {
   disabled?: boolean;
   primary?: boolean;
   secondary?: boolean;
+  danger?: boolean;
   link?: boolean;
   width?: 'full' | 'default';
   children: React.ReactNode;
@@ -15,15 +16,17 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   primary,
   secondary,
+  danger,
   link,
   width,
   children,
   ...rest
 }) => (
   <button
-    className={classNames('rounded-md px-8 py-3', {
+    className={classNames('w-full rounded-md px-8 py-3', {
       'bg-sky-700 text-white': primary && !disabled,
       'bg-sky-100 text-gray-800': secondary && !disabled,
+      'bg-red-500 text-white': danger && !disabled,
       'bg-white text-gray-800': link && !disabled,
       'w-full': width === 'full',
       'bg-gray-300 text-gray-100': disabled,

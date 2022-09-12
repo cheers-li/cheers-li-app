@@ -1,15 +1,16 @@
-import { Link } from 'react-router-dom';
+import { LinkButton } from '~/components/button';
+import { Page } from '~/components/page';
+import { PageHeader } from '~/components/page-header';
 
 export default function NotFound() {
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <div className="text-2xl font-semibold">Page not found</div>
-      <Link
-        to="/"
-        className="mt-5 rounded-lg border border-gray-100 bg-gray-200 px-4 py-2 hover:bg-gray-300"
-      >
-        Back home
-      </Link>
-    </div>
+    <Page>
+      <PageHeader>Page not found</PageHeader>
+      <div className="flex w-full flex-col gap-6 px-8">
+        <LinkButton primary href="/">
+          Got back home
+        </LinkButton>
+      </div>
+    </Page>
   );
 }

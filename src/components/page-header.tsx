@@ -4,7 +4,7 @@ interface PageHeaderProps {
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ children }) => (
   <>
-    <h1 className="text-3xl font-bold">{children}</h1>
+    <h1 className="truncate px-8 text-3xl font-bold">{children}</h1>
     <hr />
   </>
 );

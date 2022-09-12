@@ -23,10 +23,8 @@ const AppUrlListener: React.FC<unknown> = () => {
         }
       }
 
-      console.log({ event });
       const slug = event.url.replace('io.supabase.cheersli://', '/');
       if (slug) {
-        console.log('navigate to', { slug });
         navigate(slug);
       }
     });

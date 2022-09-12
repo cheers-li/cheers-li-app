@@ -1,45 +1,41 @@
 import { useAsync } from 'react-use';
-import { Friend, getFriends } from '~/services/friends';
+import { Profile, getFriends } from '~/services/friends';
 import { getUserId } from '~/services/profile';
+import { Avatar } from './avatar';
 
 export const FriendList = () => {
-  const friends = useAsync(async () => {
-    return getFriends(getUserId());
-  });
+  const friends = useAsync(() => getFriends(getUserId()));
 
   return (
-    <div>
-      <ul>
-        {friends.value?.map((friend: Friend, i: number) => (
-          <li key={i} className="flex items-center justify-start gap-2 py-2">
-            {friend.avatarUrl ? (
-              <img
-                src={friend.avatarUrl}
-                alt={friend.username}
-                className="h-12 w-12 rounded-full"
-              />
-            ) : (
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-800 text-3xl font-extralight text-white">
-                {friend.username.charAt(0).toUpperCase()}
-              </div>
-            )}
+    <ul className="border-t">
+      {friends.value?.map((friend: Profile, i: number) => (
+        <li key={i}>
+          <a
+            href={`/profile/${friend.id}`}
+            className="flex items-center justify-start gap-2 border-b py-3 px-8"
+          >
+            <Avatar profile={friend} />
             <div className="flex flex-col">
               <span className="text-md font-medium">{friend.username}</span>
-              <span className="text-sm text-gray-500">Last Active 8h ago</span>
+              <span className="text-sm text-gray-500">
+                Last active {friend.lastSeen}
+              </span>
             </div>
-          </li>
-        ))}
+          </a>
+        </li>
+      ))}
 
-        {friends.value?.length === 0 && (
-          <li>It appears that you have no friends</li>
-        )}
+      {friends.value?.length === 0 && (
+        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
+          It appears that you have no friends
+        </li>
+      )}
 
-        {friends.loading && (
-          <li className="text-sm text-gray-500">
-            We are loading your friends.
-          </li>
-        )}
-      </ul>
-    </div>
+      {friends.loading && (
+        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
+          We are loading your friends.
+        </li>
+      )}
+    </ul>
   );
 };

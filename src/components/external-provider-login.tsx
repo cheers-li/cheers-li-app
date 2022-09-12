@@ -2,6 +2,9 @@ import { Provider } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
 import { supabase } from '~/services/supabase-client';
 import { Button } from '~/components/button';
+import { GoogleIcon } from './icons/google-icon';
+import { FacebookIcon } from './icons/facebook-icon';
+import { AppleIcon } from './icons/apple-icon';
 
 interface ExternalProviderLoginProps {
   loading: boolean;
@@ -42,6 +45,7 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
         width="full"
         onClick={() => handleExternalProviderLogin('google')}
         disabled={loading}
+        icon={<GoogleIcon />}
       >
         Continue with Google
       </Button>
@@ -50,6 +54,7 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
         width="full"
         onClick={() => handleExternalProviderLogin('apple')}
         disabled={loading}
+        icon={<AppleIcon />}
       >
         Continue with Apple
       </Button>
@@ -58,6 +63,7 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
         width="full"
         onClick={() => handleExternalProviderLogin('facebook')}
         disabled={loading}
+        icon={<FacebookIcon />}
       >
         Continue with Facebook
       </Button>

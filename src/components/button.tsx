@@ -9,6 +9,7 @@ interface ButtonProps {
   link?: boolean;
   width?: 'full' | 'default';
   children: React.ReactNode;
+  icon?: React.ReactNode;
   onClick?: (event: React.MouseEvent<HTMLElement>) => any;
 }
 
@@ -19,6 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   danger,
   link,
   width,
+  icon,
   children,
   ...rest
 }) => (
@@ -30,9 +32,15 @@ export const Button: React.FC<ButtonProps> = ({
       'bg-white text-gray-800': link && !disabled,
       'w-full': width === 'full',
       'bg-gray-300 text-gray-100': disabled,
+      'flex flex-row items-center justify-start': icon,
     })}
     {...rest}
   >
+    {icon && (
+      <span className="mr-8 h-8 w-8 justify-self-start fill-gray-600">
+        {icon}
+      </span>
+    )}
     {children}
   </button>
 );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select } from '~/components/select';
 import { Tag } from '~/components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
@@ -6,27 +6,15 @@ import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '~/components/navigation';
 import store from '~/store';
 import MapContainer from '~/components/map/map-container';
+import { useSessionTags } from '~/services/session';
 
 const MapView = () => {
-  // TODO: take in from db
-  const tags = [
-    {
-      name: 'Beer',
-      icon: '🍺',
-    },
-    {
-      name: 'Coffee',
-      icon: '☕️',
-    },
-    {
-      name: 'Cocktail',
-      icon: '🍸',
-    },
-    {
-      name: 'Sirup',
-      icon: '🍹',
-    },
-  ];
+  const { tags, loadTags } = useSessionTags();
+
+  useEffect(() => {
+    loadTags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [activeTag, setActiveTag] = useState<string>();
   const [isOpen, setIsOpen] = store.useState('menuOpen');
@@ -67,7 +55,7 @@ const MapView = () => {
                   active={activeTag === tag.name}
                   onClick={() => setActiveTag(tag.name)}
                 >
-                  {tag.icon}
+                  {tag.emoji}
                   <span className="ml-2">{tag.name}</span>
                 </Tag>
               </li>

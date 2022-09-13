@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { getLastActive } from '~/helper/time';
+import store from '~/store';
 import { Profile } from './friends';
 import { supabase } from './supabase-client';
 
@@ -87,6 +88,28 @@ export const endSession = async (id: string) => {
 
 export const hasEnded = (endedAt?: string) => dayjs().isAfter(dayjs(endedAt));
 
+export const useSessionTags = () => {
+  const [tags, setTags] = store.useState<Tag[]>('sessionTags');
+
+  const loadTags = async () => {
+    if (tags.length) return;
+
+    const { data, error } = await supabase
+      .from('session_tags')
+      .select('name, emoji')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setTags(data);
+  };
+
+  return { tags, loadTags };
+};
+
 export interface Session {
   id: string;
   name: string;
@@ -94,4 +117,10 @@ export interface Session {
   endedAt: string;
   user: Profile;
   lastActive: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  emoji: string;
 }

@@ -116,11 +116,6 @@ const MapContainer = () => {
       }
     });
 
-    // TODO: to debug only
-    // map.current?.on('click', (e) => {
-    //   console.log([e.lngLat.lng, e.lngLat.lat]);
-    // });
-
     getCurrentPosition();
   });
 

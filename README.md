@@ -46,7 +46,7 @@ If you want to open the project in the native IDE (Xcode or Android Studio), you
 pnpm cap open ios/android # choose one of them
 ```
 
-## Live Reload
+### Live Reload
 
 To enable live reload in the Native App, follow these instructions:
 

@@ -63,7 +63,7 @@ Remember your URL, it should be something like `http://192.168.11.3:5173`
 Now, sync the native app (replace the value of the URL with yours):
 
 ```bash
-SERVER_URL=http://192.168.11.3:5173/ pnpm cap sync
+SERVER_URL=http://192.168.11.3:5173 pnpm cap sync
 ```
 
 To finish, open the native IDE, and press the Run button to launch the app.

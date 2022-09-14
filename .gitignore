@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Cordova generated files
+resources/android/icon
+resources/android/splash
+resources/ios/icon
+resources/ios/splash

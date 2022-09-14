@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 interface SelectProps {
   label?: string;
@@ -30,7 +30,7 @@ export const Select: React.FC<SelectProps> = ({
           onChange={(e) => onUpdate(e.target.value)}
           id="location"
           name="location"
-          className={classNames(
+          className={clsx(
             'flex-1 rounded-md border-0 py-2 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
             {
               'mt-1': label,

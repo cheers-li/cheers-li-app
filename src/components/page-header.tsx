@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 interface PageHeaderProps {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 }) => (
   <>
     <h1
-      className={classNames('px-8 text-3xl font-bold', {
+      className={clsx('px-8 text-3xl font-bold', {
         truncate: truncate,
       })}
     >

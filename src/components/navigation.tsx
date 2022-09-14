@@ -5,7 +5,7 @@ import {
   PlusCircleIcon,
   Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import SideMenu from '~/components/side-menu';
 
@@ -40,7 +40,7 @@ const Navigation = () => {
               <NavLink
                 to="/sessions/new"
                 className={({ isActive }) =>
-                  classNames('block rounded-full px-6 py-2 text-white', {
+                  clsx('block rounded-full px-6 py-2 text-white', {
                     'bg-sky-600': isActive,
                     'bg-dark-gradient': !isActive,
                   })

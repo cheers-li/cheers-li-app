@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 /* Map */
-.tags-container::-webkit-scrollbar {
+.tags-inline::-webkit-scrollbar {
   display: none;
 }
 
-.tags-container {
+.tags-inline {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -29,19 +29,19 @@
 }
 
 .custom-tooltip.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
-  @apply border-l-white -ml-px -mt-2;
+  @apply -ml-px -mt-2 border-l-white;
 }
 
 .custom-tooltip.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-  @apply border-r-white -mr-px -mt-2;
+  @apply -mr-px -mt-2 border-r-white;
 }
 
 .custom-tooltip.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-  @apply border-t-gray-100 -mt-px;
+  @apply -mt-px border-t-gray-100;
 }
 
 .custom-tooltip.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
-  @apply border-b-white -mb-px;
+  @apply -mb-px border-b-white;
 }
 
 .custom-tooltip .mapboxgl-popup-close-button {

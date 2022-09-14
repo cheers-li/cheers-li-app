@@ -1,14 +1,17 @@
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAsync } from 'react-use';
 import { Button } from '~/components/button';
-import { Input } from '~/components/input';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
-import { getUserId } from '~/services/profile';
-import { createNewSession } from '~/services/session';
+import TagList from '~/components/tag-list';
+import { getProfile, getUserId } from '~/services/profile';
+import { createNewSession, TagModel } from '~/services/session';
 
 const NewSession = () => {
-  const [name, setName] = useState('');
+  const profile = useAsync(() => getProfile(getUserId()));
+  const [tag, setTag] = useState<TagModel>();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -19,11 +22,12 @@ const NewSession = () => {
     setError('');
 
     try {
-      if (!name || name.length == 0) {
-        throw 'The name cannot be empty';
+      if (!tag || tag.id <= 0) {
+        throw 'The tag is required';
       }
       const { id, error: errorMessage } = await createNewSession(
-        name,
+        `${profile.value?.data.username} is drinking ${tag.name} ${tag.emoji}`,
+        tag.id,
         getUserId(),
       );
 
@@ -47,16 +51,19 @@ const NewSession = () => {
           notification that you have started a session.
         </p>
         <form onSubmit={submit} className="flex flex-col gap-6">
-          <Input
-            placeholder="How should this session be called?"
-            label="Session Name"
-            value={name}
-            error={error}
-            onUpdate={setName}
-            disabled={isLoading}
-          />
+          <div>
+            <span className="text-sm text-gray-500">Choose a tag</span>
+            <TagList activeTag={tag} setActiveTag={setTag} />
+            <div className="h-4">
+              {error && error !== '' && (
+                <span className="text-sm text-red-500">{error}</span>
+              )}
+            </div>
+          </div>
           <div className="flex flex-col gap-4">
-            <Button primary>Start Session</Button>
+            <Button primary disabled={isLoading}>
+              Start Session
+            </Button>
           </div>
         </form>
       </div>

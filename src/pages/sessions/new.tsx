@@ -6,11 +6,11 @@ import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import TagList from '~/components/tag-list';
 import { getProfile, getUserId } from '~/services/profile';
-import { createNewSession, TagModel } from '~/services/session';
+import { createNewSession, Tag } from '~/services/session';
 
 const NewSession = () => {
   const profile = useAsync(() => getProfile(getUserId()));
-  const [tag, setTag] = useState<TagModel>();
+  const [tag, setTag] = useState<Tag>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');

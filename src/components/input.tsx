@@ -25,6 +25,7 @@ export const Input: React.FC<InputProps> = ({
           'bg-gray-100 text-gray-400': disabled,
         },
       )}
+      disabled={disabled}
       {...rest}
     />
     {error && error !== '' && (

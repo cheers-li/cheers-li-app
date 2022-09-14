@@ -1,11 +1,11 @@
 import classNames from 'classnames';
-import { Tag } from '~/components/tag';
-import { TagModel, useSessionTags } from '~/services/session';
+import { TagItem } from '~/components/tag-item';
+import { Tag, useSessionTags } from '~/services/session';
 
 interface TagListProps {
   inline?: boolean;
-  activeTag?: TagModel;
-  setActiveTag: React.Dispatch<React.SetStateAction<TagModel | undefined>>;
+  activeTag?: Tag;
+  setActiveTag: React.Dispatch<React.SetStateAction<Tag | undefined>>;
 }
 
 const TagList: React.FC<TagListProps> = ({
@@ -30,13 +30,13 @@ const TagList: React.FC<TagListProps> = ({
               'mr-2 inline-flex max-w-half': !inline,
             })}
           >
-            <Tag
+            <TagItem
               active={activeTag?.id === tag.id}
               onClick={() => setActiveTag(tag)}
             >
               {tag.emoji}
               <span className="ml-2">{tag.name}</span>
-            </Tag>
+            </TagItem>
           </li>
         ))}
       </ul>

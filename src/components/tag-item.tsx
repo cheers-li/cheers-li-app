@@ -6,7 +6,7 @@ interface TagProps {
   onClick?: (event: React.MouseEvent<HTMLElement>) => any;
 }
 
-export const Tag: React.FC<TagProps> = ({ active, children, ...rest }) => (
+export const TagItem: React.FC<TagProps> = ({ active, children, ...rest }) => (
   <button
     type="button"
     className={classNames(

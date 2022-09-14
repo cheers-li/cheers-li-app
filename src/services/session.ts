@@ -110,7 +110,7 @@ export const endSession = async (id: string) => {
 export const hasEnded = (endedAt?: string) => dayjs().isAfter(dayjs(endedAt));
 
 export const useSessionTags = () => {
-  const [tags, setTags] = store.useState<TagModel[]>('sessionTags');
+  const [tags, setTags] = store.useState<Tag[]>('sessionTags');
 
   const loadTags = async () => {
     if (tags.length) return;
@@ -145,7 +145,7 @@ export interface Session {
   lastActive: string;
 }
 
-export interface TagModel {
+export interface Tag {
   id: number;
   name: string;
   emoji: string;

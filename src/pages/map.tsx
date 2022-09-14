@@ -6,15 +6,15 @@ import store from '~/store';
 import MapContainer from '~/components/map/map-container';
 import TagList from '~/components/tag-list';
 import { useState } from 'react';
-import { TagModel } from '~/services/session';
+import { Tag } from '~/services/session';
 
 const MapView = () => {
-  const [isOpen, setIsOpen] = store.useState('menuOpen');
+  const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const [activeTag, setActiveTag] = useState<TagModel>();
+  const [activeTag, setActiveTag] = useState<Tag>();
 
   return (
     <>

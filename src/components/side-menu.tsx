@@ -13,7 +13,7 @@ const getLinkClasses = (isActive: boolean) =>
   });
 
 const SideMenu = () => {
-  const [isOpen, setIsOpen] = store.useState('menuOpen');
+  const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
   const [user] = useState(supabase.auth.user());
   const logout = () => supabase.auth.signOut();
 

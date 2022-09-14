@@ -55,7 +55,7 @@ const addFriendsMarkers = (map: mapboxgl.Map) => {
 };
 
 const MapContainer = () => {
-  const [theme] = store.useState('theme');
+  const [theme] = store.useState<string>('theme');
 
   // Mapbox
   const mapContainer = useRef(null);
@@ -116,9 +116,10 @@ const MapContainer = () => {
       }
     });
 
-    map.current?.on('click', (e) => {
-      console.log([e.lngLat.lng, e.lngLat.lat]);
-    });
+    // TODO: to debug only
+    // map.current?.on('click', (e) => {
+    //   console.log([e.lngLat.lng, e.lngLat.lat]);
+    // });
 
     getCurrentPosition();
   });

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { TagItem } from '~/components/tag-item';
 import { Tag, useSessionTags } from '~/services/session';
 
@@ -18,7 +18,7 @@ const TagList: React.FC<TagListProps> = ({
   return (
     <>
       <ul
-        className={classNames({
+        className={clsx({
           'tags-column space-y-2': !inline,
           'tags-inline flex items-center space-x-4 overflow-x-auto': inline,
         })}
@@ -26,7 +26,7 @@ const TagList: React.FC<TagListProps> = ({
         {tags.map((tag) => (
           <li
             key={tag.id}
-            className={classNames({
+            className={clsx({
               'mr-2 inline-flex max-w-half': !inline,
             })}
           >

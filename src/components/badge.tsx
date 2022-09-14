@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { FC } from 'react';
 
 interface BadgeProps {
@@ -11,7 +11,7 @@ interface BadgeProps {
 export const Badge: FC<BadgeProps> = ({ children, red, green, yellow }) => {
   return (
     <span
-      className={classNames(
+      className={clsx(
         'inline-flex items-center rounded px-2 py-0.5 text-xs font-medium',
         { 'bg-red-100 text-red-800': red },
         { 'bg-yellow-100 text-yellow-800': yellow },

@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 /* Map */
+.mapboxgl-ctrl-logo {
+  @apply !hidden;
+}
+
 .tags-inline::-webkit-scrollbar {
-  display: none;
+  @apply hidden;
 }
 
 .tags-inline {

@@ -6,7 +6,7 @@ interface PageProps {
 
 export const Page: React.FC<PageProps> = ({ children }) => (
   <>
+    <div className="flex w-full flex-col gap-6 pt-8 pb-24">{children}</div>
     <Navigation />
-    <div className="flex w-full flex-col gap-6 py-8">{children}</div>
   </>
 );

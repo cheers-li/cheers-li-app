@@ -98,6 +98,7 @@ const MapContainer = () => {
       zoom: zoom,
       pitch: 45,
       bearing: -17.6,
+      attributionControl: false,
     });
 
     map.current?.on('style.load', () => {

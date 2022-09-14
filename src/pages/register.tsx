@@ -38,17 +38,16 @@ const Register = () => {
       setLoading(true);
       console.log('email', email, 'password', password);
       const {
-        user,
-        session,
+        // user,
+        // session,
         error: loginError,
       } = await supabase.auth.signUp({
         email,
         password,
       });
       if (loginError) throw emailError;
-      console.log(user, session); // TODO: remove
 
-      navigate('/email-login');
+      navigate('/login-callback');
     } catch (err: unknown) {
       setEmailError('Something went wrong while signing you in.');
     } finally {

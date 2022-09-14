@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Select } from '~/components/select';
 import { Tag } from '~/components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
@@ -9,12 +9,7 @@ import MapContainer from '~/components/map/map-container';
 import { useSessionTags } from '~/services/session';
 
 const MapView = () => {
-  const { tags, loadTags } = useSessionTags();
-
-  useEffect(() => {
-    loadTags();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const tags = useSessionTags();
 
   const [activeTag, setActiveTag] = useState<string>();
   const [isOpen, setIsOpen] = store.useState('menuOpen');

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
 import { Profile } from './friends';
@@ -107,7 +108,12 @@ export const useSessionTags = () => {
     setTags(data);
   };
 
-  return { tags, loadTags };
+  useEffect(() => {
+    loadTags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return tags;
 };
 
 export interface Session {

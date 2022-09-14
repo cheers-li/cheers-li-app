@@ -14,7 +14,7 @@ const publicPages = [
 ];
 
 export default function App() {
-  const [theme, setTheme] = store.useState('theme');
+  const [theme, setTheme] = store.useState<string>('theme');
 
   const [session, setSession] = useState(supabase.auth.session());
   const location = useLocation();

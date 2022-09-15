@@ -23,9 +23,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (validEmail && validPassword && validConfirmationPassword)
-      setValid(true);
-    else setValid(false);
+    setValid(validEmail && validPassword && validConfirmationPassword);
   }, [validEmail, validPassword, validConfirmationPassword]);
 
   const register = async (e: SyntheticEvent): Promise<void> => {

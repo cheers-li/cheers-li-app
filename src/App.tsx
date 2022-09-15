@@ -7,6 +7,7 @@ import store from '~/store';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { addNewDevices } from './services/devices';
 import { getUserId } from './services/profile';
+import { Capacitor } from '@capacitor/core';
 
 const publicPages = [
   '/welcome',
@@ -61,7 +62,9 @@ export default function App() {
   };
 
   useEffect(() => {
-    attachEventListeners();
+    if (Capacitor.isNativePlatform()) {
+      attachEventListeners();
+    }
   });
 
   return (

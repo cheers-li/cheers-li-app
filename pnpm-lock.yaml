@@ -8,6 +8,7 @@ specifiers:
   '@capacitor/geolocation': ^4.0.1
   '@capacitor/ios': ^4.1.0
   '@capacitor/preferences': ^4.0.1
+  '@capacitor/push-notifications': ^4.1.0
   '@headlessui/react': ^1.6.6
   '@heroicons/react': ^2.0.8
   '@julr/vite-plugin-validate-env': ^0.1.2
@@ -53,6 +54,7 @@ dependencies:
   '@capacitor/geolocation': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/ios': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/preferences': 4.0.1_@capacitor+core@4.1.0
+  '@capacitor/push-notifications': 4.1.0_@capacitor+core@4.1.0
   '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.8_react@18.2.0
   '@supabase/supabase-js': 1.35.6
@@ -440,6 +442,14 @@ packages:
 
   /@capacitor/preferences/4.0.1_@capacitor+core@4.1.0:
     resolution: {integrity: sha512-FffJjKS4XcodUj/rtFtWizQ9q/oYDSn5opZ+JYwj/EkjiMWMhY/Pk9lN3vwQfp+VJrTt3hjr+bwKXjhTbYBqKw==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
+    dev: false
+
+  /@capacitor/push-notifications/4.1.0_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-oNXw89t0z0b8efH9WmNxcpZ0oJpNMAnk/B7DRSBXfLnAdej0uZ8AFeeyi6CZsKQQ78jQMD0rcP8HlyRho0olgQ==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

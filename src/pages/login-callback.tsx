@@ -1,109 +1,139 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { supabase } from '~/services/supabase-client';
-import { Button } from '~/components/button';
-import { User } from '@supabase/supabase-js';
-import { createNewProfile, getProfile } from '~/services/profile';
-import { Input } from '~/components/input';
+import { getProfile, getUserId } from '~/services/profile';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
+import { CreateProfile } from '~/components/signup/create-profile';
+import { AskNotificationPermission } from '~/components/signup/ask-notification-permission';
+import { AskLocationPermission } from '~/components/signup/ask-location-permission';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { Capacitor } from '@capacitor/core';
+import { Geolocation } from '@capacitor/geolocation';
+
+enum SignUpState {
+  REQUIRE_PROFILE,
+  COMPLETED_PROFILE,
+  PERMISSION_PUSH_NOTIFICATION,
+  COMPLETED_PERMISSION_PUSH_NOTIFICATION,
+  PERMISSION_LOCATION,
+  COMPLETED_PERMISSION_LOCATION,
+  COMPLETED,
+}
+
+const hasProfile = async () => {
+  const { error } = await getProfile(getUserId());
+  return !error;
+};
 
 const LoginCallback = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>();
-  const [profile, setProfile] = useState();
-  const [requireNewProfile, setRequireNewProfile] = useState(false);
-  const [isProfileLoading, setIsProfileLoading] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userNameError, setUserNameError] = useState('');
 
-  const loadProfile = async () => {
-    const { data, error } = await getProfile(user?.id);
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [showLocationDialog, setShowLocationDialog] = useState(false);
 
-    if (!error) {
-      setProfile(data);
-    } else {
-      setRequireNewProfile(true);
+  const [currentState, setCurrentState] = useState<SignUpState>();
+
+  const onStateChange = async () => {
+    switch (currentState) {
+      case SignUpState.REQUIRE_PROFILE: {
+        const hasExistingProfile = await hasProfile();
+
+        if (hasExistingProfile) {
+          setCurrentState(SignUpState.COMPLETED_PROFILE);
+        } else {
+          setShowProfileDialog(true);
+        }
+        break;
+      }
+      case SignUpState.COMPLETED_PROFILE:
+        setShowProfileDialog(false);
+        setCurrentState(SignUpState.PERMISSION_PUSH_NOTIFICATION);
+        break;
+      case SignUpState.PERMISSION_PUSH_NOTIFICATION: {
+        if (!Capacitor.isNativePlatform()) {
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
+          break;
+        }
+
+        setShowNotificationDialog(true);
+
+        const permission = await PushNotifications.checkPermissions();
+        if (
+          permission.receive === 'granted' ||
+          permission.receive === 'denied'
+        ) {
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
+        }
+        break;
+      }
+      case SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION:
+        setShowNotificationDialog(false);
+        setCurrentState(SignUpState.PERMISSION_LOCATION);
+        break;
+      case SignUpState.PERMISSION_LOCATION: {
+        if (!Capacitor.isNativePlatform()) {
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
+          break;
+        }
+
+        setShowLocationDialog(true);
+
+        const permission = await Geolocation.checkPermissions();
+        if (
+          permission.location === 'granted' ||
+          permission.location === 'denied'
+        ) {
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
+        }
+        break;
+      }
+      case SignUpState.COMPLETED_PERMISSION_LOCATION:
+        setShowLocationDialog(false);
+        setCurrentState(SignUpState.COMPLETED);
+        break;
+      case SignUpState.COMPLETED:
+        navigate('/');
+        break;
     }
   };
 
   useEffect(() => {
-    const wait = setTimeout(
-      () => setUser(supabase.auth.user() || undefined),
-      500,
-    );
+    const wait = setTimeout(() => {
+      setCurrentState(SignUpState.REQUIRE_PROFILE);
+    }, 500);
 
     return () => clearTimeout(wait);
   }, []);
 
   useEffect(() => {
-    if (user && !profile) {
-      loadProfile();
-    }
-    if (user && profile) {
-      navigate('/');
-    }
-  }, [user, profile, navigate]);
-
-  const submitProfileName = async (e: SyntheticEvent) => {
-    e.preventDefault();
-    if (!user || !user.id) return;
-
-    setUserNameError('');
-    setIsProfileLoading(true);
-
-    try {
-      const { error } = await createNewProfile(user?.id, userName);
-      if (error) {
-        if (error.message.includes('duplicate key value')) {
-          setUserNameError(
-            'The username you choose is already used by someone else. Choose a unique username.',
-          );
-        }
-      }
-    } catch {
-      setUserNameError('Something went wrong. Try again later.');
-    } finally {
-      setIsProfileLoading(false);
-    }
-    await loadProfile();
-  };
+    onStateChange();
+  }, [currentState]);
 
   return (
-    <Page>
-      <PageHeader>
-        {!user && <h1 className="text-xl font-bold">One moment please</h1>}
-        {user && requireNewProfile && (
-          <>
-            <h1 className="text-xl font-bold">Create a Profile</h1>
-            <p className="text-sm text-gray-500">
-              We need some more information to complete your profile.
-            </p>
-          </>
-        )}
-      </PageHeader>
+    <Page hideNavigation={true}>
+      <PageHeader>One moment please</PageHeader>
       <div className="flex w-full flex-col gap-6 px-8">
-        {!user && !requireNewProfile && (
-          <p className="text-sm text-gray-500">
-            We are currently fetching your profile.
-          </p>
+        {showProfileDialog && (
+          <CreateProfile
+            complete={() => setCurrentState(SignUpState.COMPLETED_PROFILE)}
+          />
         )}
-        {requireNewProfile && (
-          <form onSubmit={submitProfileName} className="flex flex-col gap-6">
-            <Input
-              placeholder="How should we call you?"
-              label="Username"
-              value={userName}
-              error={userNameError}
-              onUpdate={setUserName}
-              disabled={isProfileLoading}
-            />
-            <div className="flex flex-col gap-4">
-              <Button primary width="full" disabled={isProfileLoading}>
-                Save Profile
-              </Button>
-            </div>
-          </form>
+        {showNotificationDialog && (
+          <AskNotificationPermission
+            complete={() =>
+              setCurrentState(
+                SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION,
+              )
+            }
+          />
+        )}
+        {showLocationDialog && (
+          <AskLocationPermission
+            complete={() =>
+              setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION)
+            }
+          />
         )}
       </div>
     </Page>

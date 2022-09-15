@@ -34,6 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
       'bg-gray-300 text-gray-100': disabled,
       'flex flex-row items-center justify-start': icon,
     })}
+    disabled={disabled}
     {...rest}
   >
     {icon && (

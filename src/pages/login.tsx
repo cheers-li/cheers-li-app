@@ -10,6 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleLogin = async (e: SyntheticEvent): Promise<void> => {
@@ -17,9 +18,12 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { error: loginError } = await supabase.auth.signIn({ email });
+      const { error: loginError } = await supabase.auth.signIn({
+        email,
+        password,
+      });
       if (loginError) throw error;
-      navigate('/email-login');
+      navigate('/');
     } catch (err: unknown) {
       setError('Something went wrong while signing you in.');
     } finally {
@@ -30,10 +34,7 @@ const Login = () => {
   return (
     <div className="flex h-full w-full flex-col justify-center gap-6 py-8 px-8">
       <h1 className="text-center text-xl font-bold">Sign in</h1>
-      <p className="text-sm text-gray-500">
-        Sign in using your E-Mail. We will send you a magic link to log into
-        your account.
-      </p>
+      <p className="text-sm text-gray-500">Sign in using your E-Mail.</p>
       <form onSubmit={handleLogin} className="flex flex-col gap-6">
         <Input
           type="email"
@@ -42,6 +43,14 @@ const Login = () => {
           value={email}
           error={error}
           onUpdate={setEmail}
+          disabled={loading}
+        />
+        <Input
+          type="password"
+          label="Password"
+          value={password}
+          error={error}
+          onUpdate={setPassword}
           disabled={loading}
         />
         <div className="flex flex-col gap-4">

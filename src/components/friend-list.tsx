@@ -14,7 +14,7 @@ export const FriendList = () => {
             href={`/profile/${friend.id}`}
             className="flex items-center justify-start gap-2 border-b py-3 px-8"
           >
-            <Avatar profile={friend} />
+            <Avatar profile={friend} size={12} />
             <div className="flex flex-col">
               <span className="text-md font-medium">{friend.username}</span>
               <span className="text-sm text-gray-500">

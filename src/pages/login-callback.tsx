@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getProfile, getUserId } from '~/services/profile';
 import { Page } from '~/components/page';
-import { PageHeader } from '~/components/page-header';
 import { CreateProfile } from '~/components/signup/create-profile';
 import { AskNotificationPermission } from '~/components/signup/ask-notification-permission';
 import { AskLocationPermission } from '~/components/signup/ask-location-permission';
@@ -112,7 +111,6 @@ const LoginCallback = () => {
 
   return (
     <Page hideNavigation={true}>
-      <PageHeader>One moment please</PageHeader>
       <div className="flex w-full flex-col gap-6 px-8">
         {showProfileDialog && (
           <CreateProfile

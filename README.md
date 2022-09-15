@@ -46,6 +46,32 @@ If you want to open the project in the native IDE (Xcode or Android Studio), you
 pnpm cap open ios/android # choose one of them
 ```
 
+### Live Reload
+
+To enable live reload in the Native App, follow these instructions:
+
+Before starting, you need your phone and your computer connected to the same network.
+
+Start the app in development mode with the `--host` flag to expose it:
+
+```bash
+pnpm dev --host
+```
+
+Remember your URL, it should be something like `http://192.168.11.3:5173`
+
+Now, sync the native app (replace the value of the URL with yours):
+
+```bash
+SERVER_URL=http://192.168.11.3:5173 pnpm cap sync
+```
+
+To finish, open the native IDE, and press the Run button to launch the app.
+
+```bash
+pnpm cap open ios/android # choose one of them
+```
+
 ## Code style
 
 We are using ESLint and Prettier to lint and format the code. An husky pre-commit hook is also configured to run the linter and the formatter before each commit on the staged files.

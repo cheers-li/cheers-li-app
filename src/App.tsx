@@ -4,6 +4,9 @@ import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';
 import { supabase } from '~/services/supabase-client';
 import store from '~/store';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { addNewDevices } from './services/devices';
+import { getUserId } from './services/profile';
 
 const publicPages = [
   '/welcome',
@@ -47,6 +50,19 @@ export default function App() {
       navigate('/welcome');
     }
   }, [session, location, setSession, navigate]);
+
+  const attachEventListeners = async () => {
+    await PushNotifications.addListener('registration', async (token) => {
+      await addNewDevices(getUserId(), token.value);
+    });
+    await PushNotifications.addListener('registrationError', (err) => {
+      console.error('Registration error: ', err.error);
+    });
+  };
+
+  useEffect(() => {
+    attachEventListeners();
+  });
 
   return (
     <Suspense fallback={<p>Loading...</p>}>

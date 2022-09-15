@@ -1,7 +1,5 @@
 import { PushNotifications } from '@capacitor/push-notifications';
-import { FC, useEffect } from 'react';
-import { addNewDevices } from '~/services/devices';
-import { getUserId } from '~/services/profile';
+import { FC } from 'react';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
 
@@ -18,24 +16,12 @@ export const AskNotificationPermission: FC<AskNotificationPermissionProps> = ({
     // User denied the permission
     if (permission.receive !== 'granted') {
       complete();
+      return;
     }
 
     await PushNotifications.register();
     complete();
   };
-
-  const attachEventListeners = async () => {
-    await PushNotifications.addListener('registration', async (token) => {
-      await addNewDevices(getUserId(), token.value);
-    });
-    await PushNotifications.addListener('registrationError', (err) => {
-      console.error('Registration error: ', err.error);
-    });
-  };
-
-  useEffect(() => {
-    attachEventListeners();
-  });
 
   return (
     <Dialog>

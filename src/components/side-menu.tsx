@@ -1,19 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import store from '~/store';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { supabase } from '~/services/supabase-client';
 import { useState } from 'react';
 
 const getLinkClasses = (isActive: boolean) =>
-  classNames('block border-l-4  py-2 pl-3 pr-4 text-base font-medium', {
+  clsx('block border-l-4  py-2 pl-3 pr-4 text-base font-medium', {
     'border-sky-500 bg-sky-50 text-sky-700': isActive,
     'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700':
       !isActive,
   });
 
 const SideMenu = () => {
-  const [isOpen, setIsOpen] = store.useState('menuOpen');
+  const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
   const [user] = useState(supabase.auth.user());
   const logout = () => supabase.auth.signOut();
 

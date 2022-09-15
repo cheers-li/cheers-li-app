@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
+import store from '~/store';
 import { Profile } from './friends';
 import { supabase } from './supabase-client';
 
@@ -35,9 +37,14 @@ export const listSessions = async (
   return sessions || [];
 };
 
-export const createNewSession = async (name: string, userId: string) => {
+export const createNewSession = async (
+  name: string,
+  tagId: number,
+  userId: string,
+) => {
   const { data, error } = await supabase.from('sessions').insert({
     name: name,
+    session_tag: tagId,
     user_id: userId,
     ended_at: dayjs().add(2, 'hours'),
   });
@@ -49,6 +56,21 @@ export const createNewSession = async (name: string, userId: string) => {
   const id = data && data[0]?.id;
 
   return { data, id, error };
+};
+
+export const updateSession = async (id: string, newName: string) => {
+  const { data, error } = await supabase
+    .from('sessions')
+    .update({
+      name: newName,
+    })
+    .match({ id: id });
+
+  if (error) {
+    console.error(error);
+  }
+
+  return { data, error };
 };
 
 export const getSession = async (id: string): Promise<Session> => {
@@ -87,6 +109,33 @@ export const endSession = async (id: string) => {
 
 export const hasEnded = (endedAt?: string) => dayjs().isAfter(dayjs(endedAt));
 
+export const useSessionTags = () => {
+  const [tags, setTags] = store.useState<Tag[]>('sessionTags');
+
+  const loadTags = async () => {
+    if (tags.length) return;
+
+    const { data, error } = await supabase
+      .from('session_tags')
+      .select('id, name, emoji')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setTags(data);
+  };
+
+  useEffect(() => {
+    loadTags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return tags;
+};
+
 export interface Session {
   id: string;
   name: string;
@@ -94,4 +143,10 @@ export interface Session {
   endedAt: string;
   user: Profile;
   lastActive: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  emoji: string;
 }

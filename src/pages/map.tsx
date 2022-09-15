@@ -1,38 +1,20 @@
-import { useState } from 'react';
 import { Select } from '~/components/select';
-import { Tag } from '~/components/tag';
 import { Bars2Icon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import Navigation from '~/components/navigation';
 import store from '~/store';
 import MapContainer from '~/components/map/map-container';
+import TagList from '~/components/tag-list';
+import { useState } from 'react';
+import { Tag } from '~/services/session';
 
 const MapView = () => {
-  // TODO: take in from db
-  const tags = [
-    {
-      name: 'Beer',
-      icon: '🍺',
-    },
-    {
-      name: 'Coffee',
-      icon: '☕️',
-    },
-    {
-      name: 'Cocktail',
-      icon: '🍸',
-    },
-    {
-      name: 'Sirup',
-      icon: '🍹',
-    },
-  ];
-
-  const [activeTag, setActiveTag] = useState<string>();
-  const [isOpen, setIsOpen] = store.useState('menuOpen');
+  const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const [activeTag, setActiveTag] = useState<Tag>();
 
   return (
     <>
@@ -60,19 +42,7 @@ const MapView = () => {
               <Bars2Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>
-          <ul className="tags-container flex items-center space-x-4 overflow-x-auto">
-            {tags.map((tag) => (
-              <li key={tag.name}>
-                <Tag
-                  active={activeTag === tag.name}
-                  onClick={() => setActiveTag(tag.name)}
-                >
-                  {tag.icon}
-                  <span className="ml-2">{tag.name}</span>
-                </Tag>
-              </li>
-            ))}
-          </ul>
+          <TagList inline activeTag={activeTag} setActiveTag={setActiveTag} />
         </div>
       </div>
     </>

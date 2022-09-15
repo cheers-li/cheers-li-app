@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
 interface ButtonProps {
@@ -25,7 +25,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => (
   <button
-    className={classNames('w-full rounded-md px-8 py-3', {
+    className={clsx('w-full rounded-md px-8 py-3', {
       'bg-sky-700 text-white': primary && !disabled,
       'bg-sky-100 text-gray-800': secondary && !disabled,
       'bg-red-500 text-white': danger && !disabled,

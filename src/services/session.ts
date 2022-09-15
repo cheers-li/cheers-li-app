@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
 import { Profile } from './friends';
+import { getUserId, setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
 export const listSessions = async (
@@ -85,6 +86,8 @@ export const getSession = async (id: string): Promise<Session> => {
   if (error) {
     console.error(error);
   }
+
+  await setLastActive(getUserId());
 
   return {
     id: data.id,

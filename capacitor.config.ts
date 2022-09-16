@@ -5,6 +5,11 @@ const config: CapacitorConfig = {
   appName: 'cheers.li',
   webDir: 'dist',
   bundledWebRuntime: false,
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert'],
+    },
+  },
 };
 
 // Enable live reload

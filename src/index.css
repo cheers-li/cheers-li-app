@@ -11,6 +11,10 @@
   user-select: none;
 }
 
+body {
+  overflow: hidden;
+}
+
 /* Map */
 .mapboxgl-ctrl-logo {
   @apply !hidden;

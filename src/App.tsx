@@ -71,7 +71,7 @@ export default function App() {
     <Suspense fallback={<p>Loading...</p>}>
       <AppUrlListener />
       <div
-        className="h-screen w-screen bg-gray-50 pt-safe-top"
+        className="h-screen w-screen overflow-auto bg-gray-50 pt-safe-top"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
         {useRoutes(routes)}

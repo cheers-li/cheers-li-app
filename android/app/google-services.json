@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1006954222194",
+    "project_id": "cheers-li-app",
+    "storage_bucket": "cheers-li-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006954222194:android:8a0282825233d245a7a8eb",
+        "android_client_info": {
+          "package_name": "cheers.li"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006954222194-0qj7coardi7mdchcajra4t645vtne8k5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAElhcA3fO052rVmeu-BEEVlcS-UmbK6V0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006954222194-0qj7coardi7mdchcajra4t645vtne8k5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1006954222194-8ebfon8ln0ql54r2m3gtka5d3k8pd39n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "li.cheers.app",
+                "app_store_id": "1642697827"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

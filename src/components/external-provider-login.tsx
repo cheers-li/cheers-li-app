@@ -5,6 +5,7 @@ import { Button } from '~/components/button';
 import { GoogleIcon } from './icons/google-icon';
 import { FacebookIcon } from './icons/facebook-icon';
 import { AppleIcon } from './icons/apple-icon';
+import { sendSuccessFeedback } from '~/services/haptics';
 
 interface ExternalProviderLoginProps {
   loading: boolean;
@@ -22,6 +23,7 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
   const handleExternalProviderLogin = async (provider: Provider) => {
     try {
       setLoading(true);
+      sendSuccessFeedback();
 
       const redirectTo = Capacitor.isNativePlatform()
         ? 'io.supabase.cheersli://login-callback'

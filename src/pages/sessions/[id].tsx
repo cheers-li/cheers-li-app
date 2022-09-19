@@ -5,6 +5,7 @@ import { Button, LinkButton } from '~/components/button';
 import { Input } from '~/components/input';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import {
   endSession,
   getSession,
@@ -43,8 +44,10 @@ const ActiveSession = () => {
       }
 
       session.value.name = data && data[0]?.name;
+      sendSuccessFeedback();
     } catch (exception: any) {
       setError(exception);
+      sendErrorFeedback();
     } finally {
       setIsLoading(false);
     }
@@ -54,6 +57,7 @@ const ActiveSession = () => {
     setIsLoading(true);
     await endSession(params.id || '');
     setIsLoading(false);
+    sendSuccessFeedback();
     navigate('/');
   };
 

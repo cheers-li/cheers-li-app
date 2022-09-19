@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent, useState } from 'react';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { createNewProfile, getUserId } from '~/services/profile';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
@@ -8,7 +9,7 @@ interface CreateProfileProps {
   complete: () => void;
 }
 
-export const CreateProfile: FC<CreateProfileProps> = () => {
+export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [userName, setUserName] = useState('');
   const [userNameError, setUserNameError] = useState('');
@@ -22,11 +23,17 @@ export const CreateProfile: FC<CreateProfileProps> = () => {
     try {
       const { error } = await createNewProfile(getUserId(), userName);
       if (error) {
+        sendErrorFeedback();
         if (error.message.includes('duplicate key value')) {
           setUserNameError(
             'The username you choose is already used by someone else. Choose a unique username.',
           );
+        } else if (error.message.includes('invalid input syntax')) {
+          setUserNameError('Please fill in a correct username');
         }
+      } else {
+        sendSuccessFeedback();
+        complete();
       }
     } catch {
       setUserNameError('Something went wrong. Try again later.');

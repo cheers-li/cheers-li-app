@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getProfile, getUserId } from '~/services/profile';
 import { Page } from '~/components/page';
+import { ConfirmEmail } from '~/components/signup/confirm-email';
 import { CreateProfile } from '~/components/signup/create-profile';
 import { AskNotificationPermission } from '~/components/signup/ask-notification-permission';
 import { AskLocationPermission } from '~/components/signup/ask-location-permission';
@@ -10,6 +11,7 @@ import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 
 enum SignUpState {
+  CONFIRM_EMAIL,
   REQUIRE_PROFILE,
   COMPLETED_PROFILE,
   PERMISSION_PUSH_NOTIFICATION,
@@ -27,6 +29,7 @@ const hasProfile = async () => {
 const LoginCallback = () => {
   const navigate = useNavigate();
 
+  const [showConfirmEmailDialog, setShowConfirmEmailDialog] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [showLocationDialog, setShowLocationDialog] = useState(false);
@@ -36,6 +39,13 @@ const LoginCallback = () => {
   const onStateChange = async () => {
     switch (currentState) {
       case SignUpState.REQUIRE_PROFILE: {
+        const isVerified = getUserId() != 'UNKNOWN';
+        if (!isVerified) {
+          setCurrentState(SignUpState.CONFIRM_EMAIL);
+          setShowConfirmEmailDialog(true);
+          break;
+        }
+
         const hasExistingProfile = await hasProfile();
 
         if (hasExistingProfile) {
@@ -112,6 +122,9 @@ const LoginCallback = () => {
   return (
     <Page hideNavigation={true}>
       <div className="flex w-full flex-col gap-6 px-8">
+        {showConfirmEmailDialog && (
+          <ConfirmEmail complete={() => navigate('/login')} />
+        )}
         {showProfileDialog && (
           <CreateProfile
             complete={() => setCurrentState(SignUpState.COMPLETED_PROFILE)}

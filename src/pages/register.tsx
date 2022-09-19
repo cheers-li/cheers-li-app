@@ -5,6 +5,8 @@ import { Button } from '~/components/button';
 import { ExternalProviderLogin } from '~/components/external-provider-login';
 import { Input } from '~/components/input';
 import { validateEmail, validatePassword } from '~/helper/validator';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -34,19 +36,15 @@ const Register = () => {
 
     try {
       setLoading(true);
-      console.log('email', email, 'password', password);
-      const {
-        // user,
-        // session,
-        error: loginError,
-      } = await supabase.auth.signUp({
+      const { error: loginError } = await supabase.auth.signUp({
         email,
         password,
       });
       if (loginError) throw emailError;
-
+      sendSuccessFeedback();
       navigate('/login-callback');
     } catch (err: unknown) {
+      sendErrorFeedback();
       setEmailError('Something went wrong while signing you in.');
     } finally {
       setLoading(false);
@@ -90,7 +88,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex h-full w-full flex-col justify-center gap-6 py-8 px-8">
+    <div className="flex w-full flex-col justify-center gap-6 py-8 px-8">
       <h1 className="text-center text-xl font-bold">Create an account</h1>
       <p className="text-center text-sm text-gray-500">
         Use your e-mail to create a new account.
@@ -120,6 +118,15 @@ const Register = () => {
         onUpdate={checkConfirmationPassword}
         disabled={loading}
       />
+      <p className="space-x-2 text-gray-500">
+        <span>Already have an account?</span>
+        <Link
+          to="/login"
+          className="font-semibold text-sky-700 active:text-sky-600"
+        >
+          Login
+        </Link>
+      </p>
       <div className="flex flex-col gap-4">
         <Button primary width="full" onClick={register} disabled={!valid}>
           Create an account

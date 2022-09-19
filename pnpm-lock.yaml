@@ -6,6 +6,7 @@ specifiers:
   '@capacitor/cli': ^4.1.0
   '@capacitor/core': ^4.1.0
   '@capacitor/geolocation': ^4.0.1
+  '@capacitor/haptics': ^4.0.1
   '@capacitor/ios': ^4.1.0
   '@capacitor/preferences': ^4.0.1
   '@capacitor/push-notifications': ^4.1.0
@@ -52,6 +53,7 @@ dependencies:
   '@capacitor/app': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/core': 4.1.0
   '@capacitor/geolocation': 4.0.1_@capacitor+core@4.1.0
+  '@capacitor/haptics': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/ios': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/preferences': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/push-notifications': 4.1.0_@capacitor+core@4.1.0
@@ -426,6 +428,14 @@ packages:
 
   /@capacitor/geolocation/4.0.1_@capacitor+core@4.1.0:
     resolution: {integrity: sha512-5dxXfDU1rCkn8xrXk6cQwUr+F2ZRycZoU5zi8MFVnH7JvHruV3B152Uz+urRkF/GtKQrgvxEW78GbejOW+nfYw==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
+    dev: false
+
+  /@capacitor/haptics/4.0.1_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-ZLVoLdK1Md/xIRRrDOnrLCKGRg8UENY1ShpKcysPN1z1MgcpvB/9Nbqczm3RH24zyo3MP/7homkqMzUGxPBlwQ==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { Button, LinkButton } from '~/components/button';
 import { ExternalProviderLogin } from '~/components/external-provider-login';
 import { Input } from '~/components/input';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { supabase } from '~/services/supabase-client';
 
 const Login = () => {
@@ -22,17 +23,25 @@ const Login = () => {
         email,
         password,
       });
-      if (loginError) throw error;
-      navigate('/');
-    } catch (err: unknown) {
-      setError('Something went wrong while signing you in.');
+
+      if (loginError) throw loginError;
+
+      sendSuccessFeedback();
+      navigate('/login-callback');
+    } catch (err: any) {
+      if (err?.message?.includes('Email not confirmed')) {
+        setError('Please validate your email.');
+      } else {
+        setError('Something went wrong while signing you in.');
+      }
+      sendErrorFeedback();
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex h-full w-full flex-col justify-center gap-6 py-8 px-8">
+    <div className="flex w-full flex-col justify-center gap-6 py-8 px-8">
       <h1 className="text-center text-xl font-bold">Sign in</h1>
       <p className="text-sm text-gray-500">Sign in using your E-Mail.</p>
       <form onSubmit={handleLogin} className="flex flex-col gap-6">

@@ -13,6 +13,7 @@ def capacitor_pods
   pod 'CapacitorCordova', :path => '../../node_modules/.pnpm/@capacitor+ios@4.1.0_@capacitor+core@4.1.0/node_modules/@capacitor/ios'
   pod 'CapacitorApp', :path => '../../node_modules/.pnpm/@capacitor+app@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/app'
   pod 'CapacitorGeolocation', :path => '../../node_modules/.pnpm/@capacitor+geolocation@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/geolocation'
+  pod 'CapacitorHaptics', :path => '../../node_modules/.pnpm/@capacitor+haptics@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/haptics'
   pod 'CapacitorPreferences', :path => '../../node_modules/.pnpm/@capacitor+preferences@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/preferences'
   pod 'CapacitorPushNotifications', :path => '../../node_modules/.pnpm/@capacitor+push-notifications@4.1.0_@capacitor+core@4.1.0/node_modules/@capacitor/push-notifications'
 end

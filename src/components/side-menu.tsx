@@ -8,7 +8,7 @@ import { useState } from 'react';
 const getLinkClasses = (isActive: boolean) =>
   clsx('block border-l-4  py-2 pl-3 pr-4 text-base font-medium', {
     'border-sky-500 bg-sky-50 text-sky-700': isActive,
-    'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700':
+    'border-transparent text-gray-500 active:border-gray-300 active:bg-gray-50 active:text-gray-700':
       !isActive,
   });
 
@@ -31,7 +31,7 @@ const SideMenu = () => {
                 <div className="flex items-center">
                   <button
                     onClick={toggleMenu}
-                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500"
+                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 active:bg-gray-100 active:text-gray-500"
                   >
                     <span className="sr-only">Open main menu</span>
                     {isOpen ? (
@@ -92,7 +92,7 @@ const SideMenu = () => {
                 </div>
                 <button
                   type="button"
-                  className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                  className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 active:text-gray-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -101,21 +101,21 @@ const SideMenu = () => {
               <div className="mt-3 space-y-1">
                 <NavLink
                   to="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  className="block px-4 py-2 text-base font-medium text-gray-500 active:bg-gray-100 active:text-gray-800"
                   onClick={toggleMenu}
                 >
                   Your Profile
                 </NavLink>
                 <NavLink
                   to="#"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  className="block px-4 py-2 text-base font-medium text-gray-500 active:bg-gray-100 active:text-gray-800"
                   onClick={toggleMenu}
                 >
                   Settings
                 </NavLink>
                 <button
                   type="button"
-                  className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  className="block px-4 py-2 text-base font-medium text-gray-500 active:bg-gray-100 active:text-gray-800"
                   onClick={logout}
                 >
                   Sign out

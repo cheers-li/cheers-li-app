@@ -5,6 +5,7 @@ import { Button } from '~/components/button';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import TagList from '~/components/tag-list';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { getProfile, getUserId } from '~/services/profile';
 import { createNewSession, Tag } from '~/services/session';
 
@@ -34,9 +35,11 @@ const NewSession = () => {
       if (errorMessage) {
         throw errorMessage.message;
       }
+      sendSuccessFeedback();
       navigate(`/sessions/${id}`);
     } catch (exception: any) {
       setError(exception);
+      sendErrorFeedback();
     } finally {
       setIsLoading(false);
     }

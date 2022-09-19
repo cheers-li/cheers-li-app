@@ -10,7 +10,7 @@ export const Page: React.FC<PageProps> = ({
   hideNavigation = false,
 }) => (
   <>
-    <div className="flex w-full flex-col gap-6 pt-8 pb-24">{children}</div>
+    <div className="flex w-full flex-col gap-6 pt-6 pb-24">{children}</div>
     {!hideNavigation && <Navigation />}
   </>
 );

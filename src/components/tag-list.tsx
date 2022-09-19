@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { TagItem } from '~/components/tag-item';
+import { sendSuccessFeedback } from '~/services/haptics';
 import { Tag, useSessionTags } from '~/services/session';
 
 interface TagListProps {
@@ -14,6 +15,13 @@ const TagList: React.FC<TagListProps> = ({
   setActiveTag,
 }) => {
   const tags = useSessionTags();
+
+  const tagClicked = (tag: Tag) => {
+    if (tag !== activeTag) {
+      setActiveTag(tag);
+      sendSuccessFeedback();
+    }
+  };
 
   return (
     <>
@@ -32,7 +40,7 @@ const TagList: React.FC<TagListProps> = ({
           >
             <TagItem
               active={activeTag?.id === tag.id}
-              onClick={() => setActiveTag(tag)}
+              onClick={() => tagClicked(tag)}
             >
               {tag.emoji}
               <span className="ml-2">{tag.name}</span>

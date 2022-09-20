@@ -17,6 +17,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
     .range(0, top);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
   const sessions = data?.map((item) => {
@@ -46,6 +47,7 @@ export const createNewSession = async (name: string, tagId: number) => {
   });
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -63,6 +65,7 @@ export const updateSession = async (id: string, newName: string) => {
     .match({ id: id });
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -79,6 +82,7 @@ export const getSession = async (id: string): Promise<Session> => {
     .single();
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -105,6 +109,7 @@ export const endSession = async (id: string) => {
     .match({ id });
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 };
@@ -121,6 +126,7 @@ export const useSessionTags = () => {
       .order('name', { ascending: true });
 
     if (error) {
+      console.trace();
       console.error(error);
       return;
     }

@@ -13,6 +13,7 @@ export const getProfile = async (userId?: string) => {
     .single();
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -27,6 +28,7 @@ export const createNewProfile = async (userId: string, userName: string) => {
     ]);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -40,6 +42,7 @@ export const setLastActive = async (userId: string) => {
     .eq('id', userId);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 

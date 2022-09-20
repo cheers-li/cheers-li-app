@@ -8,6 +8,7 @@ export const getDevices = async (userId?: string) => {
     .eq('profile_id', userId);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -27,6 +28,7 @@ export const addNewDevices = async (userId: string, deviceToken: string) => {
   ]);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 

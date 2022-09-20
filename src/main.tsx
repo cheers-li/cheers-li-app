@@ -18,7 +18,6 @@ const Application = () => {
 
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      console.log('new session');
       if (newSession != null) {
         setIsAuthenticated(true);
         await storeSession(newSession);

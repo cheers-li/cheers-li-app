@@ -1,21 +1,46 @@
 import { Friend } from '~/components/map/map-container';
-import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
+import {
+  ChatBubbleLeftIcon,
+  ClockIcon,
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
 import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
+import mapboxgl from 'mapbox-gl';
+import { distance } from '~/helper/distance';
 
 interface FriendTooltipProps {
   user: Friend;
+  center: mapboxgl.LngLat;
 }
 
 // TODO: from db
 const ago = '1 hour ago';
 
-const FriendTooltip = ({ user }: FriendTooltipProps) => {
+const FriendTooltip = ({ user, center }: FriendTooltipProps) => {
+  const distanceFromUser = distance(
+    center.lat,
+    center.lng,
+    user.lat,
+    user.lng,
+  ).toFixed(2);
+
   return (
     <>
       <div className="px-4 py-2">
         <div className="text-base font-medium">{user.name}</div>
-        <div className="italic text-gray-600">
-          Started drinking <span className="font-medium">{ago}</span>
+        <div className="mt-2 space-y-1 text-gray-600">
+          <p className="flex items-center space-x-2">
+            <MapPinIcon className="h-5 w-5" aria-hidden="true" />
+            <span>
+              <span className="font-medium">{distanceFromUser} km</span> away
+            </span>
+          </p>
+          <p className="flex items-center space-x-2">
+            <ClockIcon className="h-5 w-5" aria-hidden="true" />
+            <span>
+              Started <span className="font-medium">{ago}</span>
+            </span>
+          </p>
         </div>
       </div>
       <div className="mt-2 flex items-center space-x-4 rounded-b-lg border-t border-t-gray-200 bg-gray-100 px-4 py-2 text-xs">

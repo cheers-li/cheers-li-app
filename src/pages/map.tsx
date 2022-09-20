@@ -18,7 +18,7 @@ const MapView = () => {
 
   return (
     <>
-      <div className="absolute inset-0 h-full w-full">
+      <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-gray-800 to-black">
         <MapContainer />
       </div>
       <Navigation />

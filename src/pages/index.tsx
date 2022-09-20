@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <Page>
       <PageHeader>
-        Welcome black {profile.value?.data.username}
+        Welcome back {profile.value?.data.username}
         <span className="mt-4 block text-sm font-normal text-gray-500">
           You are currently logged in as: {user?.email}
         </span>

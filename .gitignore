@@ -28,3 +28,6 @@ resources/android/icon
 resources/android/splash
 resources/ios/icon
 resources/ios/splash
+
+
+google-services.json

@@ -1,146 +1,142 @@
 [
   {
-      "id": "f0e735ab-e4e2-4a76-80fe-93ad840c0b55",
-      "name": "Şeyma Alderliesten",
-      "coords": [8.576508876829223, 58.34517011582082],
-      "img": "https://randomuser.me/api/portraits/women/50.jpg"
+    "id": "f0e735ab-e4e2-4a76-80fe-93ad840c0b55",
+    "name": "Şeyma Alderliesten",
+    "lng": 8.576508876829223,
+    "lat": 58.34517011582082,
+    "img": "https://randomuser.me/api/portraits/women/50.jpg"
   },
   {
-      "id": "53544c94-4f08-4751-8212-dc9baf8f8206",
-      "name": "Gabin Dubois",
-      "coords": [8.556273622892093, 58.31564375266373],
-      "img": "https://randomuser.me/api/portraits/men/74.jpg"
+    "id": "53544c94-4f08-4751-8212-dc9baf8f8206",
+    "name": "Gabin Dubois",
+    "lng": 8.556273622892093,
+    "lat": 58.31564375266373,
+    "img": "https://randomuser.me/api/portraits/men/74.jpg"
   },
   {
-      "id": "83f964d4-9de6-46c7-9b6e-c50f7b37955c",
-      "name": "Leo Claire",
-      "coords": [8.766088691479524, 58.459936575694115],
-      "img": "https://randomuser.me/api/portraits/men/96.jpg"
+    "id": "83f964d4-9de6-46c7-9b6e-c50f7b37955c",
+    "name": "Leo Claire",
+    "lng": 8.766088691479524,
+    "lat": 58.459936575694115,
+    "img": "https://randomuser.me/api/portraits/men/96.jpg"
   },
   {
-      "id": "d6f4cd25-b7dc-4e0f-9e41-bd1f686926c5",
-      "name": "Rosie Hopkins",
-      "coords": [7.994988687811627, 58.14619826915717],
-      "img": "https://randomuser.me/api/portraits/women/37.jpg"
+    "id": "d6f4cd25-b7dc-4e0f-9e41-bd1f686926c5",
+    "name": "Rosie Hopkins",
+    "lng": 7.994988687811627,
+    "lat": 58.14619826915717,
+    "img": "https://randomuser.me/api/portraits/women/37.jpg"
   },
   {
-      "id": "083730ea-f911-49c7-a671-bb761e2c05fe",
-      "name": "Alvin Lynch",
-      "coords": [
-          -120.4527,
-          85.3008
-      ],
-      "img": "https://randomuser.me/api/portraits/men/41.jpg"
+    "id": "083730ea-f911-49c7-a671-bb761e2c05fe",
+    "name": "Alvin Lynch",
+    "lng": -120.4527,
+    "lat": 85.3008,
+    "img": "https://randomuser.me/api/portraits/men/41.jpg"
   },
   {
-      "id": "afffedf0-b688-49a8-80bb-f2d67cd39d7d",
-      "name": "John Doe",
-      "coords": [7.997363741111229, 58.142061821309284],
-      "img": "https://randomuser.me/api/portraits/men/38.jpg"
+    "id": "afffedf0-b688-49a8-80bb-f2d67cd39d7d",
+    "name": "John Doe",
+    "lng": 7.997363741111229,
+    "lat": 58.142061821309284,
+    "img": "https://randomuser.me/api/portraits/men/38.jpg"
   },
   {
-      "id": "3ec7e501-033e-4253-b04e-a0d9261c4dad",
-      "name": "Christian Rasmussen",
-      "coords": [7.993719312500843, 58.144394147595335],
-      "img": "https://randomuser.me/api/portraits/men/59.jpg"
+    "id": "3ec7e501-033e-4253-b04e-a0d9261c4dad",
+    "name": "Christian Rasmussen",
+    "lng": 7.993719312500843,
+    "lat": 58.144394147595335,
+    "img": "https://randomuser.me/api/portraits/men/59.jpg"
   },
   {
-      "id": "26c254d5-a6a1-4b69-b984-d03111ea5595",
-      "name": "Bariş Evliyaoğlu",
-      "coords": [8.002662212583317, 58.16368966400938],
-      "img": "https://randomuser.me/api/portraits/men/8.jpg"
+    "id": "26c254d5-a6a1-4b69-b984-d03111ea5595",
+    "name": "Bariş Evliyaoğlu",
+    "lng": 8.002662212583317,
+    "lat": 58.16368966400938,
+    "img": "https://randomuser.me/api/portraits/men/8.jpg"
   },
   {
-      "id": "c9036a40-9ad0-4027-b45d-15ba1298e579",
-      "name": "Svyatoslav Miron",
-      "coords": [7.997793563874694, 58.164371901410476],
-      "img": "https://randomuser.me/api/portraits/men/65.jpg"
+    "id": "c9036a40-9ad0-4027-b45d-15ba1298e579",
+    "name": "Svyatoslav Miron",
+    "lng": 7.997793563874694,
+    "lat": 58.164371901410476,
+    "img": "https://randomuser.me/api/portraits/men/65.jpg"
   },
   {
-      "id": "a1b63ca9-6bbc-48bb-8f51-70021fece9d7",
-      "name": "Mathilde Brunet",
-      "coords": [6.6273215490464, 46.52216879831991],
-      "img": "https://randomuser.me/api/portraits/women/11.jpg"
+    "id": "a1b63ca9-6bbc-48bb-8f51-70021fece9d7",
+    "name": "Mathilde Brunet",
+    "lng": 6.6273215490464,
+    "lat": 46.52216879831991,
+    "img": "https://randomuser.me/api/portraits/women/11.jpg"
   },
   {
-      "id": "3e9b6e75-e34d-4b46-ae1a-836e1ac01ad4",
-      "name": "Eemil Tolonen",
-      "coords": [6.842659454695223, 46.46316341369268],
-      "img": "https://randomuser.me/api/portraits/men/87.jpg"
+    "id": "3e9b6e75-e34d-4b46-ae1a-836e1ac01ad4",
+    "name": "Eemil Tolonen",
+    "lng": 6.842659454695223,
+    "lat": 46.46316341369268,
+    "img": "https://randomuser.me/api/portraits/men/87.jpg"
   },
   {
-      "id": "0ba2340c-c3cd-4ec1-9997-38eacc2a84a4",
-      "name": "Nicolas Kaelin",
-      "coords": [6.834169701659334, 46.464296618961896],
-      "img": "https://randomuser.me/api/portraits/men/66.jpg"
+    "id": "0ba2340c-c3cd-4ec1-9997-38eacc2a84a4",
+    "name": "Nicolas Kaelin",
+    "lng": 6.834169701659334,
+    "lat": 46.464296618961896,
+    "img": "https://randomuser.me/api/portraits/men/66.jpg"
   },
   {
-      "id": "6c27247c-f32b-4df5-b091-a5a1f3e865b4",
-      "name": "Giuseppina Petit",
-      "coords": [8.58266756902944, 58.326457146654036],
-      "img": "https://randomuser.me/api/portraits/women/94.jpg"
+    "id": "6c27247c-f32b-4df5-b091-a5a1f3e865b4",
+    "name": "Giuseppina Petit",
+    "lng": 8.58266756902944,
+    "lat": 58.326457146654036,
+    "img": "https://randomuser.me/api/portraits/women/94.jpg"
   },
   {
-      "id": "3c482d43-7078-46d0-b19a-ff9b200b6010",
-      "name": "Corey Ryan",
-      "coords": [
-          -17.9216,
-          86.3663
-      ],
-      "img": "https://randomuser.me/api/portraits/men/71.jpg"
+    "id": "3c482d43-7078-46d0-b19a-ff9b200b6010",
+    "name": "Corey Ryan",
+    "lng": -17.9216,
+    "lat": 86.3663,
+    "img": "https://randomuser.me/api/portraits/men/71.jpg"
   },
   {
-      "id": "24d9f13f-333f-4b0e-afef-de36a4ef253b",
-      "name": "Crispijn Heesters",
-      "coords": [
-          -11.1028,
-          35.0147
-      ],
-      "img": "https://randomuser.me/api/portraits/men/43.jpg"
+    "id": "24d9f13f-333f-4b0e-afef-de36a4ef253b",
+    "name": "Crispijn Heesters",
+    "lng": -11.1028,
+    "lat": 35.0147,
+    "img": "https://randomuser.me/api/portraits/men/43.jpg"
   },
   {
-      "id": "8af17bb5-eab0-4d8f-afe9-8f6a6616e107",
-      "name": "Mladen Rodić",
-      "coords": [
-          -59.8197,
-          61.4741
-      ],
-      "img": "https://randomuser.me/api/portraits/men/67.jpg"
+    "id": "8af17bb5-eab0-4d8f-afe9-8f6a6616e107",
+    "name": "Mladen Rodić",
+    "lng": -59.8197,
+    "lat": 61.4741,
+    "img": "https://randomuser.me/api/portraits/men/67.jpg"
   },
   {
-      "id": "a997d417-bfdf-4f04-ae1e-713cd0cf9d0e",
-      "name": "Meagan Renfurm",
-      "coords": [
-          40.2483,
-          32.3341
-      ],
-      "img": "https://randomuser.me/api/portraits/women/83.jpg"
+    "id": "a997d417-bfdf-4f04-ae1e-713cd0cf9d0e",
+    "name": "Meagan Renfurm",
+    "lng": 40.2483,
+    "lat": 32.3341,
+    "img": "https://randomuser.me/api/portraits/women/83.jpg"
   },
   {
-      "id": "18fabf2f-7aa1-4454-9ad5-a84487b1e212",
-      "name": "Arman Laastad",
-      "coords": [
-          -130.0051,
-          41.1221
-      ],
-      "img": "https://randomuser.me/api/portraits/men/29.jpg"
+    "id": "18fabf2f-7aa1-4454-9ad5-a84487b1e212",
+    "name": "Arman Laastad",
+    "lng": -130.0051,
+    "lat": 41.1221,
+    "img": "https://randomuser.me/api/portraits/men/29.jpg"
   },
   {
-      "id": "ba5544ca-c76c-4fe5-b6a1-34544d04985c",
-      "name": "Nikolaj Olsen",
-      "coords": [
-          -50.1442,
-          -43.5131
-      ],
-      "img": "https://randomuser.me/api/portraits/men/25.jpg"
+    "id": "ba5544ca-c76c-4fe5-b6a1-34544d04985c",
+    "name": "Nikolaj Olsen",
+    "lng": -50.1442,
+    "lat": -43.5131,
+    "img": "https://randomuser.me/api/portraits/men/25.jpg"
   },
   {
-      "id": "8539b74b-ac0a-4f4d-864a-f7d4be69f4b6",
-      "name": "Jimmie Harper",
-      "coords": [
-          -35.7764,
-          -81.7662
-      ],
-      "img": "https://randomuser.me/api/portraits/men/28.jpg"
+    "id": "8539b74b-ac0a-4f4d-864a-f7d4be69f4b6",
+    "name": "Jimmie Harper",
+    "lng": -35.7764,
+    "lat": -81.7662,
+    "img": "https://randomuser.me/api/portraits/men/28.jpg"
   }
 ]

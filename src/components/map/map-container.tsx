@@ -6,29 +6,17 @@ import FriendTooltip from '~/components/map/friend-tooltip';
 import { createRoot } from 'react-dom/client';
 import FriendMarker from '~/components/map/friend-marker';
 import fakeData from '~/components/map/fake-data.json';
+import clsx from 'clsx';
 
 // TODO: get this from DB
 export interface Friend {
   id: string;
   name: string;
-  coords: number[];
+  lat: number;
+  lng: number;
   img: string;
 }
 const friends: Friend[] = fakeData;
-// for (let i = 0; i < 20; i++) {
-//   const resp = await fetch('https://randomuser.me/api/');
-//   const { results } = await resp.json();
-//   const user = results[0];
-//   friends.push({
-//     id: user.login.uuid,
-//     name: `${user.name.first} ${user.name.last}`,
-//     coords: [
-//       user.location.coordinates.longitude,
-//       user.location.coordinates.latitude,
-//     ],
-//     img: user.picture.large,
-//   });
-// }
 // -- END TODO
 
 const addFriendsMarkers = (map: mapboxgl.Map) => {
@@ -41,11 +29,13 @@ const addFriendsMarkers = (map: mapboxgl.Map) => {
     // Create tooltip node
     const tooltipNode = document.createElement('div');
     const tooltipRoot = createRoot(tooltipNode);
-    tooltipRoot.render(<FriendTooltip user={friend} />);
+    tooltipRoot.render(
+      <FriendTooltip user={friend} center={map.getCenter()} />,
+    );
 
     // make a marker for each feature and add to the map
     new mapboxgl.Marker(markerNode)
-      .setLngLat(friend.coords as [number, number])
+      .setLngLat([friend.lng, friend.lat])
       .setPopup(
         new mapboxgl.Popup({ offset: 25, className: 'custom-tooltip' }) // add popups
           .setDOMContent(tooltipNode),
@@ -60,15 +50,12 @@ const MapContainer = () => {
   // Mapbox
   const mapContainer = useRef(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [lng, setLng] = useState(0);
-  const [lat, setLat] = useState(0);
-  const [zoom] = useState(12);
+  const [loaded, setLoaded] = useState(false);
+  const [animated, setAnimated] = useState(true);
 
   // User location
   const getCurrentPosition = async () => {
     const pos = await Geolocation.getCurrentPosition();
-    setLat(pos.coords.latitude);
-    setLng(pos.coords.longitude);
     const coords: [number, number] = [
       pos.coords.longitude,
       pos.coords.latitude,
@@ -76,8 +63,21 @@ const MapContainer = () => {
 
     if (!map.current) return;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    map.current?.flyTo({ center: coords, preloadOnly: true });
+
     // Center map on user location
-    map.current?.setCenter(coords);
+    map.current.setCenter(coords);
+    await map.current.once('idle');
+    setLoaded(true);
+
+    // Zoom in
+    map.current?.flyTo({ center: coords, zoom: 12, duration: 5000 });
+
+    setTimeout(() => {
+      setAnimated(false);
+    }, 2000);
 
     // Add User marker
     const userMarker = document.createElement('div');
@@ -94,8 +94,7 @@ const MapContainer = () => {
       container: mapContainer.current,
       projection: { name: 'globe' },
       style: `mapbox://styles/mapbox/${style}`,
-      center: [lng, lat],
-      zoom: zoom,
+      zoom: 3,
       pitch: 45,
       bearing: -17.6,
       attributionControl: false,
@@ -119,7 +118,21 @@ const MapContainer = () => {
     getCurrentPosition();
   });
 
-  return <div ref={mapContainer} className="map-container h-full w-full"></div>;
+  return (
+    <>
+      <div
+        ref={mapContainer}
+        className={clsx(
+          'h-full w-full transform transition-opacity duration-300',
+          {
+            'opacity-0': !loaded,
+            'pointer-events-none': animated,
+          },
+        )}
+      ></div>
+      <div></div>
+    </>
+  );
 };
 
 export default MapContainer;

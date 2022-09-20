@@ -1,11 +1,11 @@
 import { useAsync } from 'react-use';
 import { getLastActive } from '~/helper/time';
-import { getUserId } from '~/services/profile';
-import { hasEnded, listSessions, Session } from '~/services/session';
+import { listSessions, Session } from '~/services/session';
+import { Avatar } from './avatar';
 import { Badge } from './badge';
 
 export const SessionList = () => {
-  const sessions = useAsync(() => listSessions(getUserId()));
+  const sessions = useAsync(() => listSessions(4));
 
   return (
     <ul className="border-t">
@@ -15,15 +15,11 @@ export const SessionList = () => {
             href={`/sessions/${session.id}`}
             className="flex items-center justify-start gap-2 border-b py-3 px-8"
           >
+            <Avatar profile={session.user} size={12} />
             <div className="flex flex-col items-start justify-start">
-              <span className="text-md font-medium">
-                {session.name}
-                <span className="ml-2 text-sm text-gray-500">
-                  {session.user.username}
-                </span>
-              </span>
+              <span className="text-md font-medium">{session.name}</span>
 
-              {hasEnded(session.endedAt) ? (
+              {session.hasEnded ? (
                 <>
                   <span>Ended {getLastActive(session.endedAt)}</span>
                   <Badge red>Ended</Badge>

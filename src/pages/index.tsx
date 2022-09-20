@@ -20,7 +20,7 @@ const Index = () => {
         </span>
       </PageHeader>
 
-      <h2 className="px-8 text-xl font-bold">Your Sessions</h2>
+      <h2 className="px-8 text-xl font-bold">Recent Sessions</h2>
       <SessionList />
       <h2 className="px-8 text-xl font-bold">Your friends</h2>
       <FriendList />

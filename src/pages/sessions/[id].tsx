@@ -6,12 +6,7 @@ import { Input } from '~/components/input';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import {
-  endSession,
-  getSession,
-  hasEnded,
-  updateSession,
-} from '~/services/session';
+import { endSession, getSession, updateSession } from '~/services/session';
 
 const ActiveSession = () => {
   const params = useParams();
@@ -67,17 +62,17 @@ const ActiveSession = () => {
         {session.loading ? 'Loading...' : session.value?.name}
       </PageHeader>
       <div className="flex w-full flex-col gap-6 px-8">
-        {hasEnded(session.value?.endedAt) && (
+        {!session.loading && session.value?.hasEnded && (
           <>
             <p className="text-sm text-red-500">
               This session has already ended
             </p>
-            <LinkButton primary href="/">
+            <LinkButton secondary href="/">
               Go Home
             </LinkButton>
           </>
         )}
-        {!hasEnded(session.value?.endedAt) && (
+        {!session.loading && !session.value?.hasEnded && (
           <>
             <form onSubmit={updateSessionName} className="flex flex-col gap-6">
               <Input

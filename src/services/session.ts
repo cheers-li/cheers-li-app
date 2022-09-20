@@ -6,18 +6,14 @@ import { Profile } from './friends';
 import { getUserId, setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
-export const listSessions = async (
-  userId: string,
-  top = 2,
-): Promise<Session[]> => {
+export const listSessions = async (top = 2): Promise<Session[]> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, user:user_id (id, username, avatar_url)',
+      'id, name, created_at, ended_at, user:user_id (id, username, avatarUrl:avatar_url)',
     )
     .order('ended_at', { ascending: false })
-    .range(0, top)
-    .eq('user_id', userId);
+    .range(0, top);
 
   if (error) {
     console.error(error);
@@ -30,6 +26,7 @@ export const listSessions = async (
       endedAt: item.ended_at,
       user: item.user,
       lastActive: getLastActive(item.created_at),
+      hasEnded: dayjs().isAfter(dayjs(item.ended_at)),
     };
 
     return newSession;
@@ -96,6 +93,7 @@ export const getSession = async (id: string): Promise<Session> => {
     endedAt: data.ended_at,
     user: data.user,
     lastActive: getLastActive(data.created_at),
+    hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
   };
 };
 
@@ -109,8 +107,6 @@ export const endSession = async (id: string) => {
     console.error(error);
   }
 };
-
-export const hasEnded = (endedAt?: string) => dayjs().isAfter(dayjs(endedAt));
 
 export const useSessionTags = () => {
   const [tags, setTags] = store.useState<Tag[]>('sessionTags');
@@ -146,6 +142,7 @@ export interface Session {
   endedAt: string;
   user: Profile;
   lastActive: string;
+  hasEnded?: boolean;
 }
 
 export interface Tag {

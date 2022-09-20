@@ -1,13 +1,8 @@
-import { Suspense, useEffect, useState } from 'react';
-import { useRoutes, useLocation, useNavigate } from 'react-router-dom';
+import { FC, Suspense, useEffect } from 'react';
+import { useNavigate, useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';
-import { supabase } from '~/services/supabase-client';
 import store from '~/store';
-import { PushNotifications } from '@capacitor/push-notifications';
-import { addNewDevices } from './services/devices';
-import { getUserId } from './services/profile';
-import { Capacitor } from '@capacitor/core';
 
 const publicPages = [
   '/welcome',
@@ -17,12 +12,20 @@ const publicPages = [
   '/login-callback',
 ];
 
-export default function App() {
-  const [theme, setTheme] = store.useState<string>('theme');
+interface AppProps {
+  isAuthenticated: boolean;
+}
 
-  const [session, setSession] = useState(supabase.auth.session());
-  const location = useLocation();
+const App: FC<AppProps> = ({ isAuthenticated }) => {
+  const [theme, setTheme] = store.useState<string>('theme');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (!isAuthenticated && !publicPages.includes(path)) {
+      navigate('welcome');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -40,33 +43,6 @@ export default function App() {
     }
   }, [theme]);
 
-  useEffect(() => {
-    supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
-
-    const path = location.pathname;
-
-    if (!session && !publicPages.includes(path)) {
-      navigate('/welcome');
-    }
-  }, [session, location, setSession, navigate]);
-
-  const attachEventListeners = async () => {
-    await PushNotifications.addListener('registration', async (token) => {
-      await addNewDevices(getUserId(), token.value);
-    });
-    await PushNotifications.addListener('registrationError', (err) => {
-      console.error('Registration error: ', err.error);
-    });
-  };
-
-  useEffect(() => {
-    if (Capacitor.isNativePlatform()) {
-      attachEventListeners();
-    }
-  });
-
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <AppUrlListener />
@@ -78,4 +54,6 @@ export default function App() {
       </div>
     </Suspense>
   );
-}
+};
+
+export default App;

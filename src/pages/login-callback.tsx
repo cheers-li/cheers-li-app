@@ -64,9 +64,6 @@ const LoginCallback = () => {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
           break;
         }
-
-        setShowNotificationDialog(true);
-
         const permission = await PushNotifications.checkPermissions();
         if (
           permission.receive === 'granted' ||
@@ -74,6 +71,8 @@ const LoginCallback = () => {
         ) {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
         }
+
+        setShowNotificationDialog(true);
         break;
       }
       case SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION:
@@ -86,8 +85,6 @@ const LoginCallback = () => {
           break;
         }
 
-        setShowLocationDialog(true);
-
         const permission = await Geolocation.checkPermissions();
         if (
           permission.location === 'granted' ||
@@ -95,6 +92,8 @@ const LoginCallback = () => {
         ) {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
         }
+
+        setShowLocationDialog(true);
         break;
       }
       case SignUpState.COMPLETED_PERMISSION_LOCATION:

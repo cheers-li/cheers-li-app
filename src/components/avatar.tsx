@@ -12,7 +12,7 @@ export const Avatar: FC<AvatarProps> = ({ profile, size = 12 }) => (
       <img
         src={profile.avatarUrl}
         alt={profile.username}
-        className={`h-12 w-12 h-${size} w-${size} rounded-full`}
+        className={`h-12 w-12 h-${size} w-${size} block rounded-full`}
       />
     ) : (
       <div

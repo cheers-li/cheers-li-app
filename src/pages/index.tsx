@@ -1,22 +1,34 @@
-import { useState } from 'react';
-import { supabase } from '~/services/supabase-client';
+import { useEffect, useState } from 'react';
 import { useAsync } from 'react-use';
-import { getProfile, getUserId } from '~/services/profile';
+import { getProfile } from '~/services/profile';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { FriendList } from '~/components/friend-list';
 import { SessionList } from '~/components/session-list';
+import { getStoredUser } from '~/services/auth';
+import { Profile } from '~/services/friends';
 
 const Index = () => {
-  const [user] = useState(supabase.auth.user());
-  const profile = useAsync(() => getProfile(getUserId()));
+  const user = useAsync(() => getStoredUser());
+  const [profile, setProfile] = useState<Profile>();
+
+  useEffect(() => {
+    if (!user.loading) {
+      loadProfile();
+    }
+  }, [user]);
+
+  const loadProfile = async () => {
+    const { data } = await getProfile(user.value?.id);
+    setProfile(data);
+  };
 
   return (
     <Page>
       <PageHeader>
-        Welcome back {profile.value?.data.username}
+        {profile && <>Welcome back {profile?.username}</>}
         <span className="mt-4 block text-sm font-normal text-gray-500">
-          You are currently logged in as: {user?.email}
+          You are currently logged in as: {user.value?.email}
         </span>
       </PageHeader>
 

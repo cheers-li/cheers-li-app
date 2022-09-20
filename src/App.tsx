@@ -13,7 +13,7 @@ const publicPages = [
 ];
 
 interface AppProps {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
 }
 
 const App: FC<AppProps> = ({ isAuthenticated }) => {
@@ -22,7 +22,7 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
 
   useEffect(() => {
     const path = location.pathname;
-    if (!isAuthenticated && !publicPages.includes(path)) {
+    if (isAuthenticated === false && !publicPages.includes(path)) {
       navigate('welcome');
     }
   }, [isAuthenticated, navigate]);

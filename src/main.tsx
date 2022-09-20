@@ -4,22 +4,23 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '~/App';
 import { useEffectOnce } from 'react-use';
 import { supabase } from './services/supabase-client';
-import { getStoredSession, storeSession } from './services/auth';
+import { getStoredSession, getStoredUser, storeSession } from './services/auth';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { addNewDevices } from './services/devices';
-import { getUserId } from './services/profile';
 import { Capacitor } from '@capacitor/core';
 
 import '~/index.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const Application = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
-      if (newSession) {
+      console.log('new session');
+      if (newSession != null) {
+        setIsAuthenticated(true);
         await storeSession(newSession);
       } else {
         setIsAuthenticated(false);
@@ -35,8 +36,8 @@ const Application = () => {
       currentSession &&
       parseInt(currentSession?.expires_at + '000') > Date.now()
     ) {
-      setIsLoading(false);
       setIsAuthenticated(true);
+      setIsLoading(false);
       return;
     } else if (currentSession && currentSession.refresh_token) {
       const { session, error } = await supabase.auth.setSession(
@@ -44,8 +45,8 @@ const Application = () => {
       );
 
       if (!error && session) {
-        setIsLoading(false);
         setIsAuthenticated(true);
+        setIsLoading(false);
         return;
       }
     }
@@ -56,8 +57,8 @@ const Application = () => {
         storedSession.refresh_token,
       );
       if (!error && session) {
-        setIsLoading(false);
         setIsAuthenticated(true);
+        setIsLoading(false);
         return;
       }
     } else {
@@ -68,7 +69,10 @@ const Application = () => {
 
   const attachEventListeners = async () => {
     await PushNotifications.addListener('registration', async (token) => {
-      await addNewDevices(getUserId(), token.value);
+      const user = await getStoredUser();
+      if (user?.id) {
+        await addNewDevices(user?.id, token.value);
+      }
     });
     await PushNotifications.addListener('registrationError', (err) => {
       console.error('Registration error: ', err.error);

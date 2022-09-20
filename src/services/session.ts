@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
+import { getStoredUser } from './auth';
 import { Profile } from './friends';
-import { getUserId, setLastActive } from './profile';
+import { setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
 export const listSessions = async (top = 2): Promise<Session[]> => {
@@ -35,15 +36,12 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
   return sessions || [];
 };
 
-export const createNewSession = async (
-  name: string,
-  tagId: number,
-  userId: string,
-) => {
+export const createNewSession = async (name: string, tagId: number) => {
+  const user = await getStoredUser();
   const { data, error } = await supabase.from('sessions').insert({
     name: name,
     session_tag: tagId,
-    user_id: userId,
+    user_id: user?.id,
     ended_at: dayjs().add(2, 'hours'),
   });
 
@@ -84,7 +82,10 @@ export const getSession = async (id: string): Promise<Session> => {
     console.error(error);
   }
 
-  await setLastActive(getUserId());
+  const user = await getStoredUser();
+  if (user) {
+    await setLastActive(user.id);
+  }
 
   return {
     id: data.id,

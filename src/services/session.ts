@@ -109,7 +109,6 @@ export const endSession = async (id: string) => {
     .match({ id });
 
   if (error) {
-    console.log(id, error);
     console.trace();
     console.error(error);
   }

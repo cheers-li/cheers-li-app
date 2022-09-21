@@ -98,6 +98,12 @@ const LoginCallback = () => {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
           break;
         }
+        if (Capacitor.getPlatform() === 'android') {
+          await PushNotifications.register();
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
+          break;
+        }
+
         const permission = await PushNotifications.checkPermissions();
         if (
           permission.receive === 'granted' ||

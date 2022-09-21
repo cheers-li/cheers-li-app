@@ -17,7 +17,7 @@ export const ConfirmEmail: FC<ConfirmEmailProps> = ({ complete }) => {
         </p>
         <hr />
         <Button primary onClick={complete}>
-          Email confirmed
+          Go Back Home
         </Button>
       </div>
     </Dialog>

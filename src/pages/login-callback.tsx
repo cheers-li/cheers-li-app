@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getProfile } from '~/services/profile';
 import { Page } from '~/components/page';
-import { ConfirmEmail } from '~/components/signup/confirm-email';
 import { CreateProfile } from '~/components/signup/create-profile';
 import { AskNotificationPermission } from '~/components/signup/ask-notification-permission';
 import { AskLocationPermission } from '~/components/signup/ask-location-permission';
@@ -11,12 +10,13 @@ import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { supabase } from '~/services/supabase-client';
 import { User } from '@supabase/supabase-js';
-import { storeUser } from '~/services/auth';
+import { signOut, storeUser } from '~/services/auth';
+import { Button } from '~/components/button';
 
 enum SignUpState {
   USER_NOT_LOADED,
-  CONFIRM_EMAIL,
-  CONFIRM_EMAIL_COMPLETE,
+  LOAD_USER,
+  LOAD_USER_COMPLETE,
   REQUIRE_PROFILE,
   COMPLETED_PROFILE,
   PERMISSION_PUSH_NOTIFICATION,
@@ -24,6 +24,7 @@ enum SignUpState {
   PERMISSION_LOCATION,
   COMPLETED_PERMISSION_LOCATION,
   COMPLETED,
+  ERROR,
 }
 
 const LoginCallback = () => {
@@ -32,10 +33,10 @@ const LoginCallback = () => {
   const [user, setUser] = useState<User | null>();
 
   const [showUserLoading, setShowUserLoading] = useState(false);
-  const [showConfirmEmailDialog, setShowConfirmEmailDialog] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [showLocationDialog, setShowLocationDialog] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const [currentState, setCurrentState] = useState<SignUpState>();
 
@@ -47,16 +48,18 @@ const LoginCallback = () => {
   const onStateChange = async () => {
     switch (currentState) {
       case SignUpState.USER_NOT_LOADED: {
-        setShowUserLoading(true);
-
         setTimeout(() => {
-          setCurrentState(SignUpState.CONFIRM_EMAIL);
+          setCurrentState(SignUpState.LOAD_USER);
         }, 500);
         break;
       }
-      case SignUpState.CONFIRM_EMAIL: {
+      case SignUpState.LOAD_USER: {
+        setShowUserLoading(true);
+
         const session = supabase.auth.session();
         if (!session || !session.access_token) {
+          console.error('No active session found');
+          setCurrentState(SignUpState.ERROR);
           break;
         }
 
@@ -64,21 +67,16 @@ const LoginCallback = () => {
         setUser(result.user);
         storeUser(result.user);
 
-        if (!user || !user.confirmed_at) {
+        if (!user) {
           setCurrentState(SignUpState.USER_NOT_LOADED);
           break;
         }
 
-        if (!user?.confirmed_at) {
-          setShowConfirmEmailDialog(true);
-        } else {
-          setCurrentState(SignUpState.CONFIRM_EMAIL_COMPLETE);
-        }
-
+        setCurrentState(SignUpState.LOAD_USER_COMPLETE);
         break;
       }
-      case SignUpState.CONFIRM_EMAIL_COMPLETE:
-        setShowConfirmEmailDialog(false);
+      case SignUpState.LOAD_USER_COMPLETE:
+        setShowUserLoading(false);
         setCurrentState(SignUpState.REQUIRE_PROFILE);
         break;
       case SignUpState.REQUIRE_PROFILE: {
@@ -139,12 +137,15 @@ const LoginCallback = () => {
       case SignUpState.COMPLETED:
         navigate('/');
         break;
+      case SignUpState.ERROR:
+        setShowError(true);
+        break;
     }
   };
 
   useEffect(() => {
     const wait = setTimeout(() => {
-      setCurrentState(SignUpState.CONFIRM_EMAIL);
+      setCurrentState(SignUpState.LOAD_USER);
     }, 500);
 
     return () => clearTimeout(wait);
@@ -154,18 +155,29 @@ const LoginCallback = () => {
     onStateChange();
   }, [currentState]);
 
+  const cleanSignOut = async () => {
+    await signOut();
+    navigate('/welcome');
+  };
+
   return (
     <Page hideNavigation={true}>
       <div className="flex w-full flex-col gap-6 px-8">
-        {showUserLoading && (
+        {showError && (
+          <>
+            <p className="text-sm text-red-500">
+              We are sorry, something went wrong while logging you in. Try to
+              log in again later.
+            </p>
+            <Button primary onClick={cleanSignOut}>
+              Go back Home
+            </Button>
+          </>
+        )}
+        {!showError && showUserLoading && (
           <p className="text-sm text-gray-500">
             One moment, we are loading your user account.
           </p>
-        )}
-        {showConfirmEmailDialog && (
-          <ConfirmEmail
-            complete={() => setCurrentState(SignUpState.CONFIRM_EMAIL_COMPLETE)}
-          />
         )}
         {showProfileDialog && (
           <CreateProfile

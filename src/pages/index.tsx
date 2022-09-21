@@ -5,7 +5,7 @@ import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { FriendList } from '~/components/friend-list';
 import { SessionList } from '~/components/session-list';
-import { getStoredUser } from '~/services/auth';
+import { getStoredUser, signOut } from '~/services/auth';
 import { Profile } from '~/services/friends';
 
 const Index = () => {
@@ -19,8 +19,12 @@ const Index = () => {
   }, [user]);
 
   const loadProfile = async () => {
-    const { data } = await getProfile(user.value?.id);
-    setProfile(data);
+    const { data, error } = await getProfile(user.value?.id);
+    if (!data && error) {
+      await signOut();
+    } else {
+      setProfile(data);
+    }
   };
 
   return (

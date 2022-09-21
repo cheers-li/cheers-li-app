@@ -10,6 +10,7 @@ const publicPages = [
   '/register',
   '/email-login',
   '/login-callback',
+  '/confirm-email',
 ];
 
 interface AppProps {

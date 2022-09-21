@@ -1,5 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import { Session, User } from '@supabase/supabase-js';
+import { supabase } from './supabase-client';
 
 export const getStoredSession = async (): Promise<Session | undefined> => {
   const { value } = await Preferences.get({ key: 'session' });
@@ -29,4 +30,11 @@ export const storeUser = async (user: User | null) => {
     key: 'user',
     value: JSON.stringify(user),
   });
+};
+
+export const signOut = async () => {
+  await Preferences.remove({ key: 'user' });
+  await Preferences.remove({ key: 'session' });
+
+  await supabase.auth.signOut();
 };

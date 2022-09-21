@@ -4,6 +4,7 @@ import store from '~/store';
 import clsx from 'clsx';
 import { supabase } from '~/services/supabase-client';
 import { useState } from 'react';
+import { signOut } from '~/services/auth';
 
 const getLinkClasses = (isActive: boolean) =>
   clsx('block border-l-4  py-2 pl-3 pr-4 text-base font-medium', {
@@ -15,7 +16,7 @@ const getLinkClasses = (isActive: boolean) =>
 const SideMenu = () => {
   const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
   const [user] = useState(supabase.auth.user());
-  const logout = () => supabase.auth.signOut();
+  const logout = () => signOut();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

@@ -124,16 +124,19 @@ const LoginCallback = () => {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
           break;
         }
+        try {
+          const permission = await Geolocation.checkPermissions();
+          if (
+            permission.location === 'granted' ||
+            permission.location === 'denied'
+          ) {
+            setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
+          }
 
-        const permission = await Geolocation.checkPermissions();
-        if (
-          permission.location === 'granted' ||
-          permission.location === 'denied'
-        ) {
+          setShowLocationDialog(true);
+        } catch (error) {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
         }
-
-        setShowLocationDialog(true);
         break;
       }
       case SignUpState.COMPLETED_PERMISSION_LOCATION:

@@ -57,6 +57,7 @@ const Login = () => {
         <Input
           type="password"
           label="Password"
+          placeholder="••••••••"
           value={password}
           error={error}
           onUpdate={setPassword}

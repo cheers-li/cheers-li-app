@@ -11,6 +11,7 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
     .or(`user_1.eq.${userId},user_2.eq.${userId}`);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 

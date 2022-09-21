@@ -1,10 +1,13 @@
 import { useAsync } from 'react-use';
+import { getStoredUser } from '~/services/auth';
 import { Profile, getFriends } from '~/services/friends';
-import { getUserId } from '~/services/profile';
 import { Avatar } from './avatar';
 
 export const FriendList = () => {
-  const friends = useAsync(() => getFriends(getUserId()));
+  const friends = useAsync(async () => {
+    const user = await getStoredUser();
+    return getFriends(user?.id);
+  });
 
   return (
     <ul className="border-t">

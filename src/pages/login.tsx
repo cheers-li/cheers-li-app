@@ -42,7 +42,7 @@ const Login = () => {
 
   return (
     <div className="flex w-full flex-col justify-center gap-6 py-8 px-8">
-      <h1 className="text-center text-xl font-bold">Sign in</h1>
+      <h1 className="text-xl font-bold">Sign in</h1>
       <p className="text-sm text-gray-500">Sign in using your E-Mail.</p>
       <form onSubmit={handleLogin} className="flex flex-col gap-6">
         <Input
@@ -57,6 +57,7 @@ const Login = () => {
         <Input
           type="password"
           label="Password"
+          placeholder="••••••••"
           value={password}
           error={error}
           onUpdate={setPassword}

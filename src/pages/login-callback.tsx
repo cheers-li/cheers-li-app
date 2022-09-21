@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { getProfile, getUserId } from '~/services/profile';
+import { getProfile } from '~/services/profile';
 import { Page } from '~/components/page';
-import { ConfirmEmail } from '~/components/signup/confirm-email';
 import { CreateProfile } from '~/components/signup/create-profile';
 import { AskNotificationPermission } from '~/components/signup/ask-notification-permission';
 import { AskLocationPermission } from '~/components/signup/ask-location-permission';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
+import { supabase } from '~/services/supabase-client';
+import { User } from '@supabase/supabase-js';
+import { signOut, storeUser } from '~/services/auth';
+import { Button } from '~/components/button';
 
 enum SignUpState {
-  CONFIRM_EMAIL,
+  USER_NOT_LOADED,
+  LOAD_USER,
+  LOAD_USER_COMPLETE,
   REQUIRE_PROFILE,
   COMPLETED_PROFILE,
   PERMISSION_PUSH_NOTIFICATION,
@@ -19,33 +24,62 @@ enum SignUpState {
   PERMISSION_LOCATION,
   COMPLETED_PERMISSION_LOCATION,
   COMPLETED,
+  ERROR,
 }
-
-const hasProfile = async () => {
-  const { error } = await getProfile(getUserId());
-  return !error;
-};
 
 const LoginCallback = () => {
   const navigate = useNavigate();
 
-  const [showConfirmEmailDialog, setShowConfirmEmailDialog] = useState(false);
+  const [user, setUser] = useState<User | null>();
+
+  const [showUserLoading, setShowUserLoading] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = useState(false);
   const [showLocationDialog, setShowLocationDialog] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const [currentState, setCurrentState] = useState<SignUpState>();
 
+  const hasProfile = async () => {
+    const { error } = await getProfile(user?.id);
+    return !error;
+  };
+
   const onStateChange = async () => {
     switch (currentState) {
-      case SignUpState.REQUIRE_PROFILE: {
-        const isVerified = getUserId() != 'UNKNOWN';
-        if (!isVerified) {
-          setCurrentState(SignUpState.CONFIRM_EMAIL);
-          setShowConfirmEmailDialog(true);
+      case SignUpState.USER_NOT_LOADED: {
+        setTimeout(() => {
+          setCurrentState(SignUpState.LOAD_USER);
+        }, 500);
+        break;
+      }
+      case SignUpState.LOAD_USER: {
+        setShowUserLoading(true);
+
+        const session = supabase.auth.session();
+        if (!session || !session.access_token) {
+          console.error('No active session found');
+          setCurrentState(SignUpState.ERROR);
           break;
         }
 
+        const result = await supabase.auth.api.getUser(session.access_token);
+        setUser(result.user);
+        storeUser(result.user);
+
+        if (!user) {
+          setCurrentState(SignUpState.USER_NOT_LOADED);
+          break;
+        }
+
+        setCurrentState(SignUpState.LOAD_USER_COMPLETE);
+        break;
+      }
+      case SignUpState.LOAD_USER_COMPLETE:
+        setShowUserLoading(false);
+        setCurrentState(SignUpState.REQUIRE_PROFILE);
+        break;
+      case SignUpState.REQUIRE_PROFILE: {
         const hasExistingProfile = await hasProfile();
 
         if (hasExistingProfile) {
@@ -64,6 +98,12 @@ const LoginCallback = () => {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
           break;
         }
+        if (Capacitor.getPlatform() === 'android') {
+          await PushNotifications.register();
+          setCurrentState(SignUpState.COMPLETED_PERMISSION_PUSH_NOTIFICATION);
+          break;
+        }
+
         const permission = await PushNotifications.checkPermissions();
         if (
           permission.receive === 'granted' ||
@@ -84,16 +124,19 @@ const LoginCallback = () => {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
           break;
         }
+        try {
+          const permission = await Geolocation.checkPermissions();
+          if (
+            permission.location === 'granted' ||
+            permission.location === 'denied'
+          ) {
+            setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
+          }
 
-        const permission = await Geolocation.checkPermissions();
-        if (
-          permission.location === 'granted' ||
-          permission.location === 'denied'
-        ) {
+          setShowLocationDialog(true);
+        } catch (error) {
           setCurrentState(SignUpState.COMPLETED_PERMISSION_LOCATION);
         }
-
-        setShowLocationDialog(true);
         break;
       }
       case SignUpState.COMPLETED_PERMISSION_LOCATION:
@@ -103,12 +146,15 @@ const LoginCallback = () => {
       case SignUpState.COMPLETED:
         navigate('/');
         break;
+      case SignUpState.ERROR:
+        setShowError(true);
+        break;
     }
   };
 
   useEffect(() => {
     const wait = setTimeout(() => {
-      setCurrentState(SignUpState.REQUIRE_PROFILE);
+      setCurrentState(SignUpState.LOAD_USER);
     }, 500);
 
     return () => clearTimeout(wait);
@@ -118,11 +164,29 @@ const LoginCallback = () => {
     onStateChange();
   }, [currentState]);
 
+  const cleanSignOut = async () => {
+    await signOut();
+    navigate('/welcome');
+  };
+
   return (
     <Page hideNavigation={true}>
       <div className="flex w-full flex-col gap-6 px-8">
-        {showConfirmEmailDialog && (
-          <ConfirmEmail complete={() => navigate('/login')} />
+        {showError && (
+          <>
+            <p className="text-sm text-red-500">
+              We are sorry, something went wrong while logging you in. Try to
+              log in again later.
+            </p>
+            <Button primary onClick={cleanSignOut}>
+              Go back Home
+            </Button>
+          </>
+        )}
+        {!showError && showUserLoading && (
+          <p className="text-sm text-gray-500">
+            One moment, we are loading your user account.
+          </p>
         )}
         {showProfileDialog && (
           <CreateProfile

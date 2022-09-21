@@ -1,6 +1,7 @@
 import { FC, SyntheticEvent, useState } from 'react';
+import { getStoredUser } from '~/services/auth';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import { createNewProfile, getUserId } from '~/services/profile';
+import { createNewProfile } from '~/services/profile';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
 import { Input } from '../input';
@@ -21,7 +22,14 @@ export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
     setIsProfileLoading(true);
 
     try {
-      const { error } = await createNewProfile(getUserId(), userName);
+      const user = await getStoredUser();
+
+      if (!user) {
+        throw 'Could not load user';
+      }
+
+      const { error } = await createNewProfile(user.id, userName);
+
       if (error) {
         sendErrorFeedback();
         if (error.message.includes('duplicate key value')) {
@@ -36,6 +44,7 @@ export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
         complete();
       }
     } catch {
+      sendErrorFeedback();
       setUserNameError('Something went wrong. Try again later.');
     } finally {
       setIsProfileLoading(false);

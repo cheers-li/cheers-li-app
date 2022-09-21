@@ -5,12 +5,16 @@ import { Button } from '~/components/button';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import TagList from '~/components/tag-list';
+import { getStoredUser } from '~/services/auth';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import { getProfile, getUserId } from '~/services/profile';
+import { getProfile } from '~/services/profile';
 import { createNewSession, Tag } from '~/services/session';
 
 const NewSession = () => {
-  const profile = useAsync(() => getProfile(getUserId()));
+  const profile = useAsync(async () => {
+    const user = await getStoredUser();
+    return getProfile(user?.id);
+  });
   const [tag, setTag] = useState<Tag>();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +33,6 @@ const NewSession = () => {
       const { id, error: errorMessage } = await createNewSession(
         `${profile.value?.data.username} is drinking ${tag.name} ${tag.emoji}`,
         tag.id,
-        getUserId(),
       );
 
       if (errorMessage) {

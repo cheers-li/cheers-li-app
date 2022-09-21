@@ -2,6 +2,10 @@ import dayjs from 'dayjs';
 import { supabase } from './supabase-client';
 
 export const getProfile = async (userId?: string) => {
+  if (!userId || userId === 'UNKNOWN') {
+    return { data: null, error: 'USER NOT LOADED YET' };
+  }
+
   const { data, error } = await supabase
     .from('profiles')
     .select('username, avatarUrl:avatar_url')
@@ -9,6 +13,7 @@ export const getProfile = async (userId?: string) => {
     .single();
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -23,6 +28,7 @@ export const createNewProfile = async (userId: string, userName: string) => {
     ]);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
@@ -36,13 +42,12 @@ export const setLastActive = async (userId: string) => {
     .eq('id', userId);
 
   if (error) {
+    console.trace();
     console.error(error);
   }
 
   return { data, error };
 };
-
-export const getUserId = (): string => supabase.auth.user()?.id || 'UNKNOWN';
 
 const getUserProfileImage = () => {
   const user = supabase.auth.user();

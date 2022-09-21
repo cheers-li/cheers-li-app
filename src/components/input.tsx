@@ -19,7 +19,7 @@ export const Input: React.FC<InputProps> = ({
     <input
       onChange={(e) => onUpdate(e.target.value)}
       className={clsx(
-        'border-1 rounded-md border-gray-500 px-4 py-3 placeholder:text-gray-400',
+        'border-1 select-text rounded-md border-gray-500 px-4 py-3 placeholder:text-gray-400',
         {
           'border-red-500': error,
           'bg-gray-100 text-gray-400': disabled,

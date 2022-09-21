@@ -8,12 +8,12 @@ export const SessionList = () => {
   const sessions = useAsync(() => listSessions(4));
 
   return (
-    <ul className="border-t">
+    <ul>
       {sessions.value?.map((session: Session, i: number) => (
-        <li key={i}>
+        <li key={i} className="border-b last:border-0">
           <a
             href={`/sessions/${session.id}`}
-            className="flex items-center justify-start gap-2 border-b py-3 px-8"
+            className="flex items-center justify-start gap-2 py-3 px-8"
           >
             <Avatar profile={session.user} size={12} />
             <div className="flex flex-col items-start justify-start">
@@ -36,13 +36,13 @@ export const SessionList = () => {
       ))}
 
       {sessions.value?.length === 0 && (
-        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
+        <li className="flex items-center justify-start gap-2 py-3 px-8 text-sm text-gray-500">
           It appears that you do not have any session
         </li>
       )}
 
       {sessions.loading && (
-        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
+        <li className="flex items-center justify-start gap-2 py-3 px-8 text-sm text-gray-500">
           We are loading your sessions
         </li>
       )}

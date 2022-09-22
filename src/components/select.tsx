@@ -28,8 +28,7 @@ export const Select: React.FC<SelectProps> = ({
       <div className="relative flex w-full">
         <select
           onChange={(e) => onUpdate(e.target.value)}
-          id="location"
-          name="location"
+          name={label}
           className={clsx(
             'flex-1 rounded-md border-0 py-2 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
             {

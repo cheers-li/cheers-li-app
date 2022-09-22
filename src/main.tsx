@@ -59,6 +59,11 @@ const Application = () => {
         setIsAuthenticated(true);
         setIsLoading(false);
         return;
+      } else {
+        console.log(session, error);
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
       }
     } else {
       setIsAuthenticated(false);

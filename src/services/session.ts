@@ -76,7 +76,7 @@ export const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, user:user_id (id, username, avatar_url)',
+      'id, name, created_at, ended_at, user:user_id (id, username, avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();
@@ -150,6 +150,7 @@ export interface Session {
   user: Profile;
   lastActive: string;
   hasEnded?: boolean;
+  isYourSession?: boolean;
 }
 
 export interface Tag {

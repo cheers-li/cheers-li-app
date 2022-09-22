@@ -1,6 +1,7 @@
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAsync } from 'react-use';
+import { Geolocation } from '@capacitor/geolocation';
 import { Button } from '~/components/button';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
@@ -8,7 +9,8 @@ import TagList from '~/components/tag-list';
 import { getStoredUser } from '~/services/auth';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { getProfile } from '~/services/profile';
-import { createNewSession, Tag } from '~/services/session';
+import { createNewSession, Location, Tag } from '~/services/session';
+import { LocationTag } from '~/components/location-tag';
 
 const NewSession = () => {
   const profile = useAsync(async () => {
@@ -30,9 +32,11 @@ const NewSession = () => {
       if (!tag || tag.id <= 0) {
         throw 'The tag is required';
       }
+
       const { id, error: errorMessage } = await createNewSession(
         `${profile.value?.data.username} is drinking ${tag.name} ${tag.emoji}`,
         tag.id,
+        location.value,
       );
 
       if (errorMessage) {
@@ -47,6 +51,17 @@ const NewSession = () => {
       setIsLoading(false);
     }
   };
+
+  const location = useAsync(async () => {
+    const point = await Geolocation.getCurrentPosition();
+
+    const loc: Location = {
+      type: 'Point',
+      coordinates: [point.coords.latitude, point.coords.longitude],
+    };
+
+    return loc;
+  });
 
   return (
     <Page>
@@ -66,6 +81,12 @@ const NewSession = () => {
               )}
             </div>
           </div>
+          {location && location.value && (
+            <div>
+              <span className="text-sm text-gray-500">Your Location: </span>
+              <LocationTag location={location.value} />
+            </div>
+          )}
           <div className="flex flex-col gap-4">
             <Button primary disabled={isLoading}>
               Start Session

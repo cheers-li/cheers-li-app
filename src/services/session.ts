@@ -11,7 +11,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, user:user_id (id, username, avatarUrl:avatar_url)',
+      'id, name, created_at, ended_at, location, user:user_id (id, username, avatarUrl:avatar_url)',
     )
     .order('ended_at', { ascending: false })
     .range(0, top);
@@ -27,6 +27,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
       createdAt: item.created_at,
       endedAt: item.ended_at,
       user: item.user,
+      location: item.location,
       lastActive: getLastActive(item.created_at),
       hasEnded: dayjs().isAfter(dayjs(item.ended_at)),
     };
@@ -37,13 +38,18 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
   return sessions || [];
 };
 
-export const createNewSession = async (name: string, tagId: number) => {
+export const createNewSession = async (
+  name: string,
+  tagId: number,
+  location: Location | undefined,
+) => {
   const user = await getStoredUser();
   const { data, error } = await supabase.from('sessions').insert({
     name: name,
     session_tag: tagId,
     user_id: user?.id,
     ended_at: dayjs().add(2, 'hours'),
+    location: location,
   });
 
   if (error) {
@@ -76,7 +82,7 @@ export const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, user:user_id (id, username, avatar_url)',
+      'id, name, created_at, ended_at, location, user:user_id (id, username, avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();
@@ -97,6 +103,7 @@ export const getSession = async (id: string): Promise<Session> => {
     createdAt: data.created_at,
     endedAt: data.ended_at,
     user: data.user,
+    location: data.location,
     lastActive: getLastActive(data.created_at),
     hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
   };
@@ -149,7 +156,14 @@ export interface Session {
   endedAt: string;
   user: Profile;
   lastActive: string;
+  location?: Location;
   hasEnded?: boolean;
+  isYourSession?: boolean;
+}
+
+export interface Location {
+  coordinates: number[];
+  type: string;
 }
 
 export interface Tag {

@@ -84,14 +84,25 @@ const MessagesIndex = () => {
             <li key={i}>
               <a
                 href={`/profile/${friend.id}`}
-                className="flex items-center justify-start gap-2 border-b py-3"
+                className="flex items-center justify-between border-b py-3"
               >
-                <Avatar profile={friend} size={12} />
-                <div className="flex flex-col">
-                  <span className="text-md font-medium">{friend.username}</span>
-                  <span className="text-sm text-gray-500">
-                    Last active {friend.lastSeen}
-                  </span>
+                <div className="flex items-center justify-start gap-2">
+                  <Avatar profile={friend} size={12} />
+                  <div className="flex flex-col">
+                    <span className="text-md font-medium">
+                      {friend.username}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      Last active {friend.lastSeen}
+                    </span>
+                  </div>
+                </div>
+                <div className="">
+                  <button className="p-2">
+                    <span className="rounded-full bg-sky-200 px-2 py-1 text-xs font-semibold text-sky-900 active:bg-sky-300">
+                      ADD
+                    </span>
+                  </button>
                 </div>
               </a>
             </li>

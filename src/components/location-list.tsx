@@ -99,7 +99,7 @@ export const LocationList: React.FC<LocationListProp> = ({
             <li
               key={tag.id}
               className={clsx({
-                'mr-2 inline-flex max-w-half': !inline,
+                'mr-2 inline-flex': !inline,
               })}
             >
               <TagItem
@@ -107,7 +107,9 @@ export const LocationList: React.FC<LocationListProp> = ({
                 onClick={() => tagClicked(tag)}
               >
                 {tag.emoji}
-                <span className="ml-2 truncate">{tag.name.split(',')[0]}</span>
+                <span className="ml-2">
+                  {tag.name.split(',')[0].split(':')[0]}
+                </span>
               </TagItem>
             </li>
           ))}

@@ -22,7 +22,9 @@ Here are some explanation about the different values you need to set in your `.e
 
 - **VITE_SUPABASE_URL**: On [app.supabase.com](https://app.supabase.com/), go to your project -> Settings tab -> API and copy the **Project URL**
 - **VITE_SUPABASE_KEY**: On [app.supabase.com](https://app.supabase.com/), go to your project -> Settings tab -> API and copy the **public** one in your **Project API keys**
+- **VITE_SUPABASE_FUNCTIONS_URL**: On [app.supabase.com](https://app.supabase.com/), go to your project -> Settings tab -> API and copy the **Reference ID** and add it to the base setting https://<PROJECT_ID>.functions.supabase.co
 - **VITE_MAPBOX_TOKEN**: On [mapbox.com](https://mapbox.com/), go to your account -> Tokens -> Create a token
+- **VITE_ENVIRONMENT**: `Development` for all the dev environments and `Production` for the releases.
 
 ## Native app
 

@@ -80,6 +80,12 @@ export interface Profile {
   avatarUrl: string;
   activeAt?: string;
   lastSeen?: string;
+  devices?: Device[];
+}
+
+export interface Device {
+  id: string;
+  device_token: string;
 }
 
 export interface Friend {

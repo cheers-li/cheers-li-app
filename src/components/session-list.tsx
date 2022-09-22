@@ -3,6 +3,7 @@ import { getLastActive } from '~/helper/time';
 import { listSessions, Session } from '~/services/session';
 import { Avatar } from './avatar';
 import { Badge } from './badge';
+import { LocationTag } from './location-tag';
 
 export const SessionList = () => {
   const sessions = useAsync(() => listSessions(4));
@@ -26,6 +27,9 @@ export const SessionList = () => {
                 </>
               ) : (
                 <>
+                  {session.location && (
+                    <LocationTag location={session.location} />
+                  )}
                   <span>Started {session.lastActive}</span>
                   <Badge green>Active</Badge>
                 </>

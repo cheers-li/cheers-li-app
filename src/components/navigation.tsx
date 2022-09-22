@@ -1,9 +1,9 @@
 import {
   HomeIcon,
-  InboxIcon,
   MapIcon,
   PlusCircleIcon,
   Cog6ToothIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
@@ -51,12 +51,12 @@ const Navigation = () => {
             </li>
             <li>
               <NavLink
-                to="/messages"
+                to="/friends"
                 className={({ isActive }) =>
                   isActive ? 'text-sky-600' : undefined
                 }
               >
-                <InboxIcon className="h-8 w-8" aria-hidden="true" />
+                <UsersIcon className="h-8 w-8" aria-hidden="true" />
               </NavLink>
             </li>
             <li>

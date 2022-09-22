@@ -35,6 +35,25 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
   return friendList || [];
 };
 
+export const searchUsers = async (
+  userId: string,
+  username: string,
+): Promise<Profile[]> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, username, avatar_url, active_at')
+    // .eq('user_1', userId)
+    .ilike('username', `%${username}%`);
+  // .eq(`user_1.eq.${userId},user_2.username.eq.${username}`);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data || [];
+};
+
 export interface Profile {
   id: string;
   username: string;

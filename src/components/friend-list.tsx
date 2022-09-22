@@ -10,12 +10,12 @@ export const FriendList = () => {
   });
 
   return (
-    <ul className="border-t">
+    <ul>
       {friends.value?.map((friend: Profile, i: number) => (
         <li key={i}>
           <a
             href={`/profile/${friend.id}`}
-            className="flex items-center justify-start gap-2 border-b py-3 px-8"
+            className="flex items-center justify-start gap-2 border-b py-3"
           >
             <Avatar profile={friend} size={12} />
             <div className="flex flex-col">

@@ -11,7 +11,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, user:user_id (id, username, avatarUrl:avatar_url)',
+      'id, name, created_at, ended_at, location, location_name, user:user_id (id, username, avatarUrl:avatar_url)',
     )
     .order('ended_at', { ascending: false })
     .range(0, top);
@@ -30,6 +30,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
       location: item.location,
       lastActive: getLastActive(item.created_at),
       hasEnded: dayjs().isAfter(dayjs(item.ended_at)),
+      locationName: item.location_name,
     };
 
     return newSession;
@@ -41,7 +42,8 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
 export const createNewSession = async (
   name: string,
   tagId: number,
-  location: Location | undefined,
+  location?: Location,
+  locationName?: string,
 ) => {
   const user = await getStoredUser();
   const { data, error } = await supabase.from('sessions').insert({
@@ -50,6 +52,7 @@ export const createNewSession = async (
     user_id: user?.id,
     ended_at: dayjs().add(2, 'hours'),
     location: location,
+    location_name: locationName,
   });
 
   if (error) {
@@ -82,7 +85,7 @@ export const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, user:user_id (id, username, avatar_url, devices(device_token))',
+      'id, name, created_at, ended_at, location, location_name, user:user_id (id, username, avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();
@@ -106,6 +109,7 @@ export const getSession = async (id: string): Promise<Session> => {
     location: data.location,
     lastActive: getLastActive(data.created_at),
     hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
+    locationName: data.location_name,
   };
 };
 
@@ -129,7 +133,7 @@ export const useSessionTags = () => {
 
     const { data, error } = await supabase
       .from('session_tags')
-      .select('id, name, emoji')
+      .select('id, name, emoji, type')
       .order('name', { ascending: true });
 
     if (error) {
@@ -159,6 +163,7 @@ export interface Session {
   location?: Location;
   hasEnded?: boolean;
   isYourSession?: boolean;
+  locationName?: string;
 }
 
 export interface Location {
@@ -170,4 +175,5 @@ export interface Tag {
   id: number;
   name: string;
   emoji: string;
+  type: string;
 }

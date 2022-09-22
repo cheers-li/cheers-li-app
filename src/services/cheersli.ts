@@ -4,7 +4,7 @@ export const sendCheersli = async (user: Profile, deviceToken: string[]) => {
   const baseUrl = import.meta.env.VITE_SUPABASE__FUNCTIONS_URL;
   const anon = import.meta.env.VITE_SUPABASE_KEY;
 
-  const request = await fetch(`${baseUrl}/send-cheersli`, {
+  await fetch(`${baseUrl}/send-cheersli`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -15,6 +15,4 @@ export const sendCheersli = async (user: Profile, deviceToken: string[]) => {
       device_token: deviceToken,
     }),
   });
-
-  console.log(request);
 };

@@ -1,8 +1,10 @@
+import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useAsync } from 'react-use';
 import { Button, LinkButton } from '~/components/button';
 import { Input } from '~/components/input';
+import { LocationTag } from '~/components/location-tag';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { sendCheersli } from '~/services/cheersli';
@@ -97,9 +99,13 @@ const ActiveSession = () => {
           user?.id !== session?.value?.user.id && (
             <>
               <h2 className="text-xl font-medium">{session.value?.name}</h2>
+              {session.value?.location && (
+                <LocationTag location={session.value.location} />
+              )}
               <p className="text-sm text-gray-500">
-                You have successfully started a new session. It will end
-                automatically in 2 hours.
+                {session.value?.user.username} has started a new session. It
+                will end automatically at{' '}
+                {dayjs(session.value?.endedAt).format('HH:MM')}.
               </p>
               <Button
                 primary
@@ -114,6 +120,15 @@ const ActiveSession = () => {
           !session.value?.hasEnded &&
           user?.id === session?.value?.user.id && (
             <>
+              <h2 className="text-xl font-medium">{session.value?.name}</h2>
+              {session.value?.location && (
+                <LocationTag location={session.value.location} />
+              )}
+              <p className="text-sm text-gray-500">
+                You started this session. It will end automatically at{' '}
+                {dayjs(session.value?.endedAt).format('HH:MM')}.
+              </p>
+              <hr />
               <form
                 onSubmit={updateSessionName}
                 className="flex flex-col gap-6"
@@ -128,11 +143,6 @@ const ActiveSession = () => {
                 />
                 <Button primary>Change name</Button>
               </form>
-              <hr />
-              <p className="text-sm text-gray-500">
-                You have successfully started a new session. It will end
-                automatically in 2 hours.
-              </p>
               <hr />
               <p className="text-sm text-gray-500">
                 Looks like you are alone. Invite some of your friends to join

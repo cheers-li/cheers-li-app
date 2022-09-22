@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FriendList } from '~/components/friend-list';
+import { FriendList } from '~/components/friends/friend-list';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { Tab } from '@headlessui/react';
@@ -11,8 +11,9 @@ import { addFriend, SearchProfile, searchUsers } from '~/services/friends';
 import { useDebounce } from '~/helper/debounce';
 import { getStoredUser } from '~/services/auth';
 import { useAsync } from 'react-use';
-import SearchedUser from '~/components/friends/searched-user';
+import { SearchedUserItem } from '~/components/friends/searched-user-item';
 import { sendSuccessFeedback } from '~/services/haptics';
+import { RequestList } from '~/components/friends/request-list';
 
 const MessagesIndex = () => {
   const navigate = useNavigate();
@@ -27,26 +28,20 @@ const MessagesIndex = () => {
     return getStoredUser();
   });
 
-  useEffect(
-    () => {
-      if (debouncedSearchTerm) {
-        setLoading(true);
-        if (!user.value) return;
-        searchUsers(user.value.id, debouncedSearchTerm).then((res) => {
-          setLoading(false);
-          console.log('results');
-          console.log(res);
-          if (res) {
-            setSearchResults(res);
-          }
-        });
-      } else {
-        setSearchResults([]);
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setLoading(true);
+      searchUsers(debouncedSearchTerm).then((res) => {
         setLoading(false);
-      }
-    },
-    [debouncedSearchTerm, user.value], // Only call effect if debounced search term changes
-  );
+        if (res && res.length) {
+          setSearchResults(res);
+        }
+      });
+    } else {
+      setSearchResults([]);
+      setLoading(false);
+    }
+  }, [debouncedSearchTerm]);
 
   const updateSearch = (value: string) => {
     setSearch(value);
@@ -92,7 +87,11 @@ const MessagesIndex = () => {
             <div className="font-semibold">Your search results</div>
           )}
           {searchResults.map((friend, i) => (
-            <SearchedUser key={i} friend={friend} onAdd={addFriendHandler} />
+            <SearchedUserItem
+              key={i}
+              friend={friend}
+              onAdd={addFriendHandler}
+            />
           ))}
 
           {searching && !loading && searchResults.length === 0 && (
@@ -107,52 +106,53 @@ const MessagesIndex = () => {
             </li>
           )}
         </ul>
-
-        <Tab.Group>
-          <Tab.List className="fixed bottom-24 flex items-center justify-between rounded-full bg-sky-900 p-2 text-white">
-            <Tab
-              key={'friends'}
-              className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
-                })
-              }
-            >
-              Friends
-            </Tab>
-            <Tab
-              key={'requests'}
-              className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
-                })
-              }
-            >
-              Requests
-            </Tab>
-            <Tab
-              key={'messages'}
-              onClick={() => navigate('/messages')}
-              className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
-                })
-              }
-            >
-              Messages
-            </Tab>
-          </Tab.List>
-          {!searching && (
-            <Tab.Panels className="mt-2">
-              <Tab.Panel key={'friends'} className="">
-                <FriendList />
-              </Tab.Panel>
-              <Tab.Panel key={'requests'} className="">
-                <div>Requests</div>
-              </Tab.Panel>
-            </Tab.Panels>
-          )}
-        </Tab.Group>
+        {!searching && (
+          <Tab.Group>
+            <Tab.List className="fixed bottom-24 flex items-center justify-between rounded-full bg-sky-900 p-2 text-white">
+              <Tab
+                key={'friends'}
+                className={({ selected }) =>
+                  clsx('block rounded-full px-4 py-1', {
+                    'bg-sky-700': selected,
+                  })
+                }
+              >
+                Friends
+              </Tab>
+              <Tab
+                key={'requests'}
+                className={({ selected }) =>
+                  clsx('block rounded-full px-4 py-1', {
+                    'bg-sky-700': selected,
+                  })
+                }
+              >
+                Requests
+              </Tab>
+              <Tab
+                key={'messages'}
+                onClick={() => navigate('/messages')}
+                className={({ selected }) =>
+                  clsx('block rounded-full px-4 py-1', {
+                    'bg-sky-700': selected,
+                  })
+                }
+              >
+                Messages
+              </Tab>
+            </Tab.List>
+            {
+              <Tab.Panels className="mt-2">
+                <Tab.Panel key={'friends'} className="">
+                  <FriendList />
+                </Tab.Panel>
+                <Tab.Panel key={'requests'} className="">
+                  <RequestList />
+                </Tab.Panel>
+              </Tab.Panels>
+            }
+          </Tab.Group>
+        )}
       </div>
     </Page>
   );

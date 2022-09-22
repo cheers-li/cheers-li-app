@@ -10,11 +10,14 @@ const MessagesIndex = () => {
   return (
     <Page>
       <PageHeader>
-        <div className="flex items-center space-x-2">
-          <button onClick={() => navigate(-1)}>
+        <div className="relative">
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute left-0 top-1/2 -translate-y-1/2 transform"
+          >
             <ChevronLeftIcon className="h-6 w-6" />
           </button>
-          <span>Messages</span>
+          Messages
         </div>
       </PageHeader>
       <div className="flex w-full flex-col gap-6 px-8">

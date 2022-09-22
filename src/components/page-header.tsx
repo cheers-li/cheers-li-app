@@ -11,7 +11,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
 }) => (
   <>
     <h1
-      className={clsx('px-8 text-3xl font-bold', {
+      className={clsx('px-8 text-center text-3xl font-bold', {
         truncate: truncate,
       })}
     >

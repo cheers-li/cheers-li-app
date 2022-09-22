@@ -1,10 +1,10 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { Avatar } from '~/components/avatar';
+import { UserItem } from '~/components/friends/user-item';
 import { SearchProfile } from '~/services/friends';
 
-interface SearchedUserProps {
+interface SearchedUserItemProps {
   friend: SearchProfile;
   onAdd: (friend: SearchProfile) => void;
 }
@@ -23,7 +23,7 @@ const getInitialStatus = (friend: SearchProfile) => {
     : FriendStatus.PENDING;
 };
 
-const SearchedUser = ({ friend, onAdd }: SearchedUserProps) => {
+export const SearchedUserItem = ({ friend, onAdd }: SearchedUserItemProps) => {
   const [status, setStatus] = useState(getInitialStatus(friend));
 
   const addHandler = () => {
@@ -32,16 +32,7 @@ const SearchedUser = ({ friend, onAdd }: SearchedUserProps) => {
   };
 
   return (
-    <li className="flex items-center justify-between border-b py-3">
-      <div className="flex items-center justify-start gap-2">
-        <Avatar profile={friend} size={12} />
-        <div className="flex flex-col">
-          <span className="text-md font-medium">{friend.username}</span>
-          <span className="text-sm text-gray-500">
-            Last active {friend.lastSeen}
-          </span>
-        </div>
-      </div>
+    <UserItem friend={friend}>
       {status === FriendStatus.ACCEPTED && (
         <div className="p-2">
           <CheckCircleIcon className="h-7 w-7 text-gray-800" />
@@ -67,8 +58,6 @@ const SearchedUser = ({ friend, onAdd }: SearchedUserProps) => {
           </span>
         </button>
       )}
-    </li>
+    </UserItem>
   );
 };
-
-export default SearchedUser;

@@ -35,6 +35,86 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
   return friendList || [];
 };
 
+export const searchUsers = async (
+  username: string,
+): Promise<SearchProfile[]> => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(
+      `
+      id, username, avatarUrl:avatar_url, activeAt:active_at, 
+      friends!friends_user_2_fkey(user_1,user_2,accepted),
+      friends!friends_user_1_fkey(user_1,user_2,accepted)
+      `,
+    )
+    .ilike('username', `%${username}%`);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return (
+    data?.map((friend) => ({
+      ...friend,
+      lastSeen: getLastActive(friend.activeAt),
+    })) || []
+  );
+};
+
+export const addFriend = async (userId: string, friendId: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .insert([{ user_1: userId, user_2: friendId }]);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data;
+};
+
+export const getRequests = async (userId?: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .select('user_1 (id, username, avatar_url, active_at), user_2')
+    .eq('accepted', false)
+    .eq('user_2', userId);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  const requests = data?.map((row) => {
+    return {
+      id: row.user_1.id,
+      username: row.user_1.username,
+      avatarUrl: row.user_1.avatar_url,
+      activeAt: row.user_1.active_at,
+      lastSeen: getLastActive(row.user_1.active_at),
+    } as Profile;
+  });
+
+  return requests || [];
+};
+
+export const acceptRequest = async (requestor: string, acceptor: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .update({ accepted: true })
+    .eq('user_1', requestor)
+    .eq('user_2', acceptor);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data;
+};
+
 export interface Profile {
   id: string;
   username: string;
@@ -47,4 +127,14 @@ export interface Profile {
 export interface Device {
   id: string;
   device_token: string;
+}
+
+export interface Friend {
+  user_1: string;
+  user_2: string;
+  accepted: boolean;
+}
+
+export interface SearchProfile extends Profile {
+  friends: Friend[];
 }

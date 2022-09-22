@@ -1,7 +1,7 @@
 import { useAsync } from 'react-use';
+import { UserItem } from '~/components/friends/user-item';
 import { getStoredUser } from '~/services/auth';
 import { Profile, getFriends } from '~/services/friends';
-import { Avatar } from './avatar';
 
 export const FriendList = () => {
   const friends = useAsync(async () => {
@@ -10,22 +10,9 @@ export const FriendList = () => {
   });
 
   return (
-    <ul className="border-t">
+    <ul>
       {friends.value?.map((friend: Profile, i: number) => (
-        <li key={i}>
-          <a
-            href={`/profile/${friend.id}`}
-            className="flex items-center justify-start gap-2 border-b py-3 px-8"
-          >
-            <Avatar profile={friend} size={12} />
-            <div className="flex flex-col">
-              <span className="text-md font-medium">{friend.username}</span>
-              <span className="text-sm text-gray-500">
-                Last active {friend.lastSeen}
-              </span>
-            </div>
-          </a>
-        </li>
+        <UserItem key={i} friend={friend} />
       ))}
 
       {friends.value?.length === 0 && (

@@ -38,10 +38,12 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
 export const searchUsers = async (
   userId: string,
   username: string,
-): Promise<Profile[]> => {
+): Promise<SearchProfile[]> => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, username, avatarUrl:avatar_url, activeAt:active_at')
+    .select(
+      'id, username, avatarUrl:avatar_url, activeAt:active_at, friends!friends_user_2_fkey(user_1,user_2,accepted)',
+    )
     // .eq('user_1', userId)
     .ilike('username', `%${username}%`);
   // .eq(`user_1.eq.${userId},user_2.username.eq.${username}`);
@@ -59,10 +61,33 @@ export const searchUsers = async (
   );
 };
 
+export const addFriend = async (userId: string, friendId: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .insert([{ user_1: userId, user_2: friendId }]);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data;
+};
+
 export interface Profile {
   id: string;
   username: string;
   avatarUrl: string;
   activeAt?: string;
   lastSeen?: string;
+}
+
+export interface Friend {
+  user_1: string;
+  user_2: string;
+  accepted: boolean;
+}
+
+export interface SearchProfile extends Profile {
+  friends: Friend[];
 }

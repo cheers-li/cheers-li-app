@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { FriendList } from '~/components/friend-list';
-// import FriendNavigation from '~/components/friends/friend-navigation';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { Tab } from '@headlessui/react';
@@ -8,10 +7,11 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router';
 import { Input } from '~/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Profile, searchUsers } from '~/services/friends';
+import { addFriend, SearchProfile, searchUsers } from '~/services/friends';
 import { useDebounce } from '~/helper/debounce';
 import { getStoredUser } from '~/services/auth';
-import { Avatar } from '~/components/avatar';
+import { useAsync } from 'react-use';
+import SearchedUser from '~/components/friends/searched-user';
 
 const MessagesIndex = () => {
   const navigate = useNavigate();
@@ -19,32 +19,32 @@ const MessagesIndex = () => {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [searching, setSearching] = useState(false);
-  const [results, setResults] = useState<Profile[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchProfile[]>([]);
   const debouncedSearchTerm: string = useDebounce<string>(search, 500);
+
+  const user = useAsync(async () => {
+    return getStoredUser();
+  });
 
   useEffect(
     () => {
       if (debouncedSearchTerm) {
-        console.log('searching for', debouncedSearchTerm);
-
         setLoading(true);
-        getStoredUser().then((user) => {
-          if (!user) return;
-          searchUsers(user.id, debouncedSearchTerm).then((res) => {
-            setLoading(false);
-            console.log('results');
-            console.log(res);
-            if (res) {
-              setResults(res);
-            }
-          });
+        if (!user.value) return;
+        searchUsers(user.value.id, debouncedSearchTerm).then((res) => {
+          setLoading(false);
+          console.log('results');
+          console.log(res);
+          if (res) {
+            setSearchResults(res);
+          }
         });
       } else {
-        setResults([]);
+        setSearchResults([]);
         setLoading(false);
       }
     },
-    [debouncedSearchTerm], // Only call effect if debounced search term changes
+    [debouncedSearchTerm, user.value], // Only call effect if debounced search term changes
   );
 
   const updateSearch = (value: string) => {
@@ -54,8 +54,14 @@ const MessagesIndex = () => {
       setLoading(true);
     } else {
       setSearching(false);
-      setResults([]);
+      setSearchResults([]);
     }
+  };
+
+  const addFriendHandler = async (friend: SearchProfile) => {
+    if (!user.value) return;
+    const res = await addFriend(user.value?.id, friend.id);
+    console.log(res);
   };
 
   return (
@@ -77,38 +83,14 @@ const MessagesIndex = () => {
         />
 
         <ul className="mt-3">
-          {results.length > 0 && (
+          {searchResults.length > 0 && (
             <div className="font-semibold">Your search results</div>
           )}
-          {results.map((friend: Profile, i: number) => (
-            <li key={i}>
-              <a
-                href={`/profile/${friend.id}`}
-                className="flex items-center justify-between border-b py-3"
-              >
-                <div className="flex items-center justify-start gap-2">
-                  <Avatar profile={friend} size={12} />
-                  <div className="flex flex-col">
-                    <span className="text-md font-medium">
-                      {friend.username}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      Last active {friend.lastSeen}
-                    </span>
-                  </div>
-                </div>
-                <div className="">
-                  <button className="p-2">
-                    <span className="rounded-full bg-sky-200 px-2 py-1 text-xs font-semibold text-sky-900 active:bg-sky-300">
-                      ADD
-                    </span>
-                  </button>
-                </div>
-              </a>
-            </li>
+          {searchResults.map((friend, i) => (
+            <SearchedUser key={i} friend={friend} onAdd={addFriendHandler} />
           ))}
 
-          {searching && !loading && results.length === 0 && (
+          {searching && !loading && searchResults.length === 0 && (
             <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
               No result found
             </li>

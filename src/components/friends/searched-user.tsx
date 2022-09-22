@@ -1,7 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useEffectOnce } from 'react-use';
 import { Avatar } from '~/components/avatar';
 import { SearchProfile } from '~/services/friends';
 
@@ -16,18 +15,16 @@ enum FriendStatus {
   ACCEPTED = 'friend',
 }
 
-const SearchedUser = ({ friend, onAdd }: SearchedUserProps) => {
-  const [status, setStatus] = useState(FriendStatus.NEW);
+const getInitialStatus = (friend: SearchProfile) => {
+  if (!friend.friends.length) return FriendStatus.NEW;
 
-  useEffectOnce(() => {
-    if (friend.friends.length) {
-      setStatus(
-        friend.friends[0].accepted
-          ? FriendStatus.ACCEPTED
-          : FriendStatus.PENDING,
-      );
-    }
-  });
+  return friend.friends[0].accepted
+    ? FriendStatus.ACCEPTED
+    : FriendStatus.PENDING;
+};
+
+const SearchedUser = ({ friend, onAdd }: SearchedUserProps) => {
+  const [status, setStatus] = useState(getInitialStatus(friend));
 
   const addHandler = () => {
     setStatus(FriendStatus.PENDING);

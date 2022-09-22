@@ -12,6 +12,7 @@ import { useDebounce } from '~/helper/debounce';
 import { getStoredUser } from '~/services/auth';
 import { useAsync } from 'react-use';
 import SearchedUser from '~/components/friends/searched-user';
+import { sendSuccessFeedback } from '~/services/haptics';
 
 const MessagesIndex = () => {
   const navigate = useNavigate();
@@ -49,6 +50,8 @@ const MessagesIndex = () => {
 
   const updateSearch = (value: string) => {
     setSearch(value);
+    setSearchResults([]);
+
     if (value.length) {
       setSearching(true);
       setLoading(true);
@@ -61,7 +64,9 @@ const MessagesIndex = () => {
   const addFriendHandler = async (friend: SearchProfile) => {
     if (!user.value) return;
     const res = await addFriend(user.value?.id, friend.id);
-    console.log(res);
+    if (res) {
+      sendSuccessFeedback();
+    }
   };
 
   return (

@@ -81,6 +81,17 @@ const Application = () => {
     await PushNotifications.addListener('registrationError', (err) => {
       console.error('Registration error: ', err.error);
     });
+
+    await PushNotifications.addListener(
+      'pushNotificationActionPerformed',
+      (notification) => {
+        console.log(
+          'Push notification action performed',
+          notification.actionId,
+          notification.inputValue,
+        );
+      },
+    );
   };
 
   useEffectOnce(() => {

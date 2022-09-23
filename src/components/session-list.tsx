@@ -17,13 +17,19 @@ export const SessionList = () => {
             className="flex items-center justify-start gap-2 py-3 px-8"
           >
             <Avatar profile={session.user} size={12} />
-            <div className="flex flex-col items-start justify-start">
-              <span className="text-md font-medium">{session.name}</span>
+            <div className="max-2-full flex flex-col items-start justify-start gap-1 overflow-hidden">
+              <span className="text-md max-w-full truncate font-medium">
+                {session.name}
+              </span>
 
               {session.hasEnded ? (
                 <>
-                  <span>Ended {getLastActive(session.endedAt)}</span>
-                  <Badge red>Ended</Badge>
+                  <div className="flex gap-2">
+                    <Badge red>Ended</Badge>
+                    <span className="text-sm text-gray-500">
+                      Ended {getLastActive(session.endedAt)}
+                    </span>
+                  </div>
                 </>
               ) : (
                 <>
@@ -33,8 +39,12 @@ export const SessionList = () => {
                       locationName={session.locationName}
                     />
                   )}
-                  <span>Started {session.lastActive}</span>
-                  <Badge green>Active</Badge>
+                  <div className="flex gap-2">
+                    <Badge green>Active</Badge>
+                    <span className="text-sm text-gray-500">
+                      Started {session.lastActive}
+                    </span>
+                  </div>
                 </>
               )}
             </div>

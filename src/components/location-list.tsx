@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { TagItem } from '~/components/tag-item';
 import { sendSuccessFeedback } from '~/services/haptics';
-import { getNearbyPlaces } from '~/services/locations';
+import { getNearbyAddress, getNearbyPlaces } from '~/services/locations';
 import { Location, Tag } from '~/services/session';
 
 interface LocationListProp {
@@ -25,15 +25,18 @@ export const LocationList: React.FC<LocationListProp> = ({
 
   const loadTags = async () => {
     let placesNearby = [];
+    let addressesNearby = [];
 
     if (location || !selectedDrink) {
       setLoading(true);
       placesNearby = await getNearbyPlaces(selectedDrink?.type, location);
+      addressesNearby = await getNearbyAddress(location);
       setLoading(false);
     }
 
-    let data = [
+    const data = [
       ...placesNearby,
+      ...addressesNearby,
       {
         id: 12,
         name: 'Hide',
@@ -41,24 +44,6 @@ export const LocationList: React.FC<LocationListProp> = ({
         type: 'hidden',
       },
     ];
-
-    if (location) {
-      data = [
-        ...data,
-        {
-          id: 10,
-          name: 'GPS',
-          emoji: '🛰',
-          type: 'other',
-        },
-        {
-          id: 11,
-          name: 'Home',
-          emoji: '🏡',
-          type: 'home',
-        },
-      ];
-    }
 
     setTags(data);
   };

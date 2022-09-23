@@ -10,13 +10,14 @@ import { getStoredUser } from '~/services/auth';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { getProfile } from '~/services/profile';
 import { createNewSession, Location, Tag } from '~/services/session';
-import { LocationTag } from '~/components/location-tag';
+import { LocationList } from '~/components/location-list';
 
 const NewSession = () => {
   const profile = useAsync(async () => {
     const user = await getStoredUser();
     return getProfile(user?.id);
   });
+  const [locationTag, setLocationTag] = useState<Tag>();
   const [tag, setTag] = useState<Tag>();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,14 +30,36 @@ const NewSession = () => {
     setError('');
 
     try {
+      console.log({ locationTag });
       if (!tag || tag.id <= 0) {
-        throw 'The tag is required';
+        throw 'Select a drink';
+      }
+      if (!locationTag || locationTag.id < 0) {
+        throw 'Select a location';
+      }
+
+      let coordinates;
+      if (location.value && locationTag && locationTag.type !== 'hidden') {
+        coordinates = location.value;
+      }
+
+      let locationName;
+      if (locationTag && locationTag.type !== 'other') {
+        locationName = locationTag.name;
+      }
+
+      if (locationTag && locationTag.type === 'home') {
+        locationName = 'at home';
+      }
+      if (locationTag && locationTag.type === 'hidden') {
+        locationName = 'at a nice place.';
       }
 
       const { id, error: errorMessage } = await createNewSession(
         `${profile.value?.data.username} is drinking ${tag.name} ${tag.emoji}`,
         tag.id,
-        location.value,
+        coordinates,
+        locationName,
       );
 
       if (errorMessage) {
@@ -54,7 +77,6 @@ const NewSession = () => {
 
   const location = useAsync(async () => {
     const point = await Geolocation.getCurrentPosition();
-
     const loc: Location = {
       type: 'Point',
       coordinates: [point.coords.latitude, point.coords.longitude],
@@ -66,34 +88,45 @@ const NewSession = () => {
   return (
     <Page>
       <PageHeader>Create a new Session</PageHeader>
-      <div className="flex w-full flex-col gap-6 px-8">
-        <p className="text-sm text-gray-500">
-          Click on start to create a new session. Your friends will receive a
-          notification that you have started a session.
-        </p>
-        <form onSubmit={submit} className="flex flex-col gap-6">
-          <div>
-            <span className="text-sm text-gray-500">Choose a tag</span>
-            <TagList activeTag={tag} setActiveTag={setTag} />
-            <div className="h-4">
-              {error && error !== '' && (
-                <span className="text-sm text-red-500">{error}</span>
-              )}
-            </div>
-          </div>
-          {location && location.value && (
-            <div>
-              <span className="text-sm text-gray-500">Your Location: </span>
-              <LocationTag location={location.value} />
-            </div>
-          )}
-          <div className="flex flex-col gap-4">
-            <Button primary disabled={isLoading}>
-              Start Session
-            </Button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={submit} className="flex flex-col gap-4 px-8">
+        {error && error !== '' && (
+          <span className="text-sm text-red-500">{error}</span>
+        )}
+        <span className="text-sm text-gray-500">
+          Let your friends know what you are drinking
+        </span>
+        <TagList activeTag={tag} setActiveTag={setTag} />
+        <hr />
+        {location.loading && (
+          <span className="text-sm text-gray-500">
+            Loading locations nearby...
+          </span>
+        )}
+        {!location.loading && (
+          <>
+            <span className="text-sm text-gray-500">
+              Choose the location you want to share with your friends
+            </span>
+            <LocationList
+              location={location.value}
+              selectedDrink={tag}
+              activeTag={locationTag}
+              setActiveTag={setLocationTag}
+            />
+          </>
+        )}
+        <Button
+          primary
+          disabled={
+            isLoading ||
+            location.loading ||
+            tag === undefined ||
+            locationTag === undefined
+          }
+        >
+          Start Session
+        </Button>
+      </form>
     </Page>
   );
 };

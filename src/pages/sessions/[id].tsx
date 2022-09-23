@@ -100,7 +100,10 @@ const ActiveSession = () => {
             <>
               <h2 className="text-xl font-medium">{session.value?.name}</h2>
               {session.value?.location && (
-                <LocationTag location={session.value.location} />
+                <LocationTag
+                  location={session.value.location}
+                  locationName={session.value.locationName}
+                />
               )}
               <p className="text-sm text-gray-500">
                 {session.value?.user.username} has started a new session. It
@@ -122,7 +125,10 @@ const ActiveSession = () => {
             <>
               <h2 className="text-xl font-medium">{session.value?.name}</h2>
               {session.value?.location && (
-                <LocationTag location={session.value.location} />
+                <LocationTag
+                  location={session.value.location}
+                  locationName={session.value.locationName}
+                />
               )}
               <p className="text-sm text-gray-500">
                 You started this session. It will end automatically at{' '}

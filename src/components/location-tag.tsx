@@ -3,10 +3,18 @@ import { Location } from '~/services/session';
 
 interface LocationProps {
   location: Location;
+  locationName?: string;
 }
 
-export const LocationTag: FC<LocationProps> = ({ location }) => (
+export const LocationTag: FC<LocationProps> = ({ location, locationName }) => (
   <span className="text-sm text-gray-500">
-    📍 {location.coordinates[0]} {location.coordinates[1]}
+    📍
+    {locationName ? (
+      <>{locationName}</>
+    ) : (
+      <>
+        {location.coordinates[0]}, {location.coordinates[1]}
+      </>
+    )}
   </span>
 );

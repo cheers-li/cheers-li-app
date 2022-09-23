@@ -28,7 +28,10 @@ export const SessionList = () => {
               ) : (
                 <>
                   {session.location && (
-                    <LocationTag location={session.location} />
+                    <LocationTag
+                      location={session.location}
+                      locationName={session.locationName}
+                    />
                   )}
                   <span>Started {session.lastActive}</span>
                   <Badge green>Active</Badge>

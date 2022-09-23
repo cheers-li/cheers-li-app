@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { FC } from 'react';
 import { Location } from '~/services/session';
 
@@ -8,11 +7,7 @@ interface LocationProps {
 }
 
 export const LocationTag: FC<LocationProps> = ({ location, locationName }) => (
-  <span
-    className={clsx(
-      'max-w-full truncate whitespace-nowrap text-sm text-gray-500',
-    )}
-  >
+  <span className="max-w-full truncate whitespace-nowrap text-sm text-gray-500">
     📍
     {locationName ? (
       <>{locationName}</>

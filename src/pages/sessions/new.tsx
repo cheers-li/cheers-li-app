@@ -30,7 +30,6 @@ const NewSession = () => {
     setError('');
 
     try {
-      console.log({ locationTag });
       if (!tag || tag.id <= 0) {
         throw 'Select a drink';
       }
@@ -42,14 +41,9 @@ const NewSession = () => {
       if (location.value && locationTag && locationTag.type !== 'hidden') {
         coordinates = location.value;
       }
-
       let locationName;
       if (locationTag && locationTag.type !== 'other') {
         locationName = locationTag.name;
-      }
-
-      if (locationTag && locationTag.type === 'home') {
-        locationName = 'at home';
       }
       if (locationTag && locationTag.type === 'hidden') {
         locationName = 'at a nice place.';

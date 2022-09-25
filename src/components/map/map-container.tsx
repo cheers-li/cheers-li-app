@@ -19,7 +19,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
   const mapContainer = useRef(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [animated, setAnimated] = useState(true);
+  // const [animated, setAnimated] = useState(true);
 
   // User location
   const getCurrentPosition = async () => {
@@ -31,21 +31,23 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
 
     if (!map.current) return;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    map.current?.flyTo({ center: coords, preloadOnly: true });
+    // TODO: remove animation for now
+    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // // @ts-ignore
+    // map.current?.flyTo({ center: coords, preloadOnly: true });
 
     // Center map on user location
     map.current.setCenter(coords);
     await map.current.once('idle');
     setLoaded(true);
 
-    // Zoom in
-    map.current?.flyTo({ center: coords, zoom: 12, duration: 5000 });
+    // // Zoom in
+    // map.current?.flyTo({ center: coords, zoom: 12, duration: 5000 });
 
-    setTimeout(() => {
-      setAnimated(false);
-    }, 2000);
+    // setTimeout(() => {
+    //   setAnimated(false);
+    // }, 2000);
+    // TODO: end of TODO
 
     // Add User marker
     const userMarker = document.createElement('div');
@@ -57,7 +59,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
     if (!map.current) return;
 
     for (const session of sessions) {
-      if (!session.location) continue;
+      if (!session.location || !session.location.coordinates.length) continue;
 
       // Create marker node
       const markerNode = document.createElement('div');
@@ -98,7 +100,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
       container: mapContainer.current,
       projection: { name: 'globe' },
       style: `mapbox://styles/mapbox/${style}`,
-      zoom: 3,
+      zoom: 13, // TODO: put something like 3 if animated
       pitch: 45,
       bearing: -17.6,
       attributionControl: false,
@@ -129,8 +131,8 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
         className={clsx(
           'h-full w-full transform transition-opacity duration-300',
           {
-            'opacity-0': !loaded,
-            'pointer-events-none': animated,
+            'pointer-events-none opacity-0': !loaded,
+            // 'pointer-events-none': animated,
           },
         )}
       ></div>

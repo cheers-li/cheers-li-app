@@ -7,14 +7,21 @@ import { Profile } from './friends';
 import { setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
-export const listSessions = async (top = 2): Promise<Session[]> => {
-  const { data, error } = await supabase
+export const listSessions = async (
+  top = 2,
+  onlyActives = false,
+): Promise<Session[]> => {
+  let query = supabase
     .from('sessions')
     .select(
       'id, name, created_at, ended_at, location, location_name, user:user_id (id, username, avatarUrl:avatar_url)',
     )
     .order('ended_at', { ascending: false })
     .range(0, top);
+
+  if (onlyActives) query = query.gte('ended_at', new Date().toISOString());
+
+  const { data, error } = await query;
 
   if (error) {
     console.trace();
@@ -35,8 +42,6 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
 
     return newSession;
   });
-
-  console.log(sessions);
 
   return sessions || [];
 };

@@ -15,7 +15,7 @@ const MapView = () => {
     setIsOpen(!isOpen);
   };
 
-  const sessions = useAsync(() => listSessions(20));
+  const sessions = useAsync(() => listSessions(20, true));
 
   const [activeTag, setActiveTag] = useState<Tag>();
 

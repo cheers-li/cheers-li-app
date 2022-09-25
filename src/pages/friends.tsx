@@ -31,7 +31,7 @@ const MessagesIndex = () => {
   useEffect(() => {
     if (debouncedSearchTerm) {
       setLoading(true);
-      searchUsers(debouncedSearchTerm).then((res) => {
+      searchUsers(debouncedSearchTerm, user.value?.id).then((res) => {
         setLoading(false);
         if (res && res.length) {
           setSearchResults(res);
@@ -41,7 +41,7 @@ const MessagesIndex = () => {
       setSearchResults([]);
       setLoading(false);
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, user.value?.id]);
 
   const updateSearch = (value: string) => {
     setSearch(value);

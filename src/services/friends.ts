@@ -37,6 +37,7 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
 
 export const searchUsers = async (
   username: string,
+  userId?: string,
 ): Promise<SearchProfile[]> => {
   const { data, error } = await supabase
     .from('profiles')
@@ -44,9 +45,10 @@ export const searchUsers = async (
       `
       id, username, avatarUrl:avatar_url, activeAt:active_at, 
       friends!friends_user_2_fkey(user_1,user_2,accepted),
-      friends!friends_user_1_fkey(user_1,user_2,accepted)
+      friendsToo:friends!friends_user_1_fkey(user_1,user_2,accepted)
       `,
     )
+    .neq('id', userId)
     .ilike('username', `%${username}%`);
 
   if (error) {
@@ -57,6 +59,7 @@ export const searchUsers = async (
   return (
     data?.map((friend) => ({
       ...friend,
+      friends: [...friend.friends, friend.friendsToo],
       lastSeen: getLastActive(friend.activeAt),
     })) || []
   );

@@ -1,50 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Geolocation } from '@capacitor/geolocation';
 import mapboxgl, { add3DBuildingsLayer } from '~/services/mapbox';
 import store from '~/store';
 import FriendTooltip from '~/components/map/friend-tooltip';
 import { createRoot } from 'react-dom/client';
 import FriendMarker from '~/components/map/friend-marker';
-import fakeData from '~/components/map/fake-data.json';
 import clsx from 'clsx';
+import { Session } from '~/services/session';
 
-// TODO: get this from DB
-export interface Friend {
-  id: string;
-  name: string;
-  lat: number;
-  lng: number;
-  img: string;
+interface MapContainerProps {
+  sessions: Session[];
 }
-const friends: Friend[] = fakeData;
-// -- END TODO
 
-const addFriendsMarkers = (map: mapboxgl.Map) => {
-  for (const friend of friends) {
-    // Create marker node
-    const markerNode = document.createElement('div');
-    const markerRoot = createRoot(markerNode);
-    markerRoot.render(<FriendMarker user={friend} />);
-
-    // Create tooltip node
-    const tooltipNode = document.createElement('div');
-    const tooltipRoot = createRoot(tooltipNode);
-    tooltipRoot.render(
-      <FriendTooltip user={friend} center={map.getCenter()} />,
-    );
-
-    // make a marker for each feature and add to the map
-    new mapboxgl.Marker(markerNode)
-      .setLngLat([friend.lng, friend.lat])
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25, className: 'custom-tooltip' }) // add popups
-          .setDOMContent(tooltipNode),
-      )
-      .addTo(map);
-  }
-};
-
-const MapContainer = () => {
+const MapContainer = ({ sessions }: MapContainerProps) => {
   const [theme] = store.useState<string>('theme');
 
   // Mapbox
@@ -85,6 +53,42 @@ const MapContainer = () => {
     new mapboxgl.Marker(userMarker).setLngLat(coords).addTo(map.current);
   };
 
+  const addFriendsMarkers = useCallback(() => {
+    if (!map.current) return;
+
+    for (const session of sessions) {
+      if (!session.location) continue;
+
+      // Create marker node
+      const markerNode = document.createElement('div');
+      const markerRoot = createRoot(markerNode);
+      markerRoot.render(<FriendMarker user={session.user} />);
+
+      // Create tooltip node
+      const tooltipNode = document.createElement('div');
+      const tooltipRoot = createRoot(tooltipNode);
+      tooltipRoot.render(
+        <FriendTooltip session={session} center={map.current.getCenter()} />,
+      );
+
+      // make a marker for each feature and add to the map
+      new mapboxgl.Marker(markerNode)
+        .setLngLat([
+          session.location.coordinates[1],
+          session.location.coordinates[0],
+        ])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25, className: 'custom-tooltip' }) // add popups
+            .setDOMContent(tooltipNode),
+        )
+        .addTo(map.current);
+    }
+  }, [sessions]);
+
+  useEffect(() => {
+    addFriendsMarkers();
+  }, [addFriendsMarkers, sessions]);
+
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
@@ -111,7 +115,7 @@ const MapContainer = () => {
       if (map.current) {
         add3DBuildingsLayer(map.current);
 
-        addFriendsMarkers(map.current);
+        addFriendsMarkers();
       }
     });
 

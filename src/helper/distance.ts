@@ -1,9 +1,11 @@
 export const distance = (
-  lat1: number,
-  lng1: number,
-  lat2: number,
-  lng2: number,
+  lat1?: number,
+  lng1?: number,
+  lat2?: number,
+  lng2?: number,
 ) => {
+  if (!lat1 || !lng1 || !lat2 || !lng2) return 0;
+
   function toRadians(value: number) {
     return (value * Math.PI) / 180;
   }

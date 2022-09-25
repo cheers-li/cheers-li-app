@@ -6,7 +6,8 @@ import store from '~/store';
 import MapContainer from '~/components/map/map-container';
 import TagList from '~/components/tag-list';
 import { useState } from 'react';
-import { Tag } from '~/services/session';
+import { listSessions, Tag } from '~/services/session';
+import { useAsync } from 'react-use';
 
 const MapView = () => {
   const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
@@ -14,12 +15,14 @@ const MapView = () => {
     setIsOpen(!isOpen);
   };
 
+  const sessions = useAsync(() => listSessions(20));
+
   const [activeTag, setActiveTag] = useState<Tag>();
 
   return (
     <>
       <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-gray-800 to-black">
-        <MapContainer />
+        <MapContainer sessions={sessions.value || []} />
       </div>
       <Navigation />
       <div className="relative w-full">

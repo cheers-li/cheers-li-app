@@ -36,6 +36,8 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
     return newSession;
   });
 
+  console.log(sessions);
+
   return sessions || [];
 };
 

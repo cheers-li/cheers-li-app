@@ -18,6 +18,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
   // Mapbox
   const mapContainer = useRef(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
   const [loaded, setLoaded] = useState(false);
   // const [animated, setAnimated] = useState(true);
 
@@ -58,6 +59,9 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
   const addFriendsMarkers = useCallback(() => {
     if (!map.current) return;
 
+    markers.forEach((m) => m.remove());
+    setMarkers([]);
+
     for (const session of sessions) {
       if (!session.location || !session.location.coordinates.length) continue;
 
@@ -74,7 +78,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
       );
 
       // make a marker for each feature and add to the map
-      new mapboxgl.Marker(markerNode)
+      const marker = new mapboxgl.Marker(markerNode)
         .setLngLat([
           session.location.coordinates[1],
           session.location.coordinates[0],
@@ -84,7 +88,11 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
             .setDOMContent(tooltipNode),
         )
         .addTo(map.current);
+
+      setMarkers((prev) => [...prev, marker]);
     }
+    // TODO: how to remove this ESLint warning?
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessions]);
 
   useEffect(() => {
@@ -116,8 +124,6 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
     map.current?.on('load', () => {
       if (map.current) {
         add3DBuildingsLayer(map.current);
-
-        addFriendsMarkers();
       }
     });
 

@@ -5,6 +5,7 @@ interface SelectProps {
   defaultValue?: string;
   leftIcon?: React.ReactNode;
   options: string[];
+  keys: string[];
   onUpdate: (value: string) => void;
 }
 
@@ -13,6 +14,7 @@ export const Select: React.FC<SelectProps> = ({
   defaultValue,
   leftIcon,
   options,
+  keys,
   onUpdate,
 }) => {
   return (
@@ -39,8 +41,8 @@ export const Select: React.FC<SelectProps> = ({
           )}
           defaultValue={defaultValue}
         >
-          {options.map((option) => (
-            <option key={option} value={option}>
+          {options.map((option, i) => (
+            <option key={keys[i]} value={option}>
               {option}
             </option>
           ))}

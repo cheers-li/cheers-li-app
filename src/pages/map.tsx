@@ -6,8 +6,8 @@ import store from '~/store';
 import MapContainer from '~/components/map/map-container';
 import TagList from '~/components/tag-list';
 import { useState } from 'react';
-import { listSessions, Tag } from '~/services/session';
-import { useAsync } from 'react-use';
+import { listSessions, Session, Tag } from '~/services/session';
+import { useEffectOnce } from 'react-use';
 
 const MapView = () => {
   const [isOpen, setIsOpen] = store.useState<boolean>('menuOpen');
@@ -15,14 +15,32 @@ const MapView = () => {
     setIsOpen(!isOpen);
   };
 
-  const sessions = useAsync(() => listSessions(20, true));
-
   const [activeTag, setActiveTag] = useState<Tag>();
+  const [sessions, setSessions] = useState<Session[]>([]);
+
+  const updateActiveTag = (tag: Tag) => {
+    setActiveTag(tag === activeTag ? undefined : tag);
+  };
+
+  const filteredSessions = () => {
+    if (!activeTag) return sessions;
+
+    return sessions.filter((s) => s.sessionTag === activeTag?.id);
+  };
+
+  const fetchSessions = async () => {
+    const res = await listSessions(20, true);
+    setSessions(res);
+  };
+
+  useEffectOnce(() => {
+    fetchSessions();
+  });
 
   return (
     <>
       <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-gray-800 to-black">
-        <MapContainer sessions={sessions.value || []} />
+        <MapContainer sessions={filteredSessions()} />
       </div>
       <Navigation />
       <div className="relative w-full">
@@ -35,7 +53,8 @@ const MapView = () => {
                   aria-hidden="true"
                 />
               }
-              options={['One', 'Two', 'Three']}
+              options={sessions.map((s) => s.user.username)}
+              keys={sessions.map((s) => s.id)}
               onUpdate={() => console.log('select value changed')}
             ></Select>
             <button
@@ -45,7 +64,11 @@ const MapView = () => {
               <Bars2Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>
-          <TagList inline activeTag={activeTag} setActiveTag={setActiveTag} />
+          <TagList
+            inline
+            activeTag={activeTag}
+            setActiveTag={updateActiveTag}
+          />
         </div>
       </div>
     </>

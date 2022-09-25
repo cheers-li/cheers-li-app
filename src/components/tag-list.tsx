@@ -6,7 +6,7 @@ import { Tag, useSessionTags } from '~/services/session';
 interface TagListProps {
   inline?: boolean;
   activeTag?: Tag;
-  setActiveTag: React.Dispatch<React.SetStateAction<Tag | undefined>>;
+  setActiveTag: (tag: Tag) => void;
 }
 
 const TagList: React.FC<TagListProps> = ({
@@ -17,8 +17,9 @@ const TagList: React.FC<TagListProps> = ({
   const tags = useSessionTags();
 
   const tagClicked = (tag: Tag) => {
+    setActiveTag(tag);
+
     if (tag !== activeTag) {
-      setActiveTag(tag);
       sendSuccessFeedback();
     }
   };

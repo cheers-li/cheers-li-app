@@ -31,6 +31,14 @@ Runs all the tests
 
 Build webapp and android app
 
+### android build_for_screengrab
+
+```sh
+[bundle exec] fastlane android build_for_screengrab
+```
+
+Build debug and test APK for screenshots
+
 ### android deploy
 
 ```sh

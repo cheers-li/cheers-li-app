@@ -5,29 +5,29 @@
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  -webkit-user-drag: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-user-drag: none;
 }
 
 body {
   overflow: hidden;
 }
 
-/* Map */
-.mapboxgl-ctrl-logo {
-  @apply !hidden;
-}
-
-.tags-inline::-webkit-scrollbar {
+.remove-scrollbar::-webkit-scrollbar {
   @apply hidden;
 }
 
-.tags-inline {
+.remove-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Map */
+.mapboxgl-ctrl-logo {
+  @apply !hidden;
 }
 
 .user-marker {
@@ -40,6 +40,10 @@ body {
   @apply absolute h-5 w-5 rounded-full bg-sky-500;
   filter: blur(8px);
   transform: translate3d(-4px, -4px, -1px);
+}
+
+.custom-tooltip {
+  @apply !max-w-[280px];
 }
 
 .custom-tooltip .mapboxgl-popup-content {

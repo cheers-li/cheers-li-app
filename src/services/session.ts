@@ -7,14 +7,21 @@ import { Profile } from './friends';
 import { setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
-export const listSessions = async (top = 2): Promise<Session[]> => {
-  const { data, error } = await supabase
+export const listSessions = async (
+  top = 2,
+  onlyActives = false,
+): Promise<Session[]> => {
+  let query = supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, location_name, user:user_id (id, username, avatarUrl:avatar_url)',
+      'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatarUrl:avatar_url)',
     )
     .order('ended_at', { ascending: false })
     .range(0, top);
+
+  if (onlyActives) query = query.gte('ended_at', new Date().toISOString());
+
+  const { data, error } = await query;
 
   if (error) {
     console.trace();
@@ -28,6 +35,7 @@ export const listSessions = async (top = 2): Promise<Session[]> => {
       endedAt: item.ended_at,
       user: item.user,
       location: item.location,
+      sessionTag: item.session_tag,
       lastActive: getLastActive(item.created_at),
       hasEnded: dayjs().isAfter(dayjs(item.ended_at)),
       locationName: item.location_name,
@@ -85,7 +93,7 @@ export const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, location_name, user:user_id (id, username, avatar_url, devices(device_token))',
+      'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();
@@ -107,6 +115,7 @@ export const getSession = async (id: string): Promise<Session> => {
     endedAt: data.ended_at,
     user: data.user,
     location: data.location,
+    sessionTag: data.session_tag,
     lastActive: getLastActive(data.created_at),
     hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
     locationName: data.location_name,
@@ -160,6 +169,7 @@ export interface Session {
   endedAt: string;
   user: Profile;
   lastActive: string;
+  sessionTag: number;
   location?: Location;
   hasEnded?: boolean;
   isYourSession?: boolean;

@@ -5,6 +5,8 @@ interface SelectProps {
   defaultValue?: string;
   leftIcon?: React.ReactNode;
   options: string[];
+  keys: string[];
+  children?: React.ReactNode;
   onUpdate: (value: string) => void;
 }
 
@@ -13,8 +15,14 @@ export const Select: React.FC<SelectProps> = ({
   defaultValue,
   leftIcon,
   options,
+  keys,
+  children,
   onUpdate,
 }) => {
+  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onUpdate(e.target.selectedOptions[0].getAttribute('data-key') || '');
+  };
+
   return (
     <>
       {label && (
@@ -27,10 +35,10 @@ export const Select: React.FC<SelectProps> = ({
       )}
       <div className="relative flex w-full">
         <select
-          onChange={(e) => onUpdate(e.target.value)}
+          onChange={onChange}
           name={label}
           className={clsx(
-            'flex-1 rounded-md border-0 py-2 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
+            'flex-1 rounded-md border-0 py-4 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
             {
               'mt-1': label,
               'pl-12': leftIcon,
@@ -39,8 +47,9 @@ export const Select: React.FC<SelectProps> = ({
           )}
           defaultValue={defaultValue}
         >
-          {options.map((option) => (
-            <option key={option} value={option}>
+          {children}
+          {options.map((option, i) => (
+            <option key={keys[i]} value={option} data-key={keys[i]}>
               {option}
             </option>
           ))}

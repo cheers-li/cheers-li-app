@@ -64,7 +64,8 @@ export const LocationList: React.FC<LocationListProp> = ({
       <ul
         className={clsx({
           'tags-column space-y-2': !inline,
-          'tags-inline flex items-center space-x-4 overflow-x-auto': inline,
+          'remove-scrollbar flex items-center space-x-4 overflow-x-auto':
+            inline,
         })}
       >
         {loading && (

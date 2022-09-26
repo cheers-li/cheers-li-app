@@ -24,6 +24,16 @@ const NewSession = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const location = useAsync(async () => {
+    const point = await Geolocation.getCurrentPosition();
+    const loc: Location = {
+      type: 'Point',
+      coordinates: [point.coords.latitude, point.coords.longitude],
+    };
+
+    return loc;
+  });
+
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -68,16 +78,6 @@ const NewSession = () => {
       setIsLoading(false);
     }
   };
-
-  const location = useAsync(async () => {
-    const point = await Geolocation.getCurrentPosition();
-    const loc: Location = {
-      type: 'Point',
-      coordinates: [point.coords.latitude, point.coords.longitude],
-    };
-
-    return loc;
-  });
 
   return (
     <Page>

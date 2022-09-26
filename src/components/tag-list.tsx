@@ -6,7 +6,7 @@ import { Tag, useSessionTags } from '~/services/session';
 interface TagListProps {
   inline?: boolean;
   activeTag?: Tag;
-  setActiveTag: React.Dispatch<React.SetStateAction<Tag | undefined>>;
+  setActiveTag: (tag: Tag) => void;
 }
 
 const TagList: React.FC<TagListProps> = ({
@@ -17,8 +17,9 @@ const TagList: React.FC<TagListProps> = ({
   const tags = useSessionTags();
 
   const tagClicked = (tag: Tag) => {
+    setActiveTag(tag);
+
     if (tag !== activeTag) {
-      setActiveTag(tag);
       sendSuccessFeedback();
     }
   };
@@ -28,7 +29,8 @@ const TagList: React.FC<TagListProps> = ({
       <ul
         className={clsx({
           'tags-column space-y-2': !inline,
-          'tags-inline flex items-center space-x-4 overflow-x-auto': inline,
+          'remove-scrollbar flex items-center space-x-4 overflow-x-auto':
+            inline,
         })}
       >
         {tags.map((tag) => (

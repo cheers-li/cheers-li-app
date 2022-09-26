@@ -7,12 +7,10 @@ import {
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import SideMenu from '~/components/side-menu';
 
 const Navigation = () => {
   return (
     <>
-      <SideMenu />
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-300 bg-white px-8 py-6">
         <nav>
           <ul className="flex items-center justify-between">

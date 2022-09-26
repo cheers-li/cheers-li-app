@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Geolocation } from '@capacitor/geolocation';
 import mapboxgl, { add3DBuildingsLayer } from '~/services/mapbox';
 import store from '~/store';
 import FriendTooltip from '~/components/map/friend-tooltip';
@@ -9,10 +8,16 @@ import clsx from 'clsx';
 import { Session } from '~/services/session';
 
 interface MapContainerProps {
+  position: [number, number];
   sessions: Session[];
+  zoomCoords?: [number, number];
 }
 
-const MapContainer = ({ sessions }: MapContainerProps) => {
+const MapContainer = ({
+  position,
+  sessions,
+  zoomCoords,
+}: MapContainerProps) => {
   const [theme] = store.useState<string>('theme');
 
   // Mapbox
@@ -23,22 +28,16 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
   // const [animated, setAnimated] = useState(true);
 
   // User location
-  const getCurrentPosition = async () => {
-    const pos = await Geolocation.getCurrentPosition();
-    const coords: [number, number] = [
-      pos.coords.longitude,
-      pos.coords.latitude,
-    ];
-
+  const setCurrentPosition = async () => {
     if (!map.current) return;
 
-    // TODO: remove animation for now
+    // TODO: removed animation for now
     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // // @ts-ignore
     // map.current?.flyTo({ center: coords, preloadOnly: true });
 
     // Center map on user location
-    map.current.setCenter(coords);
+    map.current.setCenter(position);
     await map.current.once('idle');
     setLoaded(true);
 
@@ -53,7 +52,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
     // Add User marker
     const userMarker = document.createElement('div');
     userMarker.className = 'user-marker';
-    new mapboxgl.Marker(userMarker).setLngLat(coords).addTo(map.current);
+    new mapboxgl.Marker(userMarker).setLngLat(position).addTo(map.current);
   };
 
   const addFriendsMarkers = useCallback(() => {
@@ -100,6 +99,11 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
   }, [addFriendsMarkers, sessions]);
 
   useEffect(() => {
+    if (!map.current) return;
+    map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
+  }, [zoomCoords]);
+
+  useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
     const style = theme === 'dark' ? 'dark-v10' : 'streets-v11';
@@ -127,7 +131,7 @@ const MapContainer = ({ sessions }: MapContainerProps) => {
       }
     });
 
-    getCurrentPosition();
+    setCurrentPosition();
   });
 
   return (

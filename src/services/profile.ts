@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
+import { FriendStatus, SearchProfile } from '~/services/friends';
 import { supabase } from './supabase-client';
 
 export const getProfile = async (userId?: string) => {
-  if (!userId || userId === 'UNKNOWN') {
+  if (!userId) {
     return { data: null, error: 'USER NOT LOADED YET' };
   }
 
@@ -18,6 +19,51 @@ export const getProfile = async (userId?: string) => {
   }
 
   return { data, error };
+};
+
+export const getCompleteProfile = async (
+  searchProfileId?: string,
+  loggedUserId?: string,
+): Promise<{ data: CompleteProfile | null; error?: string }> => {
+  if (!loggedUserId || !searchProfileId) {
+    return { data: null, error: 'Profile not found' };
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(
+      `id, username, bio, avatarUrl:avatar_url,
+      friends!friends_user_2_fkey(user_1,user_2,accepted),
+      friendsToo:friends!friends_user_1_fkey(user_1,user_2,accepted)
+      `,
+    )
+    .eq('id', searchProfileId)
+    .single();
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  const completeProfile: CompleteProfile = {
+    ...data,
+    friends: [...data.friends, ...data.friendsToo],
+  };
+
+  if (completeProfile.friends.length) {
+    if (completeProfile.friends[0].accepted)
+      completeProfile.status = FriendStatus.ACCEPTED;
+    else if (completeProfile.friends[0].user_1 === loggedUserId)
+      completeProfile.status = FriendStatus.PENDING;
+    else completeProfile.status = FriendStatus.REQUESTED;
+  } else {
+    completeProfile.status = FriendStatus.NEW;
+  }
+
+  return {
+    data: completeProfile,
+    error: error?.message,
+  };
 };
 
 export const createNewProfile = async (userId: string, userName: string) => {
@@ -56,3 +102,9 @@ const getUserProfileImage = () => {
     return user.user_metadata.avatar_url;
   }
 };
+
+interface CompleteProfile extends SearchProfile {
+  id: string;
+  bio: string;
+  status: FriendStatus;
+}

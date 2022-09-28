@@ -6,6 +6,7 @@ interface ButtonProps {
   primary?: boolean;
   secondary?: boolean;
   danger?: boolean;
+  dark?: boolean;
   link?: boolean;
   width?: 'full' | 'default';
   children: React.ReactNode;
@@ -18,6 +19,7 @@ export const Button: React.FC<ButtonProps> = ({
   primary,
   secondary,
   danger,
+  dark,
   link,
   width,
   icon,
@@ -30,6 +32,7 @@ export const Button: React.FC<ButtonProps> = ({
       'bg-sky-100 text-gray-800 active:bg-sky-200': secondary && !disabled,
       'bg-red-500 text-white active:bg-red-600': danger && !disabled,
       'bg-white text-gray-800 active:bg-sky-50': link && !disabled,
+      'bg-gray-800 text-gray-100 active:bg-gray-900': dark && !disabled,
       'w-full': width === 'full',
       'bg-gray-300 text-gray-100': disabled,
       'flex flex-row items-center justify-start': icon,

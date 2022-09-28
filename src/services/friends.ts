@@ -141,3 +141,10 @@ export interface Friend {
 export interface SearchProfile extends Profile {
   friends: Friend[];
 }
+
+export enum FriendStatus {
+  NEW = 'add',
+  PENDING = 'added',
+  REQUESTED = 'requested',
+  ACCEPTED = 'friend',
+}

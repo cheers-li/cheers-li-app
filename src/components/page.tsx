@@ -1,16 +1,28 @@
+import clsx from 'clsx';
 import Navigation from './navigation';
 
 interface PageProps {
   children: React.ReactNode;
   hideNavigation?: boolean;
+  noPadding?: boolean;
+  noGap?: boolean;
 }
 
 export const Page: React.FC<PageProps> = ({
   children,
   hideNavigation = false,
+  noPadding = false,
+  noGap = false,
 }) => (
   <>
-    <div className="flex w-full flex-col gap-6 pt-6 pb-24">{children}</div>
+    <div
+      className={clsx('flex w-full flex-col pb-24', {
+        'pt-6': !noPadding,
+        'gap-6 ': !noGap,
+      })}
+    >
+      {children}
+    </div>
     {!hideNavigation && <Navigation />}
   </>
 );

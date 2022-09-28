@@ -2,17 +2,11 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { UserItem } from '~/components/friends/user-item';
-import { SearchProfile } from '~/services/friends';
+import { FriendStatus, SearchProfile } from '~/services/friends';
 
 interface SearchedUserItemProps {
   friend: SearchProfile;
   onAdd: (friend: SearchProfile) => void;
-}
-
-enum FriendStatus {
-  NEW = 'add',
-  PENDING = 'added',
-  ACCEPTED = 'friend',
 }
 
 const getInitialStatus = (friend: SearchProfile) => {

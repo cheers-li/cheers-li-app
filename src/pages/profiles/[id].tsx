@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useAsync } from 'react-use';
 import { Button } from '~/components/button';
 import { Page } from '~/components/page';
-import { addFriend, FriendStatus } from '~/services/friends';
+import { acceptRequest, addFriend, FriendStatus } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { getCompleteProfile } from '~/services/profile';
 import store from '~/store';
@@ -31,12 +31,20 @@ const ProfileView = () => {
   const addFriendHandler = async () => {
     if (!profile?.value?.data) return;
 
-    console.log(user, profile);
-
     const res = await addFriend(user.id, profile.value.data.id);
     if (res) {
       sendSuccessFeedback();
-      profile.value.data.status = FriendStatus.PENDING;
+      profile.value.data.status = FriendStatus.REQUESTED;
+    }
+  };
+
+  const confirmFriend = async () => {
+    if (!profile?.value?.data) return;
+
+    const res = await acceptRequest(profile.value.data.id, user.id);
+    if (res) {
+      sendSuccessFeedback();
+      profile.value.data.status = FriendStatus.ACCEPTED;
     }
   };
 
@@ -71,7 +79,7 @@ const ProfileView = () => {
               <p className="mt-1 text-sm">{profile.value?.data?.bio}</p>
             </div>
           </div>
-          <div className="px-8">
+          <div className="mt-4 px-8">
             {profile.value?.data?.status === FriendStatus.NEW && (
               <Button dark onClick={addFriendHandler}>
                 <div className="flex items-center justify-center space-x-3">
@@ -80,11 +88,19 @@ const ProfileView = () => {
                 </div>
               </Button>
             )}
-            {profile.value?.data?.status === FriendStatus.PENDING && (
+            {profile.value?.data?.status === FriendStatus.REQUESTED && (
               <Button dark disabled>
                 <div className="flex items-center justify-center space-x-3">
                   <UserPlusIcon className="h-5 w-5" />
-                  <span>Added</span>
+                  <span>Requested</span>
+                </div>
+              </Button>
+            )}
+            {profile.value?.data?.status === FriendStatus.CONFIRM && (
+              <Button dark onClick={confirmFriend}>
+                <div className="flex items-center justify-center space-x-3">
+                  <UserPlusIcon className="h-5 w-5" />
+                  <span>Confirm</span>
                 </div>
               </Button>
             )}

@@ -53,7 +53,8 @@ export const searchUsers = async (
       `,
     )
     .neq('id', userId)
-    .ilike('username', `%${username}%`);
+    .ilike('username', `%${username}%`)
+    .limit(10);
 
   if (error) {
     console.trace();
@@ -150,9 +151,19 @@ export interface SearchProfile extends Profile {
   friends: Friend[];
 }
 
+export const getFriendStatus = (friends: Friend[], userId: string) => {
+  if (!friends.length) return FriendStatus.NEW;
+
+  if (friends[0].accepted) return FriendStatus.ACCEPTED;
+
+  if (friends[0].user_1 === userId) return FriendStatus.REQUESTED;
+
+  return FriendStatus.CONFIRM;
+};
+
 export enum FriendStatus {
   NEW = 'add',
-  PENDING = 'added',
   REQUESTED = 'requested',
+  CONFIRM = 'confirm',
   ACCEPTED = 'friend',
 }

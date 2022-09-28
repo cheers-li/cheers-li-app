@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
-import { FriendStatus, SearchProfile } from '~/services/friends';
+import {
+  FriendStatus,
+  getFriendStatus,
+  SearchProfile,
+} from '~/services/friends';
 import { supabase } from './supabase-client';
 
 export const getProfile = async (userId?: string) => {
@@ -50,15 +54,10 @@ export const getCompleteProfile = async (
     friends: [...data.friends, ...data.friendsToo],
   };
 
-  if (completeProfile.friends.length) {
-    if (completeProfile.friends[0].accepted)
-      completeProfile.status = FriendStatus.ACCEPTED;
-    else if (completeProfile.friends[0].user_1 === loggedUserId)
-      completeProfile.status = FriendStatus.PENDING;
-    else completeProfile.status = FriendStatus.REQUESTED;
-  } else {
-    completeProfile.status = FriendStatus.NEW;
-  }
+  completeProfile.status = getFriendStatus(
+    completeProfile.friends,
+    loggedUserId,
+  );
 
   return {
     data: completeProfile,

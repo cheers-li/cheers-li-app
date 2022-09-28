@@ -17,11 +17,11 @@ export const Avatar: FC<AvatarProps> = ({
       <img
         src={profile.avatarUrl}
         alt={profile.username}
-        className={`h-${size} w-${size} block rounded-full ${customClasses}`}
+        className={`h-${size} w-${size} block flex-shrink-0 rounded-full ${customClasses}`}
       />
     ) : (
       <div
-        className={`flex h-${size} w-${size} items-center justify-center rounded-full bg-sky-800 px-4 text-3xl font-extralight text-white ${customClasses}`}
+        className={`flex h-${size} w-${size} flex-shrink-0 items-center  justify-center rounded-full bg-sky-800 px-4 text-3xl font-extralight text-white ${customClasses}`}
       >
         {profile.username.charAt(0).toUpperCase()}
       </div>

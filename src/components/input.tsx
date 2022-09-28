@@ -8,6 +8,7 @@ interface InputProps extends React.HTMLProps<HTMLInputElement> {
   error?: string;
   cleanable?: boolean;
   leftIcon?: React.ReactNode;
+  currentValue?: string;
   onUpdate: (value: string) => void;
 }
 
@@ -17,10 +18,12 @@ export const Input: React.FC<InputProps> = ({
   leftIcon,
   disabled,
   cleanable,
+  currentValue,
   onUpdate,
   ...rest
 }) => {
   const inputRef = useRef(null);
+  const notEmpty = (currentValue?.length || 0) > 0;
 
   const clearInput = () => {
     if (!inputRef || !inputRef.current) return;
@@ -58,12 +61,12 @@ export const Input: React.FC<InputProps> = ({
           {leftIcon}
         </div>
       )}
-      {cleanable && (
+      {cleanable && notEmpty && (
         <button
           onClick={clearInput}
           className="absolute right-4 top-0 bottom-0 flex items-center justify-center"
         >
-          <XCircleIcon className="h-5 w-5" />
+          <XCircleIcon className="h-5 w-5 text-gray-500" />
         </button>
       )}
     </label>

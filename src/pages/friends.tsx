@@ -80,6 +80,7 @@ const MessagesIndex = () => {
               aria-hidden="true"
             />
           }
+          currentValue={search}
         />
 
         <ul className="mt-3">
@@ -108,7 +109,7 @@ const MessagesIndex = () => {
         </ul>
         {!searching && (
           <Tab.Group>
-            <Tab.List className="fixed bottom-24 flex items-center justify-between rounded-full bg-sky-900 p-2 text-white">
+            <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 items-center justify-between rounded-full bg-sky-900 p-2 text-white">
               <Tab
                 key={'friends'}
                 className={({ selected }) =>

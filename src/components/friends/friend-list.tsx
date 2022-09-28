@@ -1,7 +1,8 @@
 import { useAsync } from 'react-use';
 import { UserItem } from '~/components/friends/user-item';
 import { getStoredUser } from '~/services/auth';
-import { Profile, getFriends } from '~/services/friends';
+import { getFriends } from '~/services/friends';
+import { List } from '../list/list';
 
 export const FriendList = () => {
   const friends = useAsync(async () => {
@@ -10,22 +11,14 @@ export const FriendList = () => {
   });
 
   return (
-    <ul>
-      {friends.value?.map((friend: Profile, i: number) => (
-        <UserItem key={i} friend={friend} />
-      ))}
-
-      {friends.value?.length === 0 && (
-        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
-          It appears that you have no friends
-        </li>
-      )}
-
-      {friends.loading && (
-        <li className="flex items-center justify-start gap-2 border-b py-3 px-8 text-sm text-gray-500">
-          We are loading your friends.
-        </li>
-      )}
-    </ul>
+    <>
+      <List
+        title="Friends"
+        loading={friends.loading}
+        items={friends.value?.list || []}
+        count={friends.value?.count || 0}
+        ItemComponent={UserItem}
+      />
+    </>
   );
 };

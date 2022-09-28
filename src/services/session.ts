@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
+import { ElementList, ListItem } from '~/types/List';
 import { getStoredUser } from './auth';
 import { Profile } from './friends';
 import { setLastActive } from './profile';
@@ -10,18 +11,19 @@ import { supabase } from './supabase-client';
 export const listSessions = async (
   top = 2,
   onlyActives = false,
-): Promise<Session[]> => {
+): Promise<ElementList<Session>> => {
   let query = supabase
     .from('sessions')
     .select(
       'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatarUrl:avatar_url)',
+      { count: 'exact' },
     )
     .order('ended_at', { ascending: false })
     .range(0, top);
 
   if (onlyActives) query = query.gte('ended_at', new Date().toISOString());
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
 
   if (error) {
     console.trace();
@@ -44,7 +46,7 @@ export const listSessions = async (
     return newSession;
   });
 
-  return sessions || [];
+  return { list: sessions || [], count };
 };
 
 export const createNewSession = async (
@@ -162,7 +164,7 @@ export const useSessionTags = () => {
   return tags;
 };
 
-export interface Session {
+export interface Session extends ListItem {
   id: string;
   name: string;
   createdAt: string;

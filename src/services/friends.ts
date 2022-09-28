@@ -1,11 +1,15 @@
 import { getLastActive } from '~/helper/time';
+import { ElementList } from '~/types/List';
 import { supabase } from './supabase-client';
 
-export const getFriends = async (userId?: string): Promise<Profile[]> => {
-  const { data, error } = await supabase
+export const getFriends = async (
+  userId?: string,
+): Promise<ElementList<Profile>> => {
+  const { data, error, count } = await supabase
     .from('friends')
     .select(
       'user_1 (id, username, avatar_url, active_at), user_2 (id, username, avatar_url, active_at)',
+      { count: 'exact' },
     )
     .eq('accepted', true)
     .or(`user_1.eq.${userId},user_2.eq.${userId}`);
@@ -32,7 +36,7 @@ export const getFriends = async (userId?: string): Promise<Profile[]> => {
     return friend;
   });
 
-  return friendList || [];
+  return { list: friendList || [], count };
 };
 
 export const searchUsers = async (
@@ -78,10 +82,14 @@ export const addFriend = async (userId: string, friendId: string) => {
   return data;
 };
 
-export const getRequests = async (userId?: string) => {
-  const { data, error } = await supabase
+export const getRequests = async (
+  userId?: string,
+): Promise<ElementList<Profile>> => {
+  const { data, error, count } = await supabase
     .from('friends')
-    .select('user_1 (id, username, avatar_url, active_at), user_2')
+    .select('user_1 (id, username, avatar_url, active_at), user_2', {
+      count: 'exact',
+    })
     .eq('accepted', false)
     .eq('user_2', userId);
 
@@ -100,7 +108,7 @@ export const getRequests = async (userId?: string) => {
     } as Profile;
   });
 
-  return requests || [];
+  return { list: requests || [], count };
 };
 
 export const acceptRequest = async (requestor: string, acceptor: string) => {

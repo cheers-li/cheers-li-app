@@ -1,6 +1,6 @@
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
-import { SessionList } from '~/components/session-list';
+import { SessionList } from '~/components/session/session-list';
 
 const Index = () => {
   return (
@@ -12,7 +12,6 @@ const Index = () => {
         </span>
       </PageHeader>
 
-      <h2 className="px-8 text-xl font-bold">Recent Sessions</h2>
       <SessionList />
     </Page>
   );

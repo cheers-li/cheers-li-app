@@ -5,7 +5,7 @@ import { UserItem } from '~/components/friends/user-item';
 import { SearchProfile } from '~/services/friends';
 
 interface SearchedUserItemProps {
-  friend: SearchProfile;
+  item: SearchProfile;
   onAdd: (friend: SearchProfile) => void;
 }
 
@@ -23,7 +23,10 @@ const getInitialStatus = (friend: SearchProfile) => {
     : FriendStatus.PENDING;
 };
 
-export const SearchedUserItem = ({ friend, onAdd }: SearchedUserItemProps) => {
+export const SearchedUserItem = ({
+  item: friend,
+  onAdd,
+}: SearchedUserItemProps) => {
   const [status, setStatus] = useState(getInitialStatus(friend));
 
   const addHandler = () => {
@@ -32,7 +35,7 @@ export const SearchedUserItem = ({ friend, onAdd }: SearchedUserItemProps) => {
   };
 
   return (
-    <UserItem friend={friend}>
+    <UserItem item={friend}>
       {status === FriendStatus.ACCEPTED && (
         <div className="p-2">
           <CheckCircleIcon className="h-7 w-7 text-gray-800" />

@@ -21,7 +21,7 @@ export const Avatar: FC<AvatarProps> = ({
       />
     ) : (
       <div
-        className={`flex h-${size} w-${size} items-center justify-center rounded-full bg-sky-800 px-4 text-3xl font-extralight text-white ${customClasses}`}
+        className={`flex h-${size} w-${size} flex-shrink-0 items-center justify-center rounded-full bg-sky-800 px-4 text-3xl font-extralight text-white ${customClasses}`}
       >
         {profile.username.charAt(0).toUpperCase()}
       </div>

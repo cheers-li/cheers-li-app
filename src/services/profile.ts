@@ -102,7 +102,7 @@ const getUserProfileImage = () => {
   }
 };
 
-interface CompleteProfile extends SearchProfile {
+export interface CompleteProfile extends SearchProfile {
   id: string;
   bio: string;
   city: string;

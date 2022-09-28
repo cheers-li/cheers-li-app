@@ -35,17 +35,16 @@ export const Button: React.FC<ButtonProps> = ({
       'bg-gray-800 text-gray-100 active:bg-gray-900': dark && !disabled,
       'w-full': width === 'full',
       'bg-gray-300 text-gray-100': disabled,
-      'flex flex-row items-center justify-start': icon,
+      'flex flex-row items-center justify-center gap-8': icon,
     })}
     disabled={disabled}
     {...rest}
   >
     {icon && (
-      <span className="mr-8 h-8 w-8 justify-self-start fill-gray-600">
-        {icon}
-      </span>
+      <span className="h-6 w-6 flex-shrink-0 fill-gray-600">{icon}</span>
     )}
-    {children}
+    <span className="whitespace-nowrap">{children}</span>
+    {icon && <span className="h-6 w-6 flex-shrink-0 fill-gray-600"></span>}
   </button>
 );
 

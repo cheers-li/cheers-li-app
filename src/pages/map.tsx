@@ -41,8 +41,8 @@ const MapView = () => {
 
   const fetchData = async () => {
     const pos = await Geolocation.getCurrentPosition();
-    const res = await listSessions(20, true);
-    setSessions(res);
+    const { list } = await listSessions(20, true);
+    setSessions(list);
     setPosition([pos.coords.longitude, pos.coords.latitude]);
   };
 

@@ -4,24 +4,22 @@ import { Profile } from '~/services/friends';
 
 interface UserItemProps {
   children?: React.ReactNode;
-  friend: Profile;
+  item: Profile;
 }
 
-export const UserItem = ({ children, friend }: UserItemProps) => {
+export const UserItem = ({ children, item: profile }: UserItemProps) => {
   return (
-    <li className="flex items-center justify-between border-b py-3">
-      <div className="flex items-center justify-start gap-2">
-        <Link to={`/profiles/${friend.id}`}>
-          <Avatar profile={friend} size={12} />
-        </Link>
-        <div className="flex flex-col">
-          <span className="text-md font-medium">{friend.username}</span>
-          <span className="text-sm text-gray-500">
-            Last active {friend.lastSeen}
-          </span>
-        </div>
+    <div className="flex items-center justify-start gap-2 py-3 px-8">
+      <Link to={`/profiles/${profile.id}`}>
+        <Avatar profile={profile} size={12} />
+      </Link>
+      <div className="flex flex-1 flex-col">
+        <span className="text-md font-medium">{profile.username}</span>
+        <span className="text-sm text-gray-500">
+          Last active {profile.lastSeen}
+        </span>
       </div>
       {children}
-    </li>
+    </div>
   );
 };

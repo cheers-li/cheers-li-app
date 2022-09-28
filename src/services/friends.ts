@@ -63,7 +63,7 @@ export const searchUsers = async (
   return (
     data?.map((friend) => ({
       ...friend,
-      friends: [...friend.friends, friend.friendsToo],
+      friends: [...friend.friends, ...friend.friendsToo],
       lastSeen: getLastActive(friend.activeAt),
     })) || []
   );

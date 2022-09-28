@@ -12,6 +12,7 @@ import { supabase } from '~/services/supabase-client';
 import { User } from '@supabase/supabase-js';
 import { signOut, storeUser } from '~/services/auth';
 import { Button } from '~/components/button';
+import store from '~/store';
 
 enum SignUpState {
   USER_NOT_LOADED,
@@ -30,7 +31,7 @@ enum SignUpState {
 const LoginCallback = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>();
+  const [user, setGlobalUser] = store.useState<User | null>('user');
 
   const [showUserLoading, setShowUserLoading] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
@@ -64,7 +65,7 @@ const LoginCallback = () => {
         }
 
         const result = await supabase.auth.api.getUser(session.access_token);
-        setUser(result.user);
+        setGlobalUser(result.user);
         storeUser(result.user);
 
         if (!user) {

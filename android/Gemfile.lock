@@ -105,6 +105,10 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
+    fastlane-plugin-get_version_code (0.2.0)
+    fastlane-plugin-get_version_name (0.2.2)
+    fastlane-plugin-increment_version_code (0.4.3)
+    fastlane-plugin-remove_git_tag (0.1.0)
     gh_inspector (1.1.3)
     google-apis-androidpublisher_v3 (0.27.0)
       google-apis-core (>= 0.7.2, < 2.a)
@@ -213,6 +217,10 @@ PLATFORMS
 
 DEPENDENCIES
   fastlane
+  fastlane-plugin-get_version_code
+  fastlane-plugin-get_version_name
+  fastlane-plugin-increment_version_code
+  fastlane-plugin-remove_git_tag
 
 BUNDLED WITH
    2.3.22

@@ -23,6 +23,22 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs all the tests
 
+### android changelog
+
+```sh
+[bundle exec] fastlane android changelog
+```
+
+Get changelog from git
+
+### android remove_tags
+
+```sh
+[bundle exec] fastlane android remove_tags
+```
+
+
+
 ### android beta
 
 ```sh

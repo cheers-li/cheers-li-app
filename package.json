@@ -11,7 +11,11 @@
     "prepare": "husky install",
     "sync": "pnpm build && pnpm cap sync",
     "deploy:android": "pnpm sync && pnpm cap run android",
-    "deploy:ios": "pnpm sync && pnpm cap run ios"
+    "deploy:ios": "pnpm sync && pnpm cap run ios",
+    "fastlane-android": "cd android && bundle exec fastlane",
+    "fastlane-android:test": "pnpm fastlane-android test",
+    "fastlane-android:beta": "pnpm fastlane-android beta",
+    "fastlane-android:deploy": "pnpm fastlane-android deploy"
   },
   "dependencies": {
     "@capacitor/android": "^4.1.0",

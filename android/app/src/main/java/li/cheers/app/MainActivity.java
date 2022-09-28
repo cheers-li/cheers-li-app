@@ -1,4 +1,4 @@
-package cheers.li;
+package li.cheers.app;
 
 import com.getcapacitor.BridgeActivity;
 

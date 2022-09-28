@@ -36,9 +36,9 @@ export const getCompleteProfile = async (
   const { data, error } = await supabase
     .from('profiles')
     .select(
-      `id, username, bio, avatarUrl:avatar_url,
-      friends!friends_user_2_fkey(user_1,user_2,accepted),
-      friendsToo:friends!friends_user_1_fkey(user_1,user_2,accepted)
+      `id, username, bio, city, avatarUrl:avatar_url,
+      friends!friends_user_2_fkey(user_1,user_2,accepted, accepted_at),
+      friendsToo:friends!friends_user_1_fkey(user_1,user_2,accepted, accepted_at)
       `,
     )
     .eq('id', searchProfileId)
@@ -105,5 +105,6 @@ const getUserProfileImage = () => {
 interface CompleteProfile extends SearchProfile {
   id: string;
   bio: string;
+  city: string;
   status: FriendStatus;
 }

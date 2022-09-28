@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useAsync } from 'react-use';
 import { Button } from '~/components/button';
 import { Page } from '~/components/page';
+import { getLastActive } from '~/helper/time';
 import { acceptRequest, addFriend, FriendStatus } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { getCompleteProfile } from '~/services/profile';
@@ -76,8 +77,17 @@ const ProfileView = () => {
               <h1 className="text-3xl font-bold">
                 {profile.value?.data?.username}
               </h1>
-              <p className="mt-1 text-sm">{profile.value?.data?.bio}</p>
+              <p className="mt-1 text-base">{profile.value?.data?.bio}</p>
             </div>
+          </div>
+          <div className="px-8 text-sm leading-tight text-gray-600">
+            <p>{profile.value?.data?.city}</p>
+            {profile.value?.data?.status === FriendStatus.ACCEPTED && (
+              <p>
+                <span>Friends for </span>
+                {getLastActive(profile.value.data.friends[0].accepted_at, '')}
+              </p>
+            )}
           </div>
           <div className="mt-4 px-8">
             {profile.value?.data?.status === FriendStatus.NEW && (
@@ -103,9 +113,6 @@ const ProfileView = () => {
                   <span>Confirm</span>
                 </div>
               </Button>
-            )}
-            {profile.value?.data?.status === FriendStatus.ACCEPTED && (
-              <p>Friend ✅</p>
             )}
           </div>
         </>

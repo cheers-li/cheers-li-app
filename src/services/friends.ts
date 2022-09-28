@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { getLastActive } from '~/helper/time';
 import { ElementList } from '~/types/List';
 import { supabase } from './supabase-client';
@@ -115,7 +116,7 @@ export const getRequests = async (
 export const acceptRequest = async (requestor: string, acceptor: string) => {
   const { data, error } = await supabase
     .from('friends')
-    .update({ accepted: true })
+    .update({ accepted: true, accepted_at: dayjs() })
     .eq('user_1', requestor)
     .eq('user_2', acceptor);
 
@@ -145,6 +146,7 @@ export interface Friend {
   user_1: string;
   user_2: string;
   accepted: boolean;
+  accepted_at?: string;
 }
 
 export interface SearchProfile extends Profile {

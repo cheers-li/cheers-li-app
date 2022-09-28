@@ -24,8 +24,11 @@ platform :android do
   desc "Build webapp and android app"
   lane :beta do
     sh "pnpm install && pnpm sync android"
+    increment_version_code
+    increment_version_number(bump_type: "minor")
     gradle(task: "clean assembleRelease")
-    # crashlytics
+    #crashlytics
+    upload_to_play_store(track: "beta")
   end
 
   desc "Build debug and test APK for screenshots"

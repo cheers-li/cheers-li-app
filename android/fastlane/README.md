@@ -29,7 +29,7 @@ Runs all the tests
 [bundle exec] fastlane android changelog
 ```
 
-Get changelog from git
+Get changelog from git and create a new versioned tag on the current branch
 
 ### android remove_tags
 

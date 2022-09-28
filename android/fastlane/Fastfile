@@ -21,9 +21,8 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Get changelog from git"
+  desc "Get changelog from git and create a new versioned tag on the current branch"
   lane :changelog do
-    # ensure_git_branch(branch: 'master')
     version_code = get_version_code
     if git_tag_exists(tag: "android/latest")
       changelog = changelog_from_git_commits(
@@ -60,20 +59,22 @@ platform :android do
   end
 
   lane :remove_tags do
-    remove_git_tag(tag: "android/latest")
-    remove_git_tag(tag: "android/#{get_version_code}")
-  end
-
-  def git_log(between:, pretty:)
-    command = "git log #{between[0]}..#{between[1]} --pretty='#{pretty}'"
-    Actions.sh(command)
+    if(git_tag_exists(tag: "android/latest"))
+      remove_git_tag(tag: "android/latest")
+    end
+    if(git_tag_exists(tag: "android/#{get_version_code}"))
+      remove_git_tag(tag: "android/#{get_version_code}")
+    end
   end
 
   desc "Build webapp and android app"
-  lane :beta do
+  lane :beta do |options|
+    if !options[:unsafe]
+      ensure_git_branch(branch: 'main')
+    end
     sh "pnpm install && pnpm sync android"
     increment_version_code
-    # increment_version_number(bump_type: "patch")
+    increment_version_number(bump_type: "patch")
     gradle(
       task: "clean bundleRelease",
       print_command: false,
@@ -82,9 +83,9 @@ platform :android do
         "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],     
         "android.injected.signing.key.alias" => ENV["KEYSTORE_ALIAS"],
         "android.injected.signing.key.password" => ENV["KEYSTORE_ALIAS_PASSWORD"],
-    }
-      )
-    # crashlytics
+      }
+    )
+    changelog
     upload_to_play_store(track: "beta")
   end
 

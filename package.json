@@ -20,6 +20,7 @@
   "dependencies": {
     "@capacitor/android": "^4.1.0",
     "@capacitor/app": "^4.0.1",
+    "@capacitor/camera": "^4.1.1",
     "@capacitor/core": "^4.1.0",
     "@capacitor/geolocation": "^4.0.1",
     "@capacitor/haptics": "^4.0.1",
@@ -29,6 +30,7 @@
     "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^2.0.8",
     "@supabase/supabase-js": "^1.35.6",
+    "base64-arraybuffer": "^1.0.2",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.5",
     "mapbox-gl": "^2.10.0",

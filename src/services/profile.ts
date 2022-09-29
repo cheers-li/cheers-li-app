@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Profile } from './friends';
 import { supabase } from './supabase-client';
 
 export const getProfile = async (userId?: string) => {
@@ -35,20 +36,16 @@ export const createNewProfile = async (userId: string, userName: string) => {
   return { data, error };
 };
 
-export const updateProfile = async (
-  userId: string,
-  userName: string,
-  bio: string,
-  location: string,
-) => {
+export const updateProfile = async (profile: Profile) => {
   const { data, error } = await supabase
     .from('profiles')
     .update({
-      username: userName,
-      bio: bio,
-      city: location,
+      username: profile.username,
+      bio: profile.bio,
+      city: profile.city,
+      avatar_url: profile.avatarUrl,
     })
-    .eq('id', userId);
+    .eq('id', profile.id);
 
   if (error) {
     console.trace();

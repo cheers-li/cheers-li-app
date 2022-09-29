@@ -129,7 +129,9 @@ export const acceptRequest = async (requestor: string, acceptor: string) => {
 export interface Profile {
   id: string;
   username: string;
-  avatarUrl: string;
+  avatarUrl?: string;
+  city?: string;
+  bio?: string;
   activeAt?: string;
   lastSeen?: string;
   devices?: Device[];

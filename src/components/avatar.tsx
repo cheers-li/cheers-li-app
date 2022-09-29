@@ -17,7 +17,7 @@ export const Avatar: FC<AvatarProps> = ({
       <img
         src={profile.avatarUrl}
         alt={profile.username}
-        className={`h-${size} w-${size} block flex-shrink-0 rounded-full ${customClasses}`}
+        className={`h-${size} w-${size} block flex-shrink-0 rounded-full ${customClasses} object-cover`}
       />
     ) : (
       <div

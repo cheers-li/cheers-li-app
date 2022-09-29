@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@capacitor/android': ^4.1.0
   '@capacitor/app': ^4.0.1
+  '@capacitor/camera': ^4.1.1
   '@capacitor/cli': ^4.1.0
   '@capacitor/core': ^4.1.0
   '@capacitor/geolocation': ^4.0.1
@@ -22,6 +23,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.36.0
   '@vitejs/plugin-react': ^2.0.1
   autoprefixer: ^10.4.8
+  base64-arraybuffer: ^1.0.2
   clsx: ^1.2.1
   cordova-res: ^0.15.4
   dayjs: ^1.11.5
@@ -51,6 +53,7 @@ specifiers:
 dependencies:
   '@capacitor/android': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/app': 4.0.1_@capacitor+core@4.1.0
+  '@capacitor/camera': 4.1.1_@capacitor+core@4.1.0
   '@capacitor/core': 4.1.0
   '@capacitor/geolocation': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/haptics': 4.0.1_@capacitor+core@4.1.0
@@ -60,6 +63,7 @@ dependencies:
   '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.8_react@18.2.0
   '@supabase/supabase-js': 1.35.6
+  base64-arraybuffer: 1.0.2
   clsx: 1.2.1
   dayjs: 1.11.5
   mapbox-gl: 2.10.0
@@ -388,6 +392,14 @@ packages:
 
   /@capacitor/app/4.0.1_@capacitor+core@4.1.0:
     resolution: {integrity: sha512-frPft9TMJL70jWq5jmxwGSBddZVvsWxX5Agj2i19WJerk37aTgljB05HRr/YLg6mF1G/NIXmmFJZDY8MEgirDg==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
+    dev: false
+
+  /@capacitor/camera/4.1.1_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-L/1KLg4IRCAUmwhmu5jIic4U2OLAHFSW5GoExFU9yR8iCJo1SBGSiay2TpU3PpgmJHRtazO6pxKUCyAmDExkhw==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:
@@ -1243,6 +1255,11 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
+
+  /base64-arraybuffer/1.0.2:
+    resolution: {integrity: sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==}
+    engines: {node: '>= 0.6.0'}
+    dev: false
 
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}

@@ -152,7 +152,9 @@ export const removeFriendShip = async (user1Id: string, user2Id: string) => {
 export interface Profile {
   id: string;
   username: string;
-  avatarUrl: string;
+  avatarUrl?: string;
+  city?: string;
+  bio?: string;
   activeAt?: string;
   lastSeen?: string;
   devices?: Device[];

@@ -43,6 +43,12 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to access your camera if you want to take any pictures.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need to access your photo library if you want to upload any pictures from it.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to access your photo library if you want to upload any pictures from it.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

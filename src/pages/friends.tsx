@@ -4,7 +4,6 @@ import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router';
 import { Input } from '~/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { addFriend, SearchProfile, searchUsers } from '~/services/friends';
@@ -17,8 +16,6 @@ import { RequestList } from '~/components/friends/request-list';
 import { List } from '~/components/list/list';
 
 const MessagesIndex = () => {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [searching, setSearching] = useState(false);

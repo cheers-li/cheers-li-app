@@ -133,6 +133,22 @@ export const acceptRequest = async (requestor: string, acceptor: string) => {
   return data;
 };
 
+export const removeFriendShip = async (user1Id: string, user2Id: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .delete()
+    .or(
+      `and(user_1.eq.${user1Id}, user_2.eq.${user2Id}),and(user_1.eq.${user2Id}, user_2.eq.${user1Id})`,
+    );
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data;
+};
+
 export interface Profile {
   id: string;
   username: string;

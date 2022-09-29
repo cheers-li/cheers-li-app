@@ -52,6 +52,7 @@ const ActiveSession = () => {
       }
 
       session.value.name = data && data[0]?.name;
+      setIsEditing(false);
       sendSuccessFeedback();
     } catch (exception: any) {
       setError(exception);

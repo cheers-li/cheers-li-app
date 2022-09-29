@@ -15,6 +15,7 @@ import { getStoredUser, signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
 import { getProfile } from '~/services/profile';
 import { sendErrorFeedback } from '~/services/haptics';
+import { Link } from 'react-router-dom';
 
 const aboutListItem = [
   {
@@ -58,18 +59,21 @@ const Settings = () => {
       <PageHeader>Settings</PageHeader>
 
       <div className="px-4">
-        <div className="flex h-24 items-center justify-center gap-4 rounded-md bg-white p-4">
+        <div className="h-24 rounded-md bg-white p-4">
           {!profile.loading && profile.value && (
-            <>
-              <Avatar profile={profile.value} />
-              <div className="flex flex-1 flex-col">
+            <Link
+              to="/settings/edit-profile"
+              className="flex h-full items-center justify-center gap-4"
+            >
+              <Avatar profile={profile.value} customClasses="flex-shrink-0" />
+              <div className="flex max-w-full flex-1 flex-col overflow-hidden">
                 <span className="text-md font-bold">
                   {profile.value.username}
                 </span>
-                <span>{profile.value.user.email}</span>
+                <span className="truncate">{profile.value.user.email}</span>
               </div>
               <ChevronRightIcon className="h-6 w-6" />
-            </>
+            </Link>
           )}
         </div>
       </div>

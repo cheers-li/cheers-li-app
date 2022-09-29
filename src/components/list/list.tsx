@@ -3,6 +3,7 @@ import { ListItem } from '~/types/List';
 
 interface ListProps<T> {
   title: string;
+  titleContent?: React.ReactNode;
   loading: boolean;
   items: T[];
   count: number;
@@ -11,6 +12,7 @@ interface ListProps<T> {
 
 export const List: FC<ListProps<ListItem>> = ({
   title,
+  titleContent,
   loading,
   count,
   items,
@@ -18,9 +20,12 @@ export const List: FC<ListProps<ListItem>> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="px-8 text-gray-800">
-        {title} {!loading && `(${count})`}
-      </h2>
+      <div className="flex items-center justify-between px-8 text-gray-800">
+        <h2>
+          {title} {!loading && `(${count})`}
+        </h2>
+        {titleContent}
+      </div>
       <ul>
         {items.map((item: ListItem, i: number) => (
           <li key={i} className="border-b last:border-0">

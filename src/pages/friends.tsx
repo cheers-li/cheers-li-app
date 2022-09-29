@@ -99,7 +99,7 @@ const MessagesIndex = () => {
 
       {!searching && (
         <Tab.Group>
-          <Tab.List className="fixed bottom-24 mx-8 flex items-center justify-between rounded-full bg-sky-900 p-2 text-white">
+          <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 transform items-center justify-between rounded-full bg-sky-900 p-2 text-white">
             <Tab
               key={'friends'}
               className={({ selected }) =>
@@ -119,17 +119,6 @@ const MessagesIndex = () => {
               }
             >
               Requests
-            </Tab>
-            <Tab
-              key={'messages'}
-              onClick={() => navigate('/messages')}
-              className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
-                })
-              }
-            >
-              Messages
             </Tab>
           </Tab.List>
           {

@@ -86,14 +86,18 @@ export const addFriend = async (userId: string, friendId: string) => {
 
 export const getRequests = async (
   userId?: string,
+  sent = false,
 ): Promise<ElementList<Profile>> => {
   const { data, error, count } = await supabase
     .from('friends')
-    .select('user_1 (id, username, avatar_url, active_at), user_2', {
-      count: 'exact',
-    })
+    .select(
+      'user_1 (id, username, avatar_url, active_at), user_2 (id, username, avatar_url, active_at)',
+      {
+        count: 'exact',
+      },
+    )
     .eq('accepted', false)
-    .eq('user_2', userId);
+    .eq(sent ? 'user_1' : 'user_2', userId);
 
   if (error) {
     console.trace();
@@ -101,12 +105,13 @@ export const getRequests = async (
   }
 
   const requests = data?.map((row) => {
+    const other = row.user_1.id === userId ? row.user_2 : row.user_1;
     return {
-      id: row.user_1.id,
-      username: row.user_1.username,
-      avatarUrl: row.user_1.avatar_url,
-      activeAt: row.user_1.active_at,
-      lastSeen: getLastActive(row.user_1.active_at),
+      id: other.id,
+      username: other.username,
+      avatarUrl: other.avatar_url,
+      activeAt: other.active_at,
+      lastSeen: getLastActive(other.active_at),
     } as Profile;
   });
 

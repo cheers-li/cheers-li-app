@@ -57,7 +57,6 @@ export const RequestList = () => {
   };
 
   const displaySentRequestDialog = async () => {
-    console.log('display sent request dialog');
     await loadSentRequests();
     setSentRequestDialog(true);
   };

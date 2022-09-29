@@ -13,7 +13,12 @@ import { Button } from '~/components/button';
 import Dropdown, { DropdownOptionProps } from '~/components/dropdown';
 import { Page } from '~/components/page';
 import { getLastActive } from '~/helper/time';
-import { acceptRequest, addFriend, FriendStatus } from '~/services/friends';
+import {
+  acceptRequest,
+  addFriend,
+  FriendStatus,
+  removeFriendShip,
+} from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { CompleteProfile, getCompleteProfile } from '~/services/profile';
 import store from '~/store';
@@ -27,6 +32,8 @@ const ProfileView = () => {
   const [dropdownOptions, setDropdownOptions] = useState<DropdownOptionProps[]>(
     [
       {
+        id: 'share',
+        visible: true,
         onClick: () => shareProfile(),
         children: (
           <>
@@ -38,12 +45,27 @@ const ProfileView = () => {
           </>
         ),
       },
+      {
+        id: 'remove-frienship',
+        visible: false,
+        onClick: () => removeFriend(),
+        children: (
+          <>
+            <UserMinusIcon
+              className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
+              aria-hidden="true"
+            />
+            <span className="text-red-400">Remove friendship</span>
+          </>
+        ),
+      },
     ],
   );
 
   const shareProfile = () => {
     // TODO: share profile link
     console.log('share profile');
+    console.log(profile);
   };
 
   const [theme] = store.useState<string>('theme');
@@ -59,13 +81,28 @@ const ProfileView = () => {
     const res = await addFriend(user.id, profile.id);
     if (res) {
       sendSuccessFeedback();
-      profile.status = FriendStatus.REQUESTED;
+      setProfile((prev) => {
+        if (!prev) return prev;
+        return { ...prev, status: FriendStatus.REQUESTED };
+      });
     }
   };
 
-  const removeFriendShip = async () => {
-    // TODO: remove friend
-    console.log('remove friend');
+  const removeFriend = async () => {
+    // TODO: why is profile not available here???
+    console.log(profile);
+
+    if (!profile) return;
+
+    const data = await removeFriendShip(profile.id, user.id);
+
+    if (data) {
+      sendSuccessFeedback();
+      setProfile((prev) => {
+        if (!prev) return prev;
+        return { ...prev, status: FriendStatus.NEW };
+      });
+    }
   };
 
   const confirmFriend = async () => {
@@ -74,7 +111,10 @@ const ProfileView = () => {
     const res = await acceptRequest(profile.id, user.id);
     if (res) {
       sendSuccessFeedback();
-      profile.status = FriendStatus.ACCEPTED;
+      setProfile((prev) => {
+        if (!prev) return prev;
+        return { ...prev, status: FriendStatus.ACCEPTED };
+      });
     }
   };
 
@@ -91,23 +131,24 @@ const ProfileView = () => {
 
   useEffect(() => {
     if (profile?.status === FriendStatus.ACCEPTED) {
-      setDropdownOptions((prev) => [
-        ...prev,
-        {
-          onClick: () => removeFriendShip(),
-          children: (
-            <>
-              <UserMinusIcon
-                className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
-                aria-hidden="true"
-              />
-              <span className="text-red-400">Remove friendship</span>
-            </>
-          ),
-        },
-      ]);
+      setDropdownOptions((prev) => {
+        const optionIndex = prev.findIndex(
+          (option) => option.id === 'remove-frienship',
+        );
+
+        if (optionIndex) {
+          prev[optionIndex].visible = true;
+        }
+        return prev;
+      });
     }
   }, [profile?.status]);
+
+  // TODO: to debug
+  useEffect(() => {
+    console.log('profile updated');
+    console.log(profile);
+  }, [profile]);
 
   return (
     <Page noPadding noGap>
@@ -155,12 +196,20 @@ const ProfileView = () => {
               </Button>
             )}
             {profile.status === FriendStatus.REQUESTED && (
-              <Button dark disabled>
-                <div className="flex items-center justify-center space-x-3">
-                  <UserPlusIcon className="h-5 w-5" />
-                  <span>Requested</span>
-                </div>
-              </Button>
+              <>
+                <Button dark disabled>
+                  <div className="flex items-center justify-center space-x-3">
+                    <UserPlusIcon className="h-5 w-5" />
+                    <span>Requested</span>
+                  </div>
+                </Button>
+                <button
+                  onClick={removeFriend}
+                  className="mt-2 w-full text-center font-semibold text-gray-600"
+                >
+                  Cancel friend request
+                </button>
+              </>
             )}
             {profile.status === FriendStatus.CONFIRM && (
               <Button dark onClick={confirmFriend}>

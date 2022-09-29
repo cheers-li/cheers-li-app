@@ -8,7 +8,7 @@ export const getProfile = async (userId?: string) => {
 
   const { data, error } = await supabase
     .from('profiles')
-    .select('username, avatarUrl:avatar_url')
+    .select('id, username, avatarUrl:avatar_url, bio, city')
     .eq('id', userId)
     .single();
 
@@ -26,6 +26,29 @@ export const createNewProfile = async (userId: string, userName: string) => {
     .insert([
       { id: userId, username: userName, avatar_url: getUserProfileImage() },
     ]);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return { data, error };
+};
+
+export const updateProfile = async (
+  userId: string,
+  userName: string,
+  bio: string,
+  location: string,
+) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({
+      username: userName,
+      bio: bio,
+      city: location,
+    })
+    .eq('id', userId);
 
   if (error) {
     console.trace();

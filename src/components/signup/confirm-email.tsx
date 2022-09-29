@@ -8,7 +8,7 @@ interface ConfirmEmailProps {
 
 export const ConfirmEmail: FC<ConfirmEmailProps> = ({ complete }) => {
   return (
-    <Dialog>
+    <Dialog closeModal={() => undefined}>
       <div className="flex w-full flex-col gap-6 pt-8 pb-24">
         <h1 className="text-3xl font-bold">Confirm Email</h1>
         <p className="text-sm text-gray-500">

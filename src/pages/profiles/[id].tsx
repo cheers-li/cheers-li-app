@@ -6,11 +6,11 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useEffectOnce } from 'react-use';
 import { Button } from '~/components/button';
-import Dropdown, { DropdownOptionProps } from '~/components/dropdown';
+import Dropdown from '~/components/dropdown';
 import { Page } from '~/components/page';
 import { getLastActive } from '~/helper/time';
 import {
@@ -29,43 +29,10 @@ const ProfileView = () => {
 
   const [user] = store.useState<User>('user');
   const [profile, setProfile] = useState<CompleteProfile | null>(null);
-  const [dropdownOptions, setDropdownOptions] = useState<DropdownOptionProps[]>(
-    [
-      {
-        id: 'share',
-        visible: true,
-        onClick: () => shareProfile(),
-        children: (
-          <>
-            <ArrowUpOnSquareIcon
-              className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
-              aria-hidden="true"
-            />
-            Share this profile
-          </>
-        ),
-      },
-      {
-        id: 'remove-frienship',
-        visible: false,
-        onClick: () => removeFriend(),
-        children: (
-          <>
-            <UserMinusIcon
-              className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
-              aria-hidden="true"
-            />
-            <span className="text-red-400">Remove friendship</span>
-          </>
-        ),
-      },
-    ],
-  );
 
   const shareProfile = () => {
     // TODO: share profile link
     console.log('share profile');
-    console.log(profile);
   };
 
   const [theme] = store.useState<string>('theme');
@@ -89,9 +56,6 @@ const ProfileView = () => {
   };
 
   const removeFriend = async () => {
-    // TODO: why is profile not available here???
-    console.log(profile);
-
     if (!profile) return;
 
     const data = await removeFriendShip(profile.id, user.id);
@@ -129,27 +93,6 @@ const ProfileView = () => {
     loadProfile();
   });
 
-  useEffect(() => {
-    if (profile?.status === FriendStatus.ACCEPTED) {
-      setDropdownOptions((prev) => {
-        const optionIndex = prev.findIndex(
-          (option) => option.id === 'remove-frienship',
-        );
-
-        if (optionIndex) {
-          prev[optionIndex].visible = true;
-        }
-        return prev;
-      });
-    }
-  }, [profile?.status]);
-
-  // TODO: to debug
-  useEffect(() => {
-    console.log('profile updated');
-    console.log(profile);
-  }, [profile]);
-
   return (
     <Page noPadding noGap>
       {profile && (
@@ -167,10 +110,24 @@ const ProfileView = () => {
               <button onClick={() => navigate(-1)}>
                 <ChevronDownIcon className="h-6 w-6" />
               </button>
-              <Dropdown
-                button={<EllipsisHorizontalIcon className="h-6 w-6" />}
-                options={dropdownOptions}
-              />
+              <Dropdown button={<EllipsisHorizontalIcon className="h-6 w-6" />}>
+                <div onClick={shareProfile} className="flex items-center">
+                  <ArrowUpOnSquareIcon
+                    className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
+                    aria-hidden="true"
+                  />
+                  Share this profile
+                </div>
+                {profile.status === FriendStatus.ACCEPTED && (
+                  <div onClick={removeFriend} className="flex items-center">
+                    <UserMinusIcon
+                      className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
+                      aria-hidden="true"
+                    />
+                    <span className="text-red-400">Remove friendship</span>
+                  </div>
+                )}
+              </Dropdown>
             </div>
             <div className="px-8">
               <h1 className="text-3xl font-bold">{profile.username}</h1>

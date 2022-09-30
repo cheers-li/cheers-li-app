@@ -8,6 +8,7 @@ interface ListProps<T> {
   items: T[];
   count: number;
   ItemComponent: ElementType;
+  horizontalPadding?: string;
 }
 
 export const List: FC<ListProps<ListItem>> = ({
@@ -17,10 +18,13 @@ export const List: FC<ListProps<ListItem>> = ({
   count,
   items,
   ItemComponent,
+  horizontalPadding = 'px-8',
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between px-8 text-gray-800">
+      <div
+        className={`${horizontalPadding} flex items-center justify-between text-gray-800`}
+      >
         <h2>
           {title} {!loading && `(${count})`}
         </h2>
@@ -35,13 +39,17 @@ export const List: FC<ListProps<ListItem>> = ({
       </ul>
 
       {!loading && items.length === 0 && (
-        <div className="mx-4 rounded-2xl bg-gray-100 py-3 px-8 text-center text-sm text-gray-600">
+        <div
+          className={`mx-4 rounded-2xl bg-gray-100 py-3 ${horizontalPadding} text-center text-sm text-gray-600`}
+        >
           <div className="font-semibold">No {title} found</div>
           <div>You do not have any {title}</div>
         </div>
       )}
       {loading && (
-        <div className="mx-4 rounded-2xl bg-gray-100 py-3 px-8 text-center text-sm text-gray-600">
+        <div
+          className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center text-sm text-gray-600`}
+        >
           <div className="font-semibold">Loading {title}</div>
           <div>Your {title} are loaded</div>
         </div>

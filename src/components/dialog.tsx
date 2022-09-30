@@ -6,12 +6,14 @@ interface DialogProps {
   isShowing?: boolean;
   children: React.ReactNode;
   closeModal: () => void;
+  padding?: string;
 }
 
 export const Dialog: FC<DialogProps> = ({
   isShowing = true,
   children,
   closeModal,
+  padding = 'p-4',
 }) => {
   return (
     <Transition appear show={isShowing} as={Fragment}>
@@ -38,7 +40,9 @@ export const Dialog: FC<DialogProps> = ({
             leaveFrom="translate-y-0 opacity-100"
             leaveTo="translate-y-16 opacity-0"
           >
-            <DialogUI.Panel className="mt-20 h-full rounded-t-lg bg-gray-50 p-4 drop-shadow-md transition-all">
+            <DialogUI.Panel
+              className={`${padding} mt-20 h-full rounded-t-lg bg-gray-50 drop-shadow-md transition-all`}
+            >
               {children}
             </DialogUI.Panel>
           </Transition.Child>

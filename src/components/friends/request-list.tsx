@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import {
   getRequests,
   acceptRequest,
   FriendStatus,
+  removeFriendShip,
 } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
@@ -56,6 +57,19 @@ export const RequestList = () => {
     }
   };
 
+  const removeFriend = async (friend: Profile, sent = false) => {
+    const data = await removeFriendShip(friend.id, user.id);
+    if (data) {
+      sendSuccessFeedback();
+
+      if (sent) {
+        loadSentRequests();
+      } else {
+        loadRequests();
+      }
+    }
+  };
+
   const displaySentRequestDialog = async () => {
     await loadSentRequests();
     setSentRequestDialog(true);
@@ -89,23 +103,38 @@ export const RequestList = () => {
                 Accept
               </span>
             </button>
+            <button onClick={() => removeFriend(item)} className="-mr-2 p-2">
+              <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
+                <XMarkIcon className="h-4 w-4" />
+              </span>
+            </button>
           </UserItem>
         )}
       />
       <Dialog
         isShowing={sentRequestDialog}
         closeModal={() => setSentRequestDialog(false)}
+        padding="py-4"
       >
         <List
           title="Sent Requests"
           loading={loading}
           items={sentRequests?.list || []}
           count={sentRequests?.count || 0}
+          horizontalPadding="px-4"
           ItemComponent={({ item }) => (
-            <UserItem item={item}>
+            <UserItem item={item} horizontalPadding="px-4">
               <span className="text-gray-80 rounded-full bg-gray-200 px-2 py-1 text-xs font-semibold uppercase">
                 {FriendStatus.REQUESTED}
               </span>
+              <button
+                onClick={() => removeFriend(item, true)}
+                className="-mr-2 p-2"
+              >
+                <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
+                  <XMarkIcon className="h-4 w-4" />
+                </span>
+              </button>
             </UserItem>
           )}
         />

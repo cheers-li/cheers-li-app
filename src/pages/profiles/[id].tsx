@@ -2,6 +2,7 @@ import {
   ArrowUpOnSquareIcon,
   ChevronDownIcon,
   EllipsisHorizontalIcon,
+  PencilSquareIcon,
   UserMinusIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
@@ -82,6 +83,8 @@ const ProfileView = () => {
     }
   };
 
+  const isOwnProfile = profile?.id === user.id;
+
   const loadProfile = async () => {
     const { data, error } = await getCompleteProfile(params.id || '', user.id);
     if (data && !error) {
@@ -111,14 +114,28 @@ const ProfileView = () => {
                 <ChevronDownIcon className="h-6 w-6" />
               </button>
               <Dropdown button={<EllipsisHorizontalIcon className="h-6 w-6" />}>
-                <div onClick={shareProfile} className="flex items-center">
-                  <ArrowUpOnSquareIcon
-                    className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
-                    aria-hidden="true"
-                  />
-                  Share this profile
-                </div>
-                {profile.status === FriendStatus.ACCEPTED && (
+                {isOwnProfile && (
+                  <div
+                    onClick={() => navigate('/settings/edit-profile')}
+                    className="flex items-center"
+                  >
+                    <PencilSquareIcon
+                      className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
+                      aria-hidden="true"
+                    />
+                    Edit your profile
+                  </div>
+                )}
+                {!isOwnProfile && (
+                  <div onClick={shareProfile} className="flex items-center">
+                    <ArrowUpOnSquareIcon
+                      className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
+                      aria-hidden="true"
+                    />
+                    Share this profile
+                  </div>
+                )}
+                {!isOwnProfile && profile.status === FriendStatus.ACCEPTED && (
                   <div onClick={removeFriend} className="flex items-center">
                     <UserMinusIcon
                       className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
@@ -136,7 +153,7 @@ const ProfileView = () => {
           </div>
           <div className="px-8 text-sm leading-tight text-gray-600">
             <p>{profile.city}</p>
-            {profile.status === FriendStatus.ACCEPTED && (
+            {!isOwnProfile && profile.status === FriendStatus.ACCEPTED && (
               <p>
                 <span>Friends for </span>
                 {getLastActive(profile.friends[0].accepted_at, '')}

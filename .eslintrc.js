@@ -26,7 +26,14 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   rules: {
     '@typescript-eslint/no-shadow': ['error'],
-    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
     'jsx-a11y/anchor-is-valid': 'off',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',

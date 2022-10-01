@@ -11,16 +11,20 @@ import { Capacitor } from '@capacitor/core';
 
 import '~/index.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import store from '~/store';
+import { User } from '@supabase/supabase-js';
 
 const Application = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [_, setGlobalUser] = store.useState<User | null>('user');
 
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
       if (newSession != null) {
         setIsAuthenticated(true);
         await storeSession(newSession);
+        setGlobalUser(newSession.user);
       } else {
         setIsAuthenticated(false);
       }
@@ -36,6 +40,7 @@ const Application = () => {
       parseInt(currentSession?.expires_at + '000') > Date.now()
     ) {
       setIsAuthenticated(true);
+      setGlobalUser(currentSession.user);
       setIsLoading(false);
       return;
     } else if (currentSession && currentSession.refresh_token) {
@@ -45,6 +50,7 @@ const Application = () => {
 
       if (!error && session) {
         setIsAuthenticated(true);
+        setGlobalUser(currentSession.user);
         setIsLoading(false);
         return;
       }
@@ -57,6 +63,7 @@ const Application = () => {
       );
       if (!error && session) {
         setIsAuthenticated(true);
+        setGlobalUser(session.user);
         setIsLoading(false);
         return;
       } else {

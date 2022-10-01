@@ -1,36 +1,31 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { UserItem } from '~/components/friends/user-item';
-import { SearchProfile } from '~/services/friends';
+import {
+  FriendStatus,
+  getFriendStatus,
+  SearchProfile,
+} from '~/services/friends';
+import store from '~/store';
 
 interface SearchedUserItemProps {
   item: SearchProfile;
   onAdd: (friend: SearchProfile) => void;
 }
 
-enum FriendStatus {
-  NEW = 'add',
-  PENDING = 'added',
-  ACCEPTED = 'friend',
-}
-
-const getInitialStatus = (friend: SearchProfile) => {
-  if (!friend.friends.length) return FriendStatus.NEW;
-
-  return friend.friends[0].accepted
-    ? FriendStatus.ACCEPTED
-    : FriendStatus.PENDING;
-};
-
 export const SearchedUserItem = ({
   item: friend,
   onAdd,
 }: SearchedUserItemProps) => {
-  const [status, setStatus] = useState(getInitialStatus(friend));
+  const [user] = store.useState<User>('user');
+  const [status, setStatus] = useState(
+    getFriendStatus(friend.friends, user.id),
+  );
 
   const addHandler = () => {
-    setStatus(FriendStatus.PENDING);
+    setStatus(FriendStatus.REQUESTED);
     onAdd(friend);
   };
 
@@ -53,7 +48,7 @@ export const SearchedUserItem = ({
               {
                 'bg-sky-200 text-sky-900 active:bg-sky-300':
                   status === FriendStatus.NEW,
-                'bg-gray-200 text-gray-800': status === FriendStatus.PENDING,
+                'bg-gray-200 text-gray-800': status === FriendStatus.REQUESTED,
               },
             )}
           >

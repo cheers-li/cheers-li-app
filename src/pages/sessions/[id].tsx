@@ -161,7 +161,7 @@ const ActiveSession = () => {
           )}
       </div>
 
-      <Dialog isShowing={isEditing}>
+      <Dialog isShowing={isEditing} closeModal={() => setIsEditing(false)}>
         <div className="flex w-full flex-col gap-6 pt-8 pb-24">
           <h2 className="text-2xl font-bold">Change Session Name</h2>
           <form onSubmit={updateSessionName} className="flex flex-col gap-6">

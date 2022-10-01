@@ -4,7 +4,6 @@ import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router';
 import { Input } from '~/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { addFriend, SearchProfile, searchUsers } from '~/services/friends';
@@ -17,8 +16,6 @@ import { RequestList } from '~/components/friends/request-list';
 import { List } from '~/components/list/list';
 
 const MessagesIndex = () => {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [searching, setSearching] = useState(false);
@@ -81,6 +78,7 @@ const MessagesIndex = () => {
               aria-hidden="true"
             />
           }
+          currentValue={search}
         />
       </div>
 
@@ -98,7 +96,7 @@ const MessagesIndex = () => {
 
       {!searching && (
         <Tab.Group>
-          <Tab.List className="fixed bottom-24 mx-8 flex items-center justify-between rounded-full bg-sky-900 p-2 text-white">
+          <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 transform items-center justify-between rounded-full bg-sky-900 p-2 text-white">
             <Tab
               key={'friends'}
               className={({ selected }) =>
@@ -118,17 +116,6 @@ const MessagesIndex = () => {
               }
             >
               Requests
-            </Tab>
-            <Tab
-              key={'messages'}
-              onClick={() => navigate('/messages')}
-              className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
-                })
-              }
-            >
-              Messages
             </Tab>
           </Tab.List>
           {

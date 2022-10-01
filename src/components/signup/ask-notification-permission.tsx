@@ -24,7 +24,7 @@ export const AskNotificationPermission: FC<AskNotificationPermissionProps> = ({
   };
 
   return (
-    <Dialog>
+    <Dialog closeModal={() => undefined}>
       <div className="flex w-full flex-col gap-6 pt-8 pb-24">
         <h1 className="text-3xl font-bold">Push Notifications</h1>
         <p className="text-sm text-gray-500">

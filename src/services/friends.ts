@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { getLastActive } from '~/helper/time';
 import { ElementList } from '~/types/List';
 import { supabase } from './supabase-client';
@@ -53,7 +54,8 @@ export const searchUsers = async (
       `,
     )
     .neq('id', userId)
-    .ilike('username', `%${username}%`);
+    .ilike('username', `%${username}%`)
+    .limit(10);
 
   if (error) {
     console.trace();
@@ -84,14 +86,18 @@ export const addFriend = async (userId: string, friendId: string) => {
 
 export const getRequests = async (
   userId?: string,
+  sent = false,
 ): Promise<ElementList<Profile>> => {
   const { data, error, count } = await supabase
     .from('friends')
-    .select('user_1 (id, username, avatar_url, active_at), user_2', {
-      count: 'exact',
-    })
+    .select(
+      'user_1 (id, username, avatar_url, active_at), user_2 (id, username, avatar_url, active_at)',
+      {
+        count: 'exact',
+      },
+    )
     .eq('accepted', false)
-    .eq('user_2', userId);
+    .eq(sent ? 'user_1' : 'user_2', userId);
 
   if (error) {
     console.trace();
@@ -99,12 +105,13 @@ export const getRequests = async (
   }
 
   const requests = data?.map((row) => {
+    const other = row.user_1.id === userId ? row.user_2 : row.user_1;
     return {
-      id: row.user_1.id,
-      username: row.user_1.username,
-      avatarUrl: row.user_1.avatar_url,
-      activeAt: row.user_1.active_at,
-      lastSeen: getLastActive(row.user_1.active_at),
+      id: other.id,
+      username: other.username,
+      avatarUrl: other.avatar_url,
+      activeAt: other.active_at,
+      lastSeen: getLastActive(other.active_at),
     } as Profile;
   });
 
@@ -114,9 +121,25 @@ export const getRequests = async (
 export const acceptRequest = async (requestor: string, acceptor: string) => {
   const { data, error } = await supabase
     .from('friends')
-    .update({ accepted: true })
+    .update({ accepted: true, accepted_at: dayjs() })
     .eq('user_1', requestor)
     .eq('user_2', acceptor);
+
+  if (error) {
+    console.trace();
+    console.error(error);
+  }
+
+  return data;
+};
+
+export const removeFriendShip = async (user1Id: string, user2Id: string) => {
+  const { data, error } = await supabase
+    .from('friends')
+    .delete()
+    .or(
+      `and(user_1.eq.${user1Id}, user_2.eq.${user2Id}),and(user_1.eq.${user2Id}, user_2.eq.${user1Id})`,
+    );
 
   if (error) {
     console.trace();
@@ -146,8 +169,26 @@ export interface Friend {
   user_1: string;
   user_2: string;
   accepted: boolean;
+  accepted_at?: string;
 }
 
 export interface SearchProfile extends Profile {
   friends: Friend[];
+}
+
+export const getFriendStatus = (friends: Friend[], userId: string) => {
+  if (!friends.length) return FriendStatus.NEW;
+
+  if (friends[0].accepted) return FriendStatus.ACCEPTED;
+
+  if (friends[0].user_1 === userId) return FriendStatus.REQUESTED;
+
+  return FriendStatus.CONFIRM;
+};
+
+export enum FriendStatus {
+  NEW = 'add',
+  REQUESTED = 'requested',
+  CONFIRM = 'confirm',
+  ACCEPTED = 'friend',
 }

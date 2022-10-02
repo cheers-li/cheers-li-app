@@ -1,7 +1,8 @@
+import { User } from '@supabase/supabase-js';
 import { FC, SyntheticEvent, useState } from 'react';
-import { getStoredUser } from '~/services/auth';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { createNewProfile } from '~/services/profile';
+import store from '~/store';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
 import { Input } from '../input';
@@ -12,6 +13,7 @@ interface CreateProfileProps {
 
 export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [user] = store.useState<User>('user');
   const [userName, setUserName] = useState('');
   const [userNameError, setUserNameError] = useState('');
 
@@ -22,12 +24,6 @@ export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
     setIsProfileLoading(true);
 
     try {
-      const user = await getStoredUser();
-
-      if (!user) {
-        throw 'Could not load user';
-      }
-
       const { error } = await createNewProfile(user.id, userName);
 
       if (error) {
@@ -52,7 +48,7 @@ export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog closeModal={() => undefined}>
       <div className="flex w-full flex-col gap-6 pt-8 pb-24">
         <h1 className="text-3xl font-bold">Complete your Profile</h1>
         <p className="text-sm text-gray-500">

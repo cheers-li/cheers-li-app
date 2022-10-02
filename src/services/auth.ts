@@ -1,6 +1,5 @@
 import { Preferences } from '@capacitor/preferences';
 import { Session, User } from '@supabase/supabase-js';
-import store from '~/store';
 import { supabase } from './supabase-client';
 
 export const getStoredSession = async (): Promise<Session | undefined> => {

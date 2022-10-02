@@ -8,28 +8,25 @@ import { Input } from '~/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { addFriend, SearchProfile, searchUsers } from '~/services/friends';
 import { useDebounce } from '~/helper/debounce';
-import { getStoredUser } from '~/services/auth';
-import { useAsync } from 'react-use';
 import { SearchedUserItem } from '~/components/friends/searched-user-item';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { RequestList } from '~/components/friends/request-list';
 import { List } from '~/components/list/list';
+import store from '~/store';
+import { User } from '@supabase/supabase-js';
 
 const MessagesIndex = () => {
+  const [user] = store.useState<User>('user');
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [searching, setSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchProfile[]>([]);
   const debouncedSearchTerm: string = useDebounce<string>(search, 500);
 
-  const user = useAsync(async () => {
-    return getStoredUser();
-  });
-
   useEffect(() => {
     if (debouncedSearchTerm) {
       setLoading(true);
-      searchUsers(debouncedSearchTerm, user.value?.id).then((res) => {
+      searchUsers(debouncedSearchTerm, user.id).then((res) => {
         setLoading(false);
         if (res && res.length) {
           setSearchResults(res);
@@ -39,7 +36,7 @@ const MessagesIndex = () => {
       setSearchResults([]);
       setLoading(false);
     }
-  }, [debouncedSearchTerm, user.value?.id]);
+  }, [debouncedSearchTerm, user.id]);
 
   const updateSearch = (value: string) => {
     setSearch(value);
@@ -55,8 +52,7 @@ const MessagesIndex = () => {
   };
 
   const addFriendHandler = async (friend: SearchProfile) => {
-    if (!user.value) return;
-    const res = await addFriend(user.value?.id, friend.id);
+    const res = await addFriend(user.id, friend.id);
     if (res) {
       sendSuccessFeedback();
     }

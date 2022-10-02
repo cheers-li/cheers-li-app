@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from '~/App';
 import { useEffectOnce } from 'react-use';
 import { supabase } from './services/supabase-client';
-import { getStoredSession, getStoredUser, storeSession } from './services/auth';
+import { getStoredSession, storeSession } from './services/auth';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { addNewDevices } from './services/devices';
 import { Capacitor } from '@capacitor/core';
@@ -17,7 +17,7 @@ import { User } from '@supabase/supabase-js';
 const Application = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [_, setGlobalUser] = store.useState<User | null>('user');
+  const [user, setGlobalUser] = store.useState<User | null>('user');
 
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
@@ -80,7 +80,6 @@ const Application = () => {
 
   const attachEventListeners = async () => {
     await PushNotifications.addListener('registration', async (token) => {
-      const user = await getStoredUser();
       if (user?.id) {
         await addNewDevices(user?.id, token.value);
       }

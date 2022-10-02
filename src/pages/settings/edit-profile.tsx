@@ -8,16 +8,17 @@ import { BackButton } from '~/components/header/back-button';
 import { Input } from '~/components/input';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
-import { getStoredUser } from '~/services/auth';
 import { getProfile, updateProfile } from '~/services/profile';
 import { useNavigate } from 'react-router';
 import { generateSimpleKey, uploadAvatar } from '~/services/avatar';
+import store from '~/store';
+import { User } from '@supabase/supabase-js';
 
 const EditProfile = () => {
   const navigate = useNavigate();
+  const [user] = store.useState<User>('user');
   const profile = useAsync(async () => {
-    const user = await getStoredUser();
-    const { data } = await getProfile(user?.id);
+    const { data } = await getProfile(user.id);
 
     setUserName(data.username);
     setBio(data.bio);

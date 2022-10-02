@@ -3,9 +3,7 @@ import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
 import { ElementList, ListItem } from '~/types/List';
-import { getStoredUser } from './auth';
 import { Profile } from './friends';
-import { setLastActive } from './profile';
 import { supabase } from './supabase-client';
 
 export const listSessions = async (
@@ -52,14 +50,14 @@ export const listSessions = async (
 export const createNewSession = async (
   name: string,
   tagId: number,
+  userId: string,
   location?: Location,
   locationName?: string,
 ) => {
-  const user = await getStoredUser();
   const { data, error } = await supabase.from('sessions').insert({
     name: name,
     session_tag: tagId,
-    user_id: user?.id,
+    user_id: userId,
     ended_at: dayjs().add(2, 'hours'),
     location: location,
     location_name: locationName,
@@ -103,11 +101,6 @@ export const getSession = async (id: string): Promise<Session> => {
   if (error) {
     console.trace();
     console.error(error);
-  }
-
-  const user = await getStoredUser();
-  if (user) {
-    await setLastActive(user.id);
   }
 
   return {

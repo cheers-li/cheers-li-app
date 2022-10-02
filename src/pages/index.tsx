@@ -1,8 +1,18 @@
+import { User } from '@supabase/supabase-js';
+import { useEffectOnce } from 'react-use';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { SessionList } from '~/components/session/session-list';
+import { setLastActive } from '~/services/profile';
+import store from '~/store';
 
 const Index = () => {
+  const [user] = store.useState<User>('user');
+
+  useEffectOnce(() => {
+    setLastActive(user.id);
+  });
+
   return (
     <Page>
       <PageHeader>

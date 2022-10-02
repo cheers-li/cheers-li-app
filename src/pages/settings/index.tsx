@@ -11,11 +11,13 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline';
 import { List } from '~/components/list';
-import { getStoredUser, signOut } from '~/services/auth';
+import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
 import { getProfile } from '~/services/profile';
 import { sendErrorFeedback } from '~/services/haptics';
 import { Link } from 'react-router-dom';
+import store from '~/store';
+import { User } from '@supabase/supabase-js';
 
 const aboutListItem = [
   {
@@ -48,10 +50,11 @@ const Settings = () => {
     return await App.getInfo();
   });
 
+  const [user] = store.useState<User>('user');
+
   const profile = useAsync(async () => {
-    const user = await getStoredUser();
     const { data } = await getProfile(user?.id);
-    return { ...data, user };
+    return data;
   });
 
   return (
@@ -70,7 +73,7 @@ const Settings = () => {
                 <span className="text-md font-bold">
                   {profile.value.username}
                 </span>
-                <span className="truncate">{profile.value.user.email}</span>
+                <span className="truncate">{user.email}</span>
               </div>
               <ChevronRightIcon className="h-6 w-6" />
             </Link>

@@ -1,4 +1,5 @@
 import { PencilSquareIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -13,11 +14,12 @@ import { sendCheersli } from '~/services/cheersli';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { getProfile } from '~/services/profile';
 import { endSession, getSession, updateSession } from '~/services/session';
-import { supabase } from '~/services/supabase-client';
+import store from '~/store';
 
 const ActiveSession = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [user] = store.useState<User>('user');
   const session = useAsync(() => getSession(params.id || ''));
 
   const [name, setName] = useState('');
@@ -28,7 +30,6 @@ const ActiveSession = () => {
 
   const [loadCheersli, setLoadCheersli] = useState(false);
   const [sentCheersli, setSentCheersli] = useState(false);
-  const [user] = useState(supabase.auth.user());
 
   const updateSessionName = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -72,7 +73,7 @@ const ActiveSession = () => {
 
   const cheersli = async () => {
     setLoadCheersli(true);
-    const profile = await getProfile(user?.id);
+    const profile = await getProfile(user.id);
     const devices = session?.value?.user?.devices?.map(
       (device) => device.device_token,
     );
@@ -114,7 +115,7 @@ const ActiveSession = () => {
         )}
         {!session.loading &&
           !session.value?.hasEnded &&
-          user?.id !== session?.value?.user.id && (
+          user.id !== session?.value?.user.id && (
             <>
               <p className="text-sm text-gray-500">
                 {session.value?.user.username} has started a new session. It
@@ -132,7 +133,7 @@ const ActiveSession = () => {
           )}
         {!session.loading &&
           !session.value?.hasEnded &&
-          user?.id === session?.value?.user.id && (
+          user.id === session?.value?.user.id && (
             <>
               <p className="text-sm text-gray-500">
                 You started this session. It will end automatically at{' '}

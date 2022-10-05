@@ -2,7 +2,7 @@ import { FC, Suspense, useEffect } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';
-import store from '~/store';
+import { useDarkMode } from '~/helper/dark';
 
 const publicPages = [
   '/welcome',
@@ -18,7 +18,6 @@ interface AppProps {
 }
 
 const App: FC<AppProps> = ({ isAuthenticated }) => {
-  const [theme, setTheme] = store.useState<string>('theme');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,27 +27,20 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
     }
   }, [isAuthenticated, navigate]);
 
+  const darkMode = useDarkMode();
   useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  }, [setTheme]);
-
-  useEffect(() => {
-    if (theme === 'dark') {
+    if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+  }, [darkMode]);
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
       <AppUrlListener />
       <div
-        className="h-screen w-screen overflow-auto bg-gray-50"
+        className="h-screen w-screen overflow-auto bg-gray-50 text-black dark:bg-black dark:text-white"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
         {useRoutes(routes)}

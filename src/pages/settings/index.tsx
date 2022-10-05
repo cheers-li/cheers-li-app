@@ -62,7 +62,7 @@ const Settings = () => {
       <PageHeader>Settings</PageHeader>
 
       <div className="px-4">
-        <div className="h-24 rounded-md bg-white p-4">
+        <div className="h-24 rounded-md bg-white p-4 dark:bg-neutral-900">
           {!profile.loading && profile.value && (
             <Link
               onClick={() => sendSuccessFeedback()}
@@ -83,12 +83,16 @@ const Settings = () => {
       </div>
 
       <div className="px-4">
-        <p className="my-1 text-sm uppercase text-gray-500">App Settings</p>
+        <p className="my-1 text-sm uppercase text-gray-500 dark:text-neutral-300">
+          App Settings
+        </p>
         <List listItems={settingsListItem} />
       </div>
 
       <div className="px-4">
-        <p className="my-1 text-sm uppercase text-gray-500">About</p>
+        <p className="my-1 text-sm uppercase text-gray-500 dark:text-neutral-300">
+          About
+        </p>
         <List listItems={aboutListItem} />
       </div>
 
@@ -97,7 +101,7 @@ const Settings = () => {
           Logout
         </Button>
         {!appInfo.loading && appInfo.value && (
-          <span className="mt-1 block text-center text-sm font-normal text-gray-500">
+          <span className="mt-1 block text-center text-sm font-normal text-gray-500 dark:text-neutral-300">
             Version: {appInfo.value.version} ({appInfo.value.build}) <br />
             Environment: {import.meta.env.VITE_ENVIRONMENT}
           </span>

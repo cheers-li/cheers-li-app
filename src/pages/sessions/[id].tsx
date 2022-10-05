@@ -135,12 +135,12 @@ const ActiveSession = () => {
           !session.value?.hasEnded &&
           user.id === session?.value?.user.id && (
             <>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-neutral-400">
                 You started this session. It will end automatically at{' '}
                 {dayjs(session.value?.endedAt).format('HH:MM')}.
               </p>
-              <hr />
-              <p className="text-sm text-gray-500">
+              <hr className="dark:border-neutral-800" />
+              <p className="text-sm text-gray-500 dark:text-neutral-400">
                 Looks like you are alone. Invite some of your friends to join
                 you or go home now.
               </p>

@@ -92,12 +92,12 @@ const MessagesIndex = () => {
 
       {!searching && (
         <Tab.Group onChange={() => sendSuccessFeedback()}>
-          <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 transform items-center justify-between rounded-full bg-sky-900 p-2 text-white">
+          <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 transform items-center justify-between rounded-full bg-sky-900 p-2 text-white dark:bg-neutral-900">
             <Tab
               key={'friends'}
               className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
+                clsx('block rounded-full px-4 py-1 outline-none', {
+                  'bg-sky-700 dark:bg-neutral-700': selected,
                 })
               }
             >
@@ -106,8 +106,8 @@ const MessagesIndex = () => {
             <Tab
               key={'requests'}
               className={({ selected }) =>
-                clsx('block rounded-full px-4 py-1', {
-                  'bg-sky-700': selected,
+                clsx('block rounded-full px-4 py-1 outline-none', {
+                  'bg-sky-700 dark:bg-neutral-700': selected,
                 })
               }
             >

@@ -45,7 +45,7 @@ export const FriendList = () => {
         ItemComponent={({ item }) => (
           <UserItem item={item}>
             <button onClick={() => removeFriend(item)} className="-mr-2 p-2">
-              <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
+              <span className="rounded-full text-xs font-semibold uppercase text-gray-800 dark:text-neutral-300">
                 <XMarkIcon className="h-4 w-4" />
               </span>
             </button>

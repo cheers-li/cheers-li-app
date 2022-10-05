@@ -8,7 +8,7 @@ const Welcome = () => {
         <br />
         Welcome
       </h1>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-500 dark:text-neutral-300">
         We help you to share your free time with your friends and family.
       </p>
       <div className="flex flex-col gap-4">

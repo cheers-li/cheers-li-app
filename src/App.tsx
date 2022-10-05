@@ -37,7 +37,11 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
   }, [darkMode]);
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div className="h-screen w-screen bg-gray-50 text-black dark:bg-black dark:text-white"></div>
+      }
+    >
       <AppUrlListener />
       <div
         className="h-screen w-screen overflow-auto bg-gray-50 text-black dark:bg-black dark:text-white"

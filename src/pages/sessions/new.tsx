@@ -88,19 +88,19 @@ const NewSession = () => {
         {error && error !== '' && (
           <span className="text-sm text-red-500">{error}</span>
         )}
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 dark:text-neutral-400">
           Let your friends know what you are drinking
         </span>
         <TagList activeTag={tag} setActiveTag={setTag} />
-        <hr />
+        <hr className="dark:border-neutral-800" />
         {location.loading && (
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-neutral-400">
             Loading locations nearby...
           </span>
         )}
         {!location.loading && (
           <>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-neutral-400">
               Choose the location you want to share with your friends
             </span>
             <LocationList

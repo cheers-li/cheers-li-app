@@ -11,13 +11,13 @@ import { NavLink } from 'react-router-dom';
 const Navigation = () => {
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 border-t border-gray-300 bg-white px-5 py-3">
-        <nav className="flex items-center justify-between">
+      <div className="fixed bottom-0 left-0 right-0 border-t border-gray-300 bg-white px-5 py-3 dark:border-neutral-800 dark:bg-neutral-900">
+        <nav className="flex items-center justify-between dark:text-neutral-300">
           <NavLink
             to="/"
             className={({ isActive }) =>
               clsx('p-3', {
-                'text-sky-600': isActive,
+                'text-sky-600 dark:text-sky-400': isActive,
               })
             }
           >
@@ -27,7 +27,7 @@ const Navigation = () => {
             to="/map"
             className={({ isActive }) =>
               clsx('p-3', {
-                'text-sky-600': isActive,
+                'text-sky-600 dark:text-sky-400': isActive,
               })
             }
           >
@@ -53,7 +53,7 @@ const Navigation = () => {
             to="/friends"
             className={({ isActive }) =>
               clsx('p-3', {
-                'text-sky-600': isActive,
+                'text-sky-600 dark:text-sky-400': isActive,
               })
             }
           >
@@ -63,7 +63,7 @@ const Navigation = () => {
             to="/settings"
             className={({ isActive }) =>
               clsx('p-3', {
-                'text-sky-600': isActive,
+                'text-sky-600 dark:text-sky-400': isActive,
               })
             }
           >

@@ -91,66 +91,70 @@ const Register = () => {
   };
 
   return (
-    <div className="flex w-full flex-col justify-center gap-6 py-8 px-8">
-      <h1 className="text-xl font-bold">Create an account</h1>
-      <p className="text-sm text-gray-500">
-        Use your e-mail to create a new account.
-      </p>
-      <form
-        onSubmit={register}
-        className="flex flex-col gap-6"
-        autoComplete="off"
-      >
-        <Input
-          type="email"
-          placeholder="email@example.com"
-          label="E-Mail"
-          value={email}
-          error={emailError}
-          onUpdate={checkEmail}
-          disabled={loading}
-        />
-        <Input
-          type="password"
-          label="Password"
-          placeholder="Choose a secure password"
-          value={password}
-          error={passwordError}
-          onUpdate={checkPasswordValidity}
-          disabled={loading}
-        />
-        <Input
-          type="password"
-          label="Repeat password"
-          placeholder="Repeat your password"
-          value={confirmPassword}
-          error={confirmationPasswordError}
-          onUpdate={checkConfirmationPassword}
-          disabled={loading}
-        />
-        <p className="space-x-2 text-gray-500">
-          <span>Already have an account?</span>
-          <Link
-            to="/login"
-            className="font-semibold text-sky-700 active:text-sky-600"
-          >
-            Login
-          </Link>
+    <div className="pt-safe-top">
+      <div className="flex w-full flex-col justify-center gap-6 py-8 px-8">
+        <h1 className="text-xl font-bold">Create an account</h1>
+        <p className="text-sm text-gray-500 dark:text-neutral-300">
+          Use your e-mail to create a new account.
         </p>
-        <div className="flex flex-col gap-4">
-          <Button primary width="full" disabled={!valid || loading}>
-            Create an account
-          </Button>
-        </div>
-      </form>
-      <hr />
-      <p className="text-center text-sm text-gray-500">or continue with</p>
-      <ExternalProviderLogin
-        loading={loading}
-        setLoading={setLoading}
-        error={emailError}
-        setError={setEmailError}
-      />
+        <form
+          onSubmit={register}
+          className="flex flex-col gap-6"
+          autoComplete="off"
+        >
+          <Input
+            type="email"
+            placeholder="email@example.com"
+            label="E-Mail"
+            value={email}
+            error={emailError}
+            onUpdate={checkEmail}
+            disabled={loading}
+          />
+          <Input
+            type="password"
+            label="Password"
+            placeholder="Choose a secure password"
+            value={password}
+            error={passwordError}
+            onUpdate={checkPasswordValidity}
+            disabled={loading}
+          />
+          <Input
+            type="password"
+            label="Repeat password"
+            placeholder="Repeat your password"
+            value={confirmPassword}
+            error={confirmationPasswordError}
+            onUpdate={checkConfirmationPassword}
+            disabled={loading}
+          />
+          <p className="space-x-2 text-gray-500 dark:text-neutral-300">
+            <span>Already have an account?</span>
+            <Link
+              to="/login"
+              className="font-semibold text-sky-700 active:text-sky-600 dark:text-sky-500"
+            >
+              Login
+            </Link>
+          </p>
+          <div className="flex flex-col gap-4">
+            <Button primary width="full" disabled={!valid || loading}>
+              Create an account
+            </Button>
+          </div>
+        </form>
+        <hr className="dark:border-neutral-800" />
+        <p className="text-center text-sm text-gray-500 dark:text-neutral-300">
+          or continue with
+        </p>
+        <ExternalProviderLogin
+          loading={loading}
+          setLoading={setLoading}
+          error={emailError}
+          setError={setEmailError}
+        />
+      </div>
     </div>
   );
 };

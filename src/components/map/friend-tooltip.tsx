@@ -23,7 +23,7 @@ const FriendTooltip = ({ session, center }: FriendTooltipProps) => {
 
   return (
     <>
-      <div className="px-4 py-2">
+      <div className="px-4 py-2 text-black">
         <div className="text-base font-medium">{session.name}</div>
         <div className="text-gray-500">
           {!session.name.includes(session.user.username) && (

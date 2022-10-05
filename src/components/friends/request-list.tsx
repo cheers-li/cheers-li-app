@@ -125,14 +125,14 @@ export const RequestList = () => {
           horizontalPadding="px-4"
           ItemComponent={({ item }) => (
             <UserItem item={item} horizontalPadding="px-4">
-              <span className="text-gray-80 rounded-full bg-gray-200 px-2 py-1 text-xs font-semibold uppercase">
+              <span className="rounded-full bg-gray-200 px-2 py-1 text-xs font-semibold uppercase text-gray-800 dark:bg-neutral-300 dark:text-neutral-900">
                 {FriendStatus.REQUESTED}
               </span>
               <button
                 onClick={() => removeFriend(item, true)}
                 className="-mr-2 p-2"
               >
-                <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
+                <span className="rounded-full text-xs font-semibold uppercase text-gray-800 dark:text-neutral-300">
                   <XMarkIcon className="h-4 w-4" />
                 </span>
               </button>

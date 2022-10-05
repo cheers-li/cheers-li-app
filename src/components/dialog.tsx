@@ -27,7 +27,7 @@ export const Dialog: FC<DialogProps> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-sky-800 bg-opacity-30" />
+          <div className="fixed inset-0 bg-sky-800 bg-opacity-30 dark:bg-neutral-800 dark:bg-opacity-30 dark:backdrop-blur-sm" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -41,7 +41,7 @@ export const Dialog: FC<DialogProps> = ({
             leaveTo="translate-y-16 opacity-0"
           >
             <DialogUI.Panel
-              className={`${padding} mt-32 rounded-t-lg bg-gray-50 drop-shadow-md transition-all`}
+              className={`${padding} mt-32 rounded-t-lg bg-gray-50 drop-shadow-md transition-all dark:bg-black`}
               style={{ height: 'calc(100% - 8rem)' }}
             >
               {children}

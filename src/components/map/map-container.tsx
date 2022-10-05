@@ -18,7 +18,7 @@ const MapContainer = ({
   sessions,
   zoomCoords,
 }: MapContainerProps) => {
-  const [theme] = store.useState<string>('theme');
+  const [dark] = store.useState<boolean>('dark');
 
   // Mapbox
   const mapContainer = useRef(null);
@@ -106,7 +106,7 @@ const MapContainer = ({
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
 
-    const style = theme === 'dark' ? 'dark-v10' : 'streets-v11';
+    const style = dark ? 'dark-v10' : 'streets-v11';
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,

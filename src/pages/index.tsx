@@ -10,7 +10,9 @@ const Index = () => {
   const [user] = store.useState<User>('user');
 
   useEffectOnce(() => {
-    setLastActive(user.id);
+    if (user) {
+      setLastActive(user.id);
+    }
   });
 
   return (

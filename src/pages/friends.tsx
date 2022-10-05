@@ -91,7 +91,7 @@ const MessagesIndex = () => {
       )}
 
       {!searching && (
-        <Tab.Group>
+        <Tab.Group onChange={() => sendSuccessFeedback()}>
           <Tab.List className="fixed bottom-24 left-1/2 flex -translate-x-1/2 transform items-center justify-between rounded-full bg-sky-900 p-2 text-white">
             <Tab
               key={'friends'}

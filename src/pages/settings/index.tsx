@@ -14,7 +14,7 @@ import { List } from '~/components/list';
 import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
 import { getProfile } from '~/services/profile';
-import { sendErrorFeedback } from '~/services/haptics';
+import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { Link } from 'react-router-dom';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
@@ -65,6 +65,7 @@ const Settings = () => {
         <div className="h-24 rounded-md bg-white p-4">
           {!profile.loading && profile.value && (
             <Link
+              onClick={() => sendSuccessFeedback()}
               to="/settings/edit-profile"
               className="flex h-full items-center justify-center gap-4"
             >

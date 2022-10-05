@@ -19,7 +19,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
       <div className="flex items-center justify-between gap-4 px-4">
         <div className="w-10">{LeftComponent || <span>&nbsp;</span>}</div>
         <h1
-          className={clsx('flex-1 px-8 text-center text-3xl font-bold', {
+          className={clsx('flex-1 text-center text-3xl font-bold', {
             truncate: truncate,
           })}
         >

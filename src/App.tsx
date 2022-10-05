@@ -48,7 +48,7 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
     <Suspense fallback={<p>Loading...</p>}>
       <AppUrlListener />
       <div
-        className="h-screen w-screen overflow-auto bg-gray-50 pt-safe-top"
+        className="h-screen w-screen overflow-auto bg-gray-50"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
         {useRoutes(routes)}

@@ -17,9 +17,9 @@ const Index = () => {
 
   return (
     <Page>
-      <PageHeader>
+      <PageHeader truncate={false}>
         Cheers.li
-        <span className="mt-1 block text-sm font-normal text-gray-500">
+        <span className="mt-1 block whitespace-nowrap text-sm font-normal text-gray-500">
           Start a session or join your friends for a drink!
         </span>
       </PageHeader>

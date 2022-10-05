@@ -83,7 +83,7 @@ const NewSession = () => {
 
   return (
     <Page>
-      <PageHeader>Create a new Session</PageHeader>
+      <PageHeader>New Session</PageHeader>
       <form onSubmit={submit} className="flex flex-col gap-4 px-8">
         {error && error !== '' && (
           <span className="text-sm text-red-500">{error}</span>

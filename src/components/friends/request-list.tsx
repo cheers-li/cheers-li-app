@@ -71,6 +71,7 @@ export const RequestList = () => {
   };
 
   const displaySentRequestDialog = async () => {
+    sendSuccessFeedback();
     await loadSentRequests();
     setSentRequestDialog(true);
   };

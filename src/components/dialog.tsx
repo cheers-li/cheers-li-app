@@ -41,7 +41,8 @@ export const Dialog: FC<DialogProps> = ({
             leaveTo="translate-y-16 opacity-0"
           >
             <DialogUI.Panel
-              className={`${padding} mt-20 h-full rounded-t-lg bg-gray-50 drop-shadow-md transition-all`}
+              className={`${padding} mt-32 rounded-t-lg bg-gray-50 drop-shadow-md transition-all`}
+              style={{ height: 'calc(100% - 8rem)' }}
             >
               {children}
             </DialogUI.Panel>

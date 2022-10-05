@@ -62,7 +62,7 @@ const MapView = () => {
         )}
       </div>
       <Navigation />
-      <div className="relative w-full">
+      <div className="relative w-full pt-safe-top">
         <div className="mt-8 space-y-3 px-6">
           <Select
             leftIcon={

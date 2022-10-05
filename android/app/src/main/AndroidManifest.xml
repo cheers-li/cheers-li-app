@@ -15,6 +15,7 @@
             android:name="li.cheers.app.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:exported="true">
 

@@ -9,6 +9,7 @@ import {
   InformationCircleIcon,
   LifebuoyIcon,
   MapPinIcon,
+  PaintBrushIcon,
 } from '@heroicons/react/24/outline';
 import { List } from '~/components/list';
 import { signOut } from '~/services/auth';
@@ -41,6 +42,11 @@ const settingsListItem = [
   {
     label: 'Location',
     icon: <MapPinIcon />,
+    onClick: () => sendErrorFeedback(),
+  },
+  {
+    label: 'Theme',
+    icon: <PaintBrushIcon />,
     onClick: () => sendErrorFeedback(),
   },
 ];

@@ -20,7 +20,8 @@ import { List } from '../list/list';
 export const RequestList = () => {
   const [user] = store.useState<User>('user');
   const [loading, setLoading] = useState(false);
-  const [requests, setRequests] = useState<ElementList<Profile>>();
+  const [requests, setRequests] =
+    store.useState<ElementList<Profile>>('friendRequests');
   const [sentRequests, setSentRequests] = useState<ElementList<Profile>>();
   const [sentRequestDialog, setSentRequestDialog] = useState(false);
 
@@ -41,7 +42,9 @@ export const RequestList = () => {
   };
 
   useEffectOnce(() => {
-    loadRequests();
+    if (!requests) {
+      loadRequests();
+    }
   });
 
   const acceptHandler = async (friend: Profile) => {
@@ -50,10 +53,7 @@ export const RequestList = () => {
     const res = await acceptRequest(friend.id, user?.id);
     if (res) {
       sendSuccessFeedback();
-      setRequests({
-        list: requests?.list.filter((r) => r.id !== friend.id) || [],
-        count: requests?.count || 0,
-      });
+      loadRequests();
     }
   };
 

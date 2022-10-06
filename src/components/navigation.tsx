@@ -7,8 +7,14 @@ import {
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
+import { NotificationDot } from '~/components/notification-dot';
+import { Profile } from '~/services/friends';
+import store from '~/store';
+import { ElementList } from '~/types/List';
 
 const Navigation = () => {
+  const [requests] = store.useState<ElementList<Profile>>('friendRequests');
+
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-300 bg-white px-5 py-3 dark:border-neutral-800 dark:bg-neutral-900">
@@ -52,11 +58,16 @@ const Navigation = () => {
           <NavLink
             to="/friends"
             className={({ isActive }) =>
-              clsx('p-3', {
+              clsx('relative p-3', {
                 'text-sky-600 dark:text-sky-400': isActive,
               })
             }
           >
+            {requests.count != null && requests.count > 0 && (
+              <div className="absolute right-0 top-0 mt-2 mr-2">
+                <NotificationDot />
+              </div>
+            )}
             <UsersIcon className="h-8 w-8" aria-hidden="true" />
           </NavLink>
           <NavLink

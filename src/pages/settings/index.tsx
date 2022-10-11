@@ -16,45 +16,49 @@ import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
 import { getProfile } from '~/services/profile';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
-
-const aboutListItem = [
-  {
-    label: 'Help',
-    icon: <LifebuoyIcon />,
-    onClick: () => sendErrorFeedback(),
-  },
-  {
-    label: 'About',
-    icon: <InformationCircleIcon />,
-    onClick: () => sendErrorFeedback(),
-  },
-];
-
-const settingsListItem = [
-  {
-    label: 'Notifications',
-    icon: <BellAlertIcon />,
-    onClick: () => sendErrorFeedback(),
-  },
-  {
-    label: 'Location',
-    icon: <MapPinIcon />,
-    onClick: () => sendErrorFeedback(),
-  },
-  {
-    label: 'Theme',
-    icon: <PaintBrushIcon />,
-    onClick: () => sendErrorFeedback(),
-  },
-];
 
 const Settings = () => {
   const appInfo = useAsync(async () => {
     return await App.getInfo();
   });
+  const navigate = useNavigate();
+
+  const aboutListItem = [
+    {
+      label: 'Help',
+      icon: <LifebuoyIcon />,
+      onClick: () => sendErrorFeedback(),
+    },
+    {
+      label: 'About',
+      icon: <InformationCircleIcon />,
+      onClick: () => sendErrorFeedback(),
+    },
+  ];
+
+  const settingsListItem = [
+    {
+      label: 'Notifications',
+      icon: <BellAlertIcon />,
+      onClick: () => sendErrorFeedback(),
+    },
+    {
+      label: 'Location',
+      icon: <MapPinIcon />,
+      onClick: () => sendErrorFeedback(),
+    },
+    {
+      label: 'Theme',
+      icon: <PaintBrushIcon />,
+      onClick: () => {
+        navigate('/settings/darkmode');
+        sendSuccessFeedback();
+      },
+    },
+  ];
 
   const [user] = store.useState<User>('user');
 

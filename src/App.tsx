@@ -51,7 +51,7 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isNotPublicPage]);
 
-  const darkMode = useDarkMode();
+  const [darkMode] = useDarkMode();
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');

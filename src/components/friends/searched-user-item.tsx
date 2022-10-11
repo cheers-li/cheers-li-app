@@ -33,7 +33,7 @@ export const SearchedUserItem = ({
     <UserItem item={friend}>
       {status === FriendStatus.ACCEPTED && (
         <div className="p-2">
-          <CheckCircleIcon className="h-7 w-7 text-gray-800" />
+          <CheckCircleIcon className="h-7 w-7 text-gray-800 dark:text-neutral-400" />
         </div>
       )}
       {status !== FriendStatus.ACCEPTED && (
@@ -48,7 +48,9 @@ export const SearchedUserItem = ({
               {
                 'bg-sky-200 text-sky-900 active:bg-sky-300':
                   status === FriendStatus.NEW,
-                'bg-gray-200 text-gray-800': status === FriendStatus.REQUESTED,
+                'bg-gray-200 text-gray-800 dark:bg-neutral-300 dark:text-neutral-900':
+                  status === FriendStatus.REQUESTED ||
+                  status === FriendStatus.CONFIRM,
               },
             )}
           >

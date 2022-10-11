@@ -35,12 +35,16 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <label className="relative flex flex-col gap-1">
-      {label && <span className="text-sm text-gray-500">{label}</span>}
+      {label && (
+        <span className="text-sm text-gray-500 dark:text-neutral-300">
+          {label}
+        </span>
+      )}
       <input
         ref={inputRef}
         onChange={(e) => onUpdate(e.target.value)}
         className={clsx(
-          'border-1 select-text rounded-md border-gray-500 py-3 placeholder:text-gray-400',
+          'border-1 select-text rounded-md border-gray-500 py-3 text-black placeholder:text-gray-400 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400',
           {
             'border-red-500': error,
             'bg-gray-100 text-gray-400': disabled,
@@ -66,7 +70,7 @@ export const Input: React.FC<InputProps> = ({
           onClick={clearInput}
           className="absolute right-4 top-0 bottom-0 flex items-center justify-center"
         >
-          <XCircleIcon className="h-5 w-5 text-gray-500" />
+          <XCircleIcon className="h-5 w-5 text-gray-500 dark:text-neutral-400" />
         </button>
       )}
     </label>

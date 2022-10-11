@@ -25,13 +25,13 @@ export const AskNotificationPermission: FC<AskNotificationPermissionProps> = ({
 
   return (
     <Dialog closeModal={() => undefined}>
-      <div className="flex w-full flex-col gap-6 pt-8 pb-24">
+      <div className="flex w-full flex-col gap-6 pt-8 pb-24 text-black dark:text-white">
         <h1 className="text-3xl font-bold">Push Notifications</h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-neutral-300">
           Don’t miss out on anything! Get notified if one of your friends starts
           a new session or invites you to one.
         </p>
-        <hr />
+        <hr className="dark:border-neutral-800" />
         <Button primary onClick={setLocationPermission}>
           Enable Notification
         </Button>

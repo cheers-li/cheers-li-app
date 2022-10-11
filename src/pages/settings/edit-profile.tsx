@@ -127,7 +127,7 @@ interface SaveButtonProps {
 const SaveButton: FC<SaveButtonProps> = ({ onClick, disabled = false }) => (
   <span
     onClick={onClick}
-    className={clsx('text-md', { 'text-gray-500': !disabled })}
+    className={clsx('text-md', { 'text-gray-500 dark:text-white': !disabled })}
   >
     Save
   </span>

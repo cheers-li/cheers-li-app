@@ -28,13 +28,18 @@ export const Button: React.FC<ButtonProps> = ({
 }) => (
   <button
     className={clsx('w-full rounded-md px-8 py-3', {
-      'bg-sky-700 text-white active:bg-sky-600': primary && !disabled,
-      'bg-sky-100 text-gray-800 active:bg-sky-200': secondary && !disabled,
+      'bg-sky-700 text-white active:bg-sky-600 dark:bg-sky-500 dark:text-white':
+        primary && !disabled,
+      'bg-sky-100 text-gray-800 active:bg-sky-200 dark:bg-neutral-200 dark:text-neutral-800 dark:active:bg-neutral-300':
+        secondary && !disabled,
       'bg-red-500 text-white active:bg-red-600': danger && !disabled,
-      'bg-white text-gray-800 active:bg-sky-50': link && !disabled,
-      'bg-gray-800 text-gray-100 active:bg-gray-900': dark && !disabled,
+      'bg-white text-gray-800 active:bg-sky-50 dark:bg-neutral-200 dark:text-neutral-800 dark:active:bg-neutral-300':
+        link && !disabled,
+      'bg-gray-800 text-gray-100 active:bg-gray-900 dark:bg-neutral-700 dark:text-neutral-100 dark:active:bg-neutral-800':
+        dark && !disabled,
       'w-full': width === 'full',
-      'bg-gray-300 text-gray-100': disabled,
+      'bg-gray-300 text-gray-100 dark:bg-neutral-800 dark:text-neutral-500':
+        disabled,
       'flex flex-row items-center justify-center gap-8': icon,
     })}
     disabled={disabled}

@@ -20,9 +20,9 @@ export const UserItem = ({
       <Link to={`/profiles/${profile.id}`}>
         <Avatar profile={profile} size={12} />
       </Link>
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col text-black dark:text-white">
         <span className="text-md font-medium">{profile.username}</span>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 dark:text-neutral-400">
           Last active {profile.lastSeen}
         </span>
       </div>

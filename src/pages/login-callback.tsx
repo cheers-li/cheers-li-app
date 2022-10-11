@@ -185,7 +185,7 @@ const LoginCallback = () => {
           </>
         )}
         {!showError && showUserLoading && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-neutral-300">
             One moment, we are loading your user account.
           </p>
         )}

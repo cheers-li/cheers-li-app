@@ -27,7 +27,7 @@ export const SessionListItem: FC<SessionListItemProps> = ({
           <>
             <div className="flex gap-2">
               <Badge red>Ended</Badge>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-neutral-400">
                 Ended {getLastActive(session.endedAt)}
               </span>
             </div>
@@ -42,7 +42,7 @@ export const SessionListItem: FC<SessionListItemProps> = ({
             )}
             <div className="flex gap-2">
               <Badge green>Active</Badge>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-neutral-400">
                 Started {session.lastActive}
               </span>
             </div>

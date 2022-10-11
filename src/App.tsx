@@ -1,8 +1,12 @@
-import { FC, Suspense, useEffect } from 'react';
+import { FC, Suspense, useCallback, useEffect } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';
+import { useDarkMode } from '~/helper/dark';
 import store from '~/store';
+import { User } from '@supabase/supabase-js';
+import { getRequests, Profile } from '~/services/friends';
+import { ElementList } from '~/types/List';
 
 const publicPages = [
   '/welcome',
@@ -18,8 +22,10 @@ interface AppProps {
 }
 
 const App: FC<AppProps> = ({ isAuthenticated }) => {
-  const [theme, setTheme] = store.useState<string>('theme');
   const navigate = useNavigate();
+  const [user] = store.useState<User>('user');
+  const [_, setRequests] =
+    store.useState<ElementList<Profile>>('friendRequests');
 
   useEffect(() => {
     const path = location.pathname;
@@ -28,27 +34,41 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
     }
   }, [isAuthenticated, navigate]);
 
-  useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
+  const isNotPublicPage = !publicPages.includes(location.pathname);
+
+  const loadGlobalData = async () => {
+    if (!user) return;
+    const req = await getRequests(user.id);
+    if (req) {
+      setRequests(req);
     }
-  }, [setTheme]);
+  };
 
   useEffect(() => {
-    if (theme === 'dark') {
+    if (isAuthenticated === true && isNotPublicPage) {
+      loadGlobalData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isNotPublicPage]);
+
+  const darkMode = useDarkMode();
+  useEffect(() => {
+    if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+  }, [darkMode]);
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div className="h-screen w-screen bg-gray-50 text-black dark:bg-black dark:text-white"></div>
+      }
+    >
       <AppUrlListener />
       <div
-        className="h-screen w-screen overflow-auto bg-gray-50"
+        className="h-screen w-screen overflow-auto bg-gray-50 text-black dark:bg-black dark:text-white"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
         {useRoutes(routes)}

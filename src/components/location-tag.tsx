@@ -7,7 +7,7 @@ interface LocationProps {
 }
 
 export const LocationTag: FC<LocationProps> = ({ location, locationName }) => (
-  <span className="max-w-full truncate whitespace-nowrap text-sm text-gray-500">
+  <span className="max-w-full truncate whitespace-nowrap text-sm text-gray-500 dark:text-neutral-300">
     <span className="mr-1">📍</span>
     {locationName ? (
       <>{locationName}</>

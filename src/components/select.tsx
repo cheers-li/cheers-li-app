@@ -28,7 +28,7 @@ export const Select: React.FC<SelectProps> = ({
       {label && (
         <label
           htmlFor={label}
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 dark:text-neutral-300"
         >
           {label}
         </label>
@@ -38,7 +38,7 @@ export const Select: React.FC<SelectProps> = ({
           onChange={onChange}
           name={label}
           className={clsx(
-            'flex-1 rounded-md border-0 py-4 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500',
+            'flex-1 rounded-md border-0 bg-white py-4 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500 dark:bg-neutral-800',
             {
               'mt-1': label,
               'pl-12': leftIcon,

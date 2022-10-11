@@ -7,7 +7,7 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useEffectOnce } from 'react-use';
 import { Button } from '~/components/button';
@@ -36,12 +36,11 @@ const ProfileView = () => {
     console.log('share profile');
   };
 
-  const [theme] = store.useState<string>('theme');
+  const [dark] = store.useState<boolean>('dark');
 
-  const gradient =
-    theme === 'dark'
-      ? 'linear-gradient(0deg, rgba(249,250,251,1) 5%, rgba(249,250,251,0) 62%)'
-      : 'linear-gradient(0deg, rgba(249,250,251,1) 5%, rgba(249,250,251,0) 62%)';
+  const gradient = dark
+    ? 'linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 62%)'
+    : 'linear-gradient(0deg, rgba(249,250,251,1) 5%, rgba(249,250,251,0) 62%)';
 
   const addFriendHandler = async () => {
     if (!profile) return;
@@ -101,7 +100,7 @@ const ProfileView = () => {
       {profile && (
         <>
           <div
-            className="flex w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black"
+            className="flex w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black dark:text-white"
             style={{
               backgroundImage: `${gradient},
               linear-gradient(0deg, rgba(0,0,0,0) 80%, rgba(0,0,0,0.4) 100%),
@@ -120,7 +119,7 @@ const ProfileView = () => {
                     className="flex items-center"
                   >
                     <PencilSquareIcon
-                      className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
+                      className="mr-3 h-5 w-5 text-gray-400 dark:text-white"
                       aria-hidden="true"
                     />
                     Edit your profile
@@ -129,7 +128,7 @@ const ProfileView = () => {
                 {!isOwnProfile && (
                   <div onClick={shareProfile} className="flex items-center">
                     <ArrowUpOnSquareIcon
-                      className="mr-3 h-5 w-5 text-gray-400 group-active:text-gray-500"
+                      className="mr-3 h-5 w-5 text-gray-400 dark:text-white"
                       aria-hidden="true"
                     />
                     Share this profile
@@ -138,10 +137,12 @@ const ProfileView = () => {
                 {!isOwnProfile && profile.status === FriendStatus.ACCEPTED && (
                   <div onClick={removeFriend} className="flex items-center">
                     <UserMinusIcon
-                      className="mr-3 h-5 w-5 text-red-400 group-active:text-red-500"
+                      className="mr-3 h-5 w-5 text-red-400 dark:text-red-500"
                       aria-hidden="true"
                     />
-                    <span className="text-red-400">Remove friendship</span>
+                    <span className="text-red-400 dark:text-red-500">
+                      Remove friendship
+                    </span>
                   </div>
                 )}
               </Dropdown>
@@ -151,7 +152,7 @@ const ProfileView = () => {
               <p className="mt-1 text-base">{profile.bio}</p>
             </div>
           </div>
-          <div className="px-8 text-sm leading-tight text-gray-600">
+          <div className="px-8 text-sm leading-tight text-gray-600 dark:text-neutral-300">
             <p>{profile.city}</p>
             {!isOwnProfile && profile.status === FriendStatus.ACCEPTED && (
               <p>
@@ -179,7 +180,7 @@ const ProfileView = () => {
                 </Button>
                 <button
                   onClick={removeFriend}
-                  className="mt-2 w-full text-center font-semibold text-gray-600"
+                  className="mt-2 w-full text-center font-semibold text-gray-600 dark:text-neutral-300"
                 >
                   Cancel friend request
                 </button>

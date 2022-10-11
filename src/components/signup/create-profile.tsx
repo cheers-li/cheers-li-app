@@ -49,12 +49,12 @@ export const CreateProfile: FC<CreateProfileProps> = ({ complete }) => {
 
   return (
     <Dialog closeModal={() => undefined}>
-      <div className="flex w-full flex-col gap-6 pt-8 pb-24">
+      <div className="flex w-full flex-col gap-6 pt-8 pb-24 text-black dark:text-white">
         <h1 className="text-3xl font-bold">Complete your Profile</h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-neutral-300">
           We need some more information to complete your profile.
         </p>
-        <hr />
+        <hr className="dark:border-neutral-800" />
         <form onSubmit={submitProfileName} className="flex flex-col gap-6">
           <Input
             placeholder="How should we call you?"

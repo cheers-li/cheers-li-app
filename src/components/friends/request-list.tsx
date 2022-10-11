@@ -20,7 +20,8 @@ import { List } from '../list/list';
 export const RequestList = () => {
   const [user] = store.useState<User>('user');
   const [loading, setLoading] = useState(false);
-  const [requests, setRequests] = useState<ElementList<Profile>>();
+  const [requests, setRequests] =
+    store.useState<ElementList<Profile>>('friendRequests');
   const [sentRequests, setSentRequests] = useState<ElementList<Profile>>();
   const [sentRequestDialog, setSentRequestDialog] = useState(false);
 
@@ -41,7 +42,9 @@ export const RequestList = () => {
   };
 
   useEffectOnce(() => {
-    loadRequests();
+    if (!requests) {
+      loadRequests();
+    }
   });
 
   const acceptHandler = async (friend: Profile) => {
@@ -50,10 +53,7 @@ export const RequestList = () => {
     const res = await acceptRequest(friend.id, user?.id);
     if (res) {
       sendSuccessFeedback();
-      setRequests({
-        list: requests?.list.filter((r) => r.id !== friend.id) || [],
-        count: requests?.count || 0,
-      });
+      loadRequests();
     }
   };
 
@@ -125,14 +125,14 @@ export const RequestList = () => {
           horizontalPadding="px-4"
           ItemComponent={({ item }) => (
             <UserItem item={item} horizontalPadding="px-4">
-              <span className="text-gray-80 rounded-full bg-gray-200 px-2 py-1 text-xs font-semibold uppercase">
+              <span className="rounded-full bg-gray-200 px-2 py-1 text-xs font-semibold uppercase text-gray-800 dark:bg-neutral-300 dark:text-neutral-900">
                 {FriendStatus.REQUESTED}
               </span>
               <button
                 onClick={() => removeFriend(item, true)}
                 className="-mr-2 p-2"
               >
-                <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
+                <span className="rounded-full text-xs font-semibold uppercase text-gray-800 dark:text-neutral-300">
                   <XMarkIcon className="h-4 w-4" />
                 </span>
               </button>

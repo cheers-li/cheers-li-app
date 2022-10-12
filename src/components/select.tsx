@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 
 interface SelectProps {
+  customClasses?: string;
   label?: string;
   defaultValue?: string;
   leftIcon?: React.ReactNode;
@@ -11,6 +12,7 @@ interface SelectProps {
 }
 
 export const Select: React.FC<SelectProps> = ({
+  customClasses,
   label,
   defaultValue,
   leftIcon,
@@ -38,18 +40,22 @@ export const Select: React.FC<SelectProps> = ({
           onChange={onChange}
           name={label}
           className={clsx(
-            'flex-1 rounded-md border-0 bg-white py-4 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500 dark:bg-neutral-800',
+            `${customClasses} flex-1 rounded-md border-0 bg-white py-4 pr-10 text-base focus:border-sky-500 focus:outline-none focus:ring-sky-500 dark:bg-neutral-800`,
             {
               'mt-1': label,
               'pl-12': leftIcon,
               'pl-3': !leftIcon,
             },
           )}
-          defaultValue={defaultValue}
         >
           {children}
           {options.map((option, i) => (
-            <option key={keys[i]} value={option} data-key={keys[i]}>
+            <option
+              key={keys[i]}
+              value={option}
+              data-key={keys[i]}
+              selected={keys[i] === defaultValue}
+            >
               {option}
             </option>
           ))}

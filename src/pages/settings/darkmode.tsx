@@ -9,8 +9,6 @@ const DarkMode = () => {
   const [_, applyTheme, theme] = useTheme();
 
   const changeTheme = async (value: string) => {
-    console.log(value);
-
     await Preferences.set({ key: 'theme', value });
     applyTheme(value);
   };

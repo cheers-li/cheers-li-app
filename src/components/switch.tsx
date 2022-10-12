@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Switch as SwitchUI } from '@headlessui/react';
 import clsx from 'clsx';
+import { sendSuccessFeedback } from '~/services/haptics';
 
 interface SwitchProps {
   checked: boolean;
@@ -9,6 +10,11 @@ interface SwitchProps {
 }
 
 export const Switch: FC<SwitchProps> = ({ checked, label, onUpdate }) => {
+  const onchangeListener = (value: boolean) => {
+    onUpdate(value);
+    sendSuccessFeedback();
+  };
+
   return (
     <SwitchUI.Group as="div" className="flex items-center">
       {label && (
@@ -20,7 +26,7 @@ export const Switch: FC<SwitchProps> = ({ checked, label, onUpdate }) => {
       )}
       <SwitchUI
         checked={checked}
-        onChange={onUpdate}
+        onChange={onchangeListener}
         className={clsx(
           'relative ml-3 inline-flex h-[28px] w-[50px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2',
           checked ? 'bg-sky-500' : 'bg-gray-200 dark:bg-neutral-500',

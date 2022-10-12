@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 import { getLastActive } from '~/helper/time';
 import { Session } from '~/services/session';
 import { Avatar } from '../avatar';
@@ -13,11 +14,13 @@ export const SessionListItem: FC<SessionListItemProps> = ({
   item: session,
 }) => {
   return (
-    <a
-      href={`/sessions/${session.id}`}
+    <Link
+      to={`/sessions/${session.id}`}
       className="flex items-center justify-start gap-2 py-3 px-8"
     >
-      <Avatar profile={session.user} size={12} />
+      <Link to={`/profiles/${session.user.id}`}>
+        <Avatar profile={session.user} size={12} />
+      </Link>
       <div className="flex flex-col items-start justify-start gap-1 overflow-hidden">
         <span className="text-md max-w-full truncate font-medium">
           {session.name}
@@ -49,6 +52,6 @@ export const SessionListItem: FC<SessionListItemProps> = ({
           </>
         )}
       </div>
-    </a>
+    </Link>
   );
 };

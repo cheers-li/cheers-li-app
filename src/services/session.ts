@@ -17,7 +17,7 @@ export const listSessions = async (
       { count: 'exact' },
     )
     .order('ended_at', { ascending: false })
-    .range(0, top);
+    .range(0, top - 1);
 
   if (onlyActives) query = query.gte('ended_at', new Date().toISOString());
 

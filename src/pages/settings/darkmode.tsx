@@ -22,8 +22,20 @@ const DarkMode = () => {
         <Select
           defaultValue={theme}
           label="Choose theme"
-          options={['Light', 'Dark', 'System based']}
-          keys={['light', 'dark', 'system']}
+          options={[
+            {
+              value: 'light',
+              display: 'Light',
+            },
+            {
+              value: 'dark',
+              display: 'Dark',
+            },
+            {
+              value: 'system',
+              display: 'System based',
+            },
+          ]}
           onUpdate={changeTheme}
           customClasses="border border-gray-200 shadow dark:border-transparent dark:shadow-none"
         ></Select>

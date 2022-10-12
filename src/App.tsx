@@ -1,4 +1,4 @@
-import { FC, Suspense, useCallback, useEffect } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';

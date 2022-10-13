@@ -11,7 +11,7 @@ interface ButtonProps {
   width?: 'full' | 'default';
   children: React.ReactNode;
   icon?: React.ReactNode;
-  onClick?: (event: React.MouseEvent<HTMLElement>) => any;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const Button: React.FC<ButtonProps> = ({

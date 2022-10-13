@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -20,10 +21,10 @@ module.exports = {
   },
   safelist: [
     {
-      pattern: /w-*/,
+      pattern: /^w-*/,
     },
     {
-      pattern: /h-*/,
+      pattern: /^h-*/,
     },
   ],
   plugins: [require('@tailwindcss/forms')],

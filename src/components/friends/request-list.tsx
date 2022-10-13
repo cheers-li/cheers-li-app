@@ -57,7 +57,13 @@ export const RequestList = () => {
     }
   };
 
-  const removeFriend = async (friend: Profile, sent = false) => {
+  const removeRequest = async (friend: Profile, sent = false) => {
+    const confirmation = confirm(
+      `Are you sure you want to cancel the friend's request ${
+        sent ? 'to' : 'from'
+      } ${friend.username}?`,
+    );
+    if (!confirmation) return;
     const data = await removeFriendShip(friend.id, user.id);
     if (data) {
       sendSuccessFeedback();
@@ -104,7 +110,7 @@ export const RequestList = () => {
                 Accept
               </span>
             </button>
-            <button onClick={() => removeFriend(item)} className="-mr-2 p-2">
+            <button onClick={() => removeRequest(item)} className="-mr-2 p-2">
               <span className="text-gray-80 rounded-full text-xs font-semibold uppercase">
                 <XMarkIcon className="h-4 w-4" />
               </span>
@@ -129,7 +135,7 @@ export const RequestList = () => {
                 {FriendStatus.REQUESTED}
               </span>
               <button
-                onClick={() => removeFriend(item, true)}
+                onClick={() => removeRequest(item, true)}
                 className="-mr-2 p-2"
               >
                 <span className="rounded-full text-xs font-semibold uppercase text-gray-800 dark:text-neutral-300">

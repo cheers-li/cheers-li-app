@@ -1,8 +1,8 @@
-import { FC, Suspense, useCallback, useEffect } from 'react';
+import { FC, Suspense, useEffect } from 'react';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import routes from '~react-pages';
 import AppUrlListener from '~/AppUrlListener';
-import { useDarkMode } from '~/helper/dark';
+import { useTheme } from '~/helper/theme';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { getRequests, Profile } from '~/services/friends';
@@ -51,14 +51,14 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isNotPublicPage]);
 
-  const darkMode = useDarkMode();
+  const [isDark] = useTheme();
   useEffect(() => {
-    if (darkMode) {
+    if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [darkMode]);
+  }, [isDark]);
 
   return (
     <Suspense

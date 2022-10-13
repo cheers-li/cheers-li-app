@@ -28,6 +28,10 @@ export const FriendList = () => {
   });
 
   const removeFriend = async (friend: Profile) => {
+    const confirmation = confirm(
+      `Are you sure you want to remove ${friend.username} from your friends?`,
+    );
+    if (!confirmation) return;
     const data = await removeFriendShip(friend.id, user.id);
     if (data) {
       sendSuccessFeedback();

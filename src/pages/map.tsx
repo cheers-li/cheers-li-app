@@ -68,8 +68,10 @@ const MapView = () => {
             leftIcon={
               <MapPinIcon className="h-5 w-5 text-sky-400" aria-hidden="true" />
             }
-            options={filteredSessions().map((s) => s.user.username)}
-            keys={filteredSessions().map((s) => s.id)}
+            options={filteredSessions().map((s) => ({
+              value: s.id,
+              display: s.user.username,
+            }))}
             onUpdate={zoomOnSession}
             defaultValue=""
           >

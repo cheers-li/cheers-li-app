@@ -5,6 +5,7 @@ import { ExternalProviderLogin } from '~/components/external-provider-login';
 import { Input } from '~/components/input';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { supabase } from '~/services/supabase-client';
+import type { ApiError } from '@supabase/supabase-js';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -28,8 +29,12 @@ const Login = () => {
 
       sendSuccessFeedback();
       navigate('/login-callback');
-    } catch (err: any) {
-      if (err?.message?.includes('Email not confirmed')) {
+    } catch (exception: unknown) {
+      const apiException = exception as ApiError;
+      if (
+        apiException?.message !== undefined &&
+        apiException.message.includes('Email not confirmed')
+      ) {
         setError('Please validate your email.');
       } else {
         setError('Something went wrong while signing you in.');

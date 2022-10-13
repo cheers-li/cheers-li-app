@@ -73,8 +73,10 @@ const NewSession = () => {
       }
       sendSuccessFeedback();
       navigate(`/sessions/${id}`);
-    } catch (exception: any) {
-      setError(exception);
+    } catch (exception: unknown) {
+      if (exception instanceof String) {
+        setError(exception as string);
+      }
       sendErrorFeedback();
     } finally {
       setIsLoading(false);

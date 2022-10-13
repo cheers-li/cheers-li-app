@@ -4,7 +4,7 @@ import { List } from '../list/list';
 import { SessionListItem } from './session-list-item';
 
 export const SessionList = () => {
-  const sessions = useAsync(() => listSessions(4));
+  const sessions = useAsync(() => listSessions(10));
 
   return (
     <div>

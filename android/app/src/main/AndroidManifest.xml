@@ -24,6 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="io.supabase.cheersli" android:host="login-callback" />
+                <data android:scheme="io.supabase.cheersli" android:host="login" />
+                <data android:scheme="io.supabase.cheersli" android:host="home" />
+            </intent-filter>
+
         </activity>
 
         <provider

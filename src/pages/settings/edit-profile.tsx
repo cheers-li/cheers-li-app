@@ -21,8 +21,8 @@ const EditProfile = () => {
     const { data } = await getProfile(user.id);
 
     setUserName(data.username);
-    setBio(data.bio);
-    setLocation(data.city);
+    setBio(data.bio || '');
+    setLocation(data.city || '');
 
     return { ...data, user };
   });

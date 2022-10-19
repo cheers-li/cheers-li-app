@@ -1,40 +1,43 @@
-import { FC, useState } from 'react';
-import clsx from 'clsx';
 import { BackButton } from '~/components/header/back-button';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { Preferences } from '@capacitor/preferences';
-import { useDarkMode } from '~/helper/dark';
+import { useTheme } from '~/helper/theme';
+import { Select } from '~/components/select';
 
 const DarkMode = () => {
-  const [dark, setDark] = useDarkMode();
-  const [loading, setLoading] = useState(false);
+  const [_, applyTheme, theme] = useTheme();
 
-  const toggleDarkMode = async () => {
-    const value = !dark;
-    const strValue = value.toString();
-    console.log('new value: ' + value);
-    console.log('new value str: ' + strValue);
-
-    await Preferences.set({ key: 'darkmode', value: strValue });
-    setDark(value);
+  const changeTheme = async (value: string) => {
+    await Preferences.set({ key: 'theme', value });
+    applyTheme(value);
   };
 
   return (
     <Page hideNavigation>
-      <PageHeader LeftComponent={<BackButton disabled={loading} />}>
-        Theme
-      </PageHeader>
-
-      {
-        <div className="flex flex-col items-center gap-4 px-4">
-          <div className="flex w-full flex-col gap-2">
-            <div>Dark mode: {dark}</div>
-
-            <button onClick={toggleDarkMode}>Toggle darkmode</button>
-          </div>
-        </div>
-      }
+      <PageHeader LeftComponent={<BackButton />}>Theme</PageHeader>
+      <div className="flex w-full flex-col gap-2 px-4">
+        <Select
+          defaultValue={theme}
+          label="Choose theme"
+          options={[
+            {
+              value: 'light',
+              display: 'Light',
+            },
+            {
+              value: 'dark',
+              display: 'Dark',
+            },
+            {
+              value: 'system',
+              display: 'System based',
+            },
+          ]}
+          onUpdate={changeTheme}
+          customClasses="border border-gray-200 shadow dark:border-transparent dark:shadow-none"
+        ></Select>
+      </div>
     </Page>
   );
 };

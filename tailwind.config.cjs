@@ -21,10 +21,10 @@ module.exports = {
   },
   safelist: [
     {
-      pattern: /w-*/,
+      pattern: /^w-*/,
     },
     {
-      pattern: /h-*/,
+      pattern: /^h-*/,
     },
   ],
   plugins: [require('@tailwindcss/forms')],

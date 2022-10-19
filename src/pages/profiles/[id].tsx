@@ -7,7 +7,7 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useEffectOnce } from 'react-use';
 import { Button } from '~/components/button';
@@ -57,6 +57,11 @@ const ProfileView = () => {
 
   const removeFriend = async () => {
     if (!profile) return;
+
+    const confirmation = confirm(
+      `Are you sure you want to remove ${profile.username} from your friends?`,
+    );
+    if (!confirmation) return;
 
     const data = await removeFriendShip(profile.id, user.id);
 

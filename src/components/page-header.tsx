@@ -27,7 +27,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
         </h1>
         <div className="w-10">{RightComponent || <span>&nbsp;</span>}</div>
       </div>
-      <hr className="dark:border-neutral-800" />
+      <hr className="my-6 dark:border-neutral-800" />
     </>
   );
 };

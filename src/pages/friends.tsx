@@ -99,9 +99,7 @@ const MessagesIndex = () => {
   });
 
   return (
-    <Page>
-      <PageHeader>Friends</PageHeader>
-
+    <Page header={<PageHeader>Friends</PageHeader>}>
       <div className="px-8">
         <Input
           onUpdate={updateSearch}

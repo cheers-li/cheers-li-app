@@ -7,7 +7,7 @@ import { getFriends, Profile, removeFriendShip } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
 import { ElementList } from '~/types/List';
-import { List } from '../list/list';
+import { AnimatedList } from '../list/animated-list';
 
 export const FriendList = () => {
   const [user] = store.useState<User>('user');
@@ -41,11 +41,12 @@ export const FriendList = () => {
 
   return (
     <>
-      <List
+      <AnimatedList
         title="Friends"
         loading={loading}
         items={friends?.list || []}
         count={friends?.count || 0}
+        reload={loadFriends}
         ItemComponent={({ item }) => (
           <UserItem item={item}>
             <button onClick={() => removeFriend(item)} className="-mr-2 p-2">

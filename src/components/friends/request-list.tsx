@@ -15,6 +15,7 @@ import {
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
 import { ElementList } from '~/types/List';
+import { AnimatedList } from '../list/animated-list';
 import { List } from '../list/list';
 
 export const RequestList = () => {
@@ -84,7 +85,8 @@ export const RequestList = () => {
 
   return (
     <>
-      <List
+      <AnimatedList
+        reload={loadRequests}
         title="Friend Requests"
         titleContent={
           <button

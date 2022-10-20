@@ -1,7 +1,7 @@
 import { ElementType, FC } from 'react';
 import { ListItem } from '~/types/List';
 
-interface ListProps<T> {
+export interface ListProps<T> {
   title: string;
   titleContent?: React.ReactNode;
   loading: boolean;

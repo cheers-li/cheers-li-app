@@ -25,7 +25,7 @@ export const SessionListItem: FC<SessionListItemProps> = ({
       to={`/sessions/${session.id}`}
       className="flex items-center justify-start gap-2 py-3 px-8"
     >
-      <button onClick={redirectToProfile}>
+      <button className="flex-shrink-0" onClick={redirectToProfile}>
         <Avatar profile={session.user} size={12} />
       </button>
       <div className="flex flex-col items-start justify-start gap-1 overflow-hidden">

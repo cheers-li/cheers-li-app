@@ -31,16 +31,14 @@ export const List: FC<ListProps<ListItem>> = ({
         {titleContent}
       </div>
       <ul>
-        {items
-          .flatMap((i) => [i, i, i])
-          .map((item: ListItem, i: number) => (
-            <li
-              key={i}
-              className="border-b last:border-0 dark:border-neutral-800"
-            >
-              <ItemComponent item={item} />
-            </li>
-          ))}
+        {items.map((item: ListItem, i: number) => (
+          <li
+            key={i}
+            className="border-b last:border-0 dark:border-neutral-800"
+          >
+            <ItemComponent item={item} />
+          </li>
+        ))}
       </ul>
 
       {!loading && items.length === 0 && (

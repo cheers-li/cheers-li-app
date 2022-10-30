@@ -1,4 +1,5 @@
 import { ElementType, FC } from 'react';
+import { Loader } from '~/components/loader';
 import { ListItem } from '~/types/List';
 
 export interface ListProps<T> {
@@ -26,7 +27,8 @@ export const List: FC<ListProps<ListItem>> = ({
         className={`${horizontalPadding} flex items-center justify-between text-gray-800 dark:text-neutral-200`}
       >
         <h2>
-          {title} {!loading && `(${count})`}
+          {title}{' '}
+          {loading ? <Loader size={20} className="ml-2 pt-1" /> : `(${count})`}
         </h2>
         {titleContent}
       </div>

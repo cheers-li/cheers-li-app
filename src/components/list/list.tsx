@@ -1,7 +1,7 @@
 import { ElementType, FC } from 'react';
 import { ListItem } from '~/types/List';
 
-interface ListProps<T> {
+export interface ListProps<T> {
   title: string;
   titleContent?: React.ReactNode;
   loading: boolean;
@@ -31,22 +31,26 @@ export const List: FC<ListProps<ListItem>> = ({
         {titleContent}
       </div>
       <ul>
-        {items.map((item: ListItem, i: number) => (
-          <li
-            key={i}
-            className="border-b last:border-0 dark:border-neutral-800"
-          >
-            <ItemComponent item={item} />
-          </li>
-        ))}
+        {items
+          .flatMap((i) => [i, i, i])
+          .map((item: ListItem, i: number) => (
+            <li
+              key={i}
+              className="border-b last:border-0 dark:border-neutral-800"
+            >
+              <ItemComponent item={item} />
+            </li>
+          ))}
       </ul>
 
       {!loading && items.length === 0 && (
-        <div
-          className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center  text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
-        >
-          <div className="font-semibold">No {title} found</div>
-          <div>You do not have any {title}</div>
+        <div className="pb-64">
+          <div
+            className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center  text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
+          >
+            <div className="font-semibold">No {title} found</div>
+            <div>You do not have any {title}</div>
+          </div>
         </div>
       )}
       {loading && (

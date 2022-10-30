@@ -17,7 +17,7 @@ export const Dialog: FC<DialogProps> = ({
 }) => {
   return (
     <Transition appear show={isShowing} as={Fragment}>
-      <DialogUI as="div" className="relative z-10" onClose={closeModal}>
+      <DialogUI as="div" className="relative z-20" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

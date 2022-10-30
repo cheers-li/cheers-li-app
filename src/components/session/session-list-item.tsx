@@ -2,9 +2,9 @@ import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getLastActive } from '~/helper/time';
 import { Session } from '~/services/session';
-import { Avatar } from '../avatar';
-import { Badge } from '../badge';
-import { LocationTag } from '../location-tag';
+import { Avatar } from '~/components/avatar';
+import { Badge } from '~/components/badge';
+import { LocationTag } from '~/components/location-tag';
 
 interface SessionListItemProps {
   item: Session;

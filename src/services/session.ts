@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { getLastActive } from '~/helper/time';
 import store from '~/store';
 import { ElementList, ListItem } from '~/types/List';
-import { Profile } from './friends';
-import { supabase } from './supabase-client';
+import { Profile } from '~/services/friends';
+import { supabase } from '~/services/supabase-client';
 
 export const listSessions = async (
   top = 2,

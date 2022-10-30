@@ -3,9 +3,9 @@ import { FC, SyntheticEvent, useState } from 'react';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { createNewProfile } from '~/services/profile';
 import store from '~/store';
-import { Button } from '../button';
-import { Dialog } from '../dialog';
-import { Input } from '../input';
+import { Button } from '~/components/button';
+import { Dialog } from '~/components/dialog';
+import { Input } from '~/components/input';
 
 interface CreateProfileProps {
   complete: () => void;

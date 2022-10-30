@@ -1,4 +1,4 @@
-import { List, ListProps } from './list';
+import { List, ListProps } from '~/components/list/list';
 import { ListItem } from '~/types/List';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 

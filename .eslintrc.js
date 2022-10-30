@@ -25,7 +25,12 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint/eslint-plugin', 'prettier'],
   rules: {
-    '@typescript-eslint/no-shadow': ['error'],
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: ['.*'],
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'warn', // or "error"
       {

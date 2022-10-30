@@ -1,7 +1,7 @@
 import { Geolocation } from '@capacitor/geolocation';
 import { FC } from 'react';
-import { Button } from '../button';
-import { Dialog } from '../dialog';
+import { Button } from '~/components/button';
+import { Dialog } from '~/components/dialog';
 
 interface AskLocationPermissionProps {
   complete: () => void;

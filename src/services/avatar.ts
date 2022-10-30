@@ -1,4 +1,4 @@
-import { supabase } from './supabase-client';
+import { supabase } from '~/services/supabase-client';
 import { decode } from 'base64-arraybuffer';
 
 export const uploadAvatar = async (fileBase64: string, fileName: string) => {

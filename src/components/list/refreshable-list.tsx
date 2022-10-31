@@ -2,11 +2,11 @@ import { List, ListProps } from '~/components/list/list';
 import { ListItem } from '~/types/List';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 
-interface AnimatedListProps<T> extends ListProps<T> {
+interface RefreshableListProps<T> extends ListProps<T> {
   reload: () => Promise<unknown>;
 }
 
-export const AnimatedList: React.FC<AnimatedListProps<ListItem>> = ({
+export const RefreshableList: React.FC<RefreshableListProps<ListItem>> = ({
   title,
   titleContent,
   loading,

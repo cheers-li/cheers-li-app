@@ -3,7 +3,7 @@ import { User } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { UserItem } from '~/components/friends/user-item';
-import { AnimatedList } from '~/components/list/animated-list';
+import { RefreshableList } from '~/components/list/refreshable-list';
 import { getFriends, Profile, removeFriendShip } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
@@ -40,7 +40,7 @@ export const FriendList = () => {
   };
 
   return (
-    <AnimatedList
+    <RefreshableList
       title="Friends"
       loading={loading}
       items={friends?.list || []}

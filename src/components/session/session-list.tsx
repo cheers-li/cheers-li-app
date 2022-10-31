@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useEffectOnce } from 'react-use';
-import { AnimatedList } from '~/components/list/animated-list';
+import { RefreshableList } from '~/components/list/refreshable-list';
 import { SessionListItem } from '~/components/session/session-list-item';
 import { listSessions, Session } from '~/services/session';
 import { ElementList } from '~/types/List';
@@ -21,7 +21,7 @@ export const SessionList = () => {
   });
 
   return (
-    <AnimatedList
+    <RefreshableList
       title="Sessions"
       loading={loading}
       items={sessions?.list || []}

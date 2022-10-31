@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { Dialog } from '~/components/dialog';
 import { UserItem } from '~/components/friends/user-item';
-import { AnimatedList } from '~/components/list/animated-list';
+import { RefreshableList } from '~/components/list/refreshable-list';
 import { List } from '~/components/list/list';
 import {
   Profile,
@@ -85,7 +85,7 @@ export const RequestList = () => {
 
   return (
     <>
-      <AnimatedList
+      <RefreshableList
         title="Friend Requests"
         titleContent={
           <button

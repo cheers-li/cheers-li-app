@@ -13,11 +13,14 @@ import '~/index.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const Application = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [_, setGlobalUser] = store.useState<User | null>('user');
+
+  const queryClient = new QueryClient();
 
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
@@ -109,7 +112,11 @@ const Application = () => {
 
   return (
     <React.StrictMode>
-      <Router>{!isLoading && <App isAuthenticated={isAuthenticated} />}</Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          {!isLoading && <App isAuthenticated={isAuthenticated} />}
+        </Router>
+      </QueryClientProvider>
     </React.StrictMode>
   );
 };

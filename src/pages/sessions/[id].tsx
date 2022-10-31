@@ -3,7 +3,6 @@ import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useAsync } from 'react-use';
 import { Button, LinkButton } from '~/components/button';
 import { Dialog } from '~/components/dialog';
 import { Input } from '~/components/input';
@@ -13,14 +12,16 @@ import { PageHeader } from '~/components/page-header';
 import { sendCheersli } from '~/services/cheersli';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { getProfile } from '~/services/profile';
-import { endSession, getSession, updateSession } from '~/services/session';
+import { endSession, useSession, updateSession } from '~/services/session';
 import store from '~/store';
 
 const ActiveSession = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [user] = store.useState<User>('user');
-  const session = useAsync(() => getSession(params.id || ''));
+  const { data: session, isLoading: sessionLoading } = useSession(
+    params.id || '',
+  );
 
   const [name, setName] = useState('');
   const [loading, setIsLoading] = useState(false);
@@ -40,11 +41,11 @@ const ActiveSession = () => {
       if (!name || name.length == 0) {
         throw 'The name cannot be empty';
       }
-      if (!session.value) {
+      if (!session) {
         throw 'The session is not found';
       }
       const { data, error: errorMessage } = await updateSession(
-        session.value?.id,
+        session.id,
         name,
       );
 
@@ -52,7 +53,7 @@ const ActiveSession = () => {
         throw errorMessage.message;
       }
 
-      session.value.name = data && data[0]?.name;
+      session.name = data && data[0]?.name;
       setIsEditing(false);
       sendSuccessFeedback();
     } catch (exception: unknown) {
@@ -76,7 +77,7 @@ const ActiveSession = () => {
   const cheersli = async () => {
     setLoadCheersli(true);
     const profile = await getProfile(user.id);
-    const devices = session?.value?.user?.devices?.map(
+    const devices = session?.user?.devices?.map(
       (device) => device.device_token,
     );
 
@@ -89,23 +90,23 @@ const ActiveSession = () => {
     <Page>
       <PageHeader truncate={false}>Session</PageHeader>
       <div className="flex w-full flex-col gap-4 px-8">
-        {session.loading && (
+        {sessionLoading && (
           <p className="text-sm text-gray-500">Loading Session...</p>
         )}
-        {!session.loading && session.value && (
+        {!sessionLoading && session && (
           <>
             <h2 className="flex items-center text-xl font-medium">
-              {session.value?.name}{' '}
+              {session.name}{' '}
             </h2>
-            {session.value?.location && (
+            {session.location && (
               <LocationTag
-                location={session.value.location}
-                locationName={session.value.locationName}
+                location={session.location}
+                locationName={session.locationName}
               />
             )}
           </>
         )}
-        {!session.loading && session.value?.hasEnded && (
+        {!sessionLoading && session?.hasEnded && (
           <>
             <p className="text-sm text-red-500">
               This session has already ended
@@ -115,53 +116,48 @@ const ActiveSession = () => {
             </LinkButton>
           </>
         )}
-        {!session.loading &&
-          !session.value?.hasEnded &&
-          user.id !== session?.value?.user.id && (
-            <>
-              <p className="text-sm text-gray-500">
-                {session.value?.user.username} has started a new session. It
-                will end automatically at{' '}
-                {dayjs(session.value?.endedAt).format('HH:MM')}.
-              </p>
-              <Button
-                primary
-                onClick={cheersli}
-                disabled={sentCheersli || loadCheersli}
-              >
-                {sentCheersli ? 'Sent Cheersli' : 'Cheersli 🍻'}
-              </Button>
-            </>
-          )}
-        {!session.loading &&
-          !session.value?.hasEnded &&
-          user.id === session?.value?.user.id && (
-            <>
-              <p className="text-sm text-gray-500 dark:text-neutral-400">
-                You started this session. It will end automatically at{' '}
-                {dayjs(session.value?.endedAt).format('HH:MM')}.
-              </p>
-              <hr className="dark:border-neutral-800" />
-              <p className="text-sm text-gray-500 dark:text-neutral-400">
-                Looks like you are alone. Invite some of your friends to join
-                you or go home now.
-              </p>
-              <Button disabled={true} icon={<UserGroupIcon />}>
-                Invite Friends
-              </Button>
-              <Button
-                disabled={loading}
-                primary
-                onClick={() => setIsEditing(true)}
-                icon={<PencilSquareIcon />}
-              >
-                Change Session Name
-              </Button>
-              <Button disabled={loading} danger onClick={endCurrentSession}>
-                End Session
-              </Button>
-            </>
-          )}
+        {!sessionLoading && !session?.hasEnded && user.id !== session?.user.id && (
+          <>
+            <p className="text-sm text-gray-500">
+              {session?.user.username} has started a new session. It will end
+              automatically at {dayjs(session?.endedAt).format('HH:MM')}.
+            </p>
+            <Button
+              primary
+              onClick={cheersli}
+              disabled={sentCheersli || loadCheersli}
+            >
+              {sentCheersli ? 'Sent Cheersli' : 'Cheersli 🍻'}
+            </Button>
+          </>
+        )}
+        {!sessionLoading && !session?.hasEnded && user.id === session?.user.id && (
+          <>
+            <p className="text-sm text-gray-500 dark:text-neutral-400">
+              You started this session. It will end automatically at{' '}
+              {dayjs(session.endedAt).format('HH:MM')}.
+            </p>
+            <hr className="dark:border-neutral-800" />
+            <p className="text-sm text-gray-500 dark:text-neutral-400">
+              Looks like you are alone. Invite some of your friends to join you
+              or go home now.
+            </p>
+            <Button disabled={true} icon={<UserGroupIcon />}>
+              Invite Friends
+            </Button>
+            <Button
+              disabled={loading}
+              primary
+              onClick={() => setIsEditing(true)}
+              icon={<PencilSquareIcon />}
+            >
+              Change Session Name
+            </Button>
+            <Button disabled={loading} danger onClick={endCurrentSession}>
+              End Session
+            </Button>
+          </>
+        )}
       </div>
 
       <Dialog isShowing={isEditing} closeModal={() => setIsEditing(false)}>
@@ -169,7 +165,7 @@ const ActiveSession = () => {
           <h2 className="text-2xl font-bold">Change Session Name</h2>
           <form onSubmit={updateSessionName} className="flex flex-col gap-6">
             <Input
-              placeholder={session.value?.name}
+              placeholder={session?.name}
               label="Session Name"
               value={name}
               error={error}

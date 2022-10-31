@@ -5,8 +5,9 @@ import store from '~/store';
 import { ElementList, ListItem } from '~/types/List';
 import { Profile } from '~/services/friends';
 import { supabase } from '~/services/supabase-client';
+import { useQuery } from 'react-query';
 
-export const listSessions = async (
+const listSessions = async (
   top = 2,
   onlyActives = false,
 ): Promise<ElementList<Session>> => {
@@ -45,6 +46,10 @@ export const listSessions = async (
   });
 
   return { list: sessions || [], count };
+};
+
+export const useSessions = (top = 2, onlyActives = false) => {
+  return useQuery('sessions', () => listSessions(top, onlyActives));
 };
 
 export const createNewSession = async (
@@ -89,7 +94,7 @@ export const updateSession = async (id: string, newName: string) => {
   return { data, error };
 };
 
-export const getSession = async (id: string): Promise<Session> => {
+const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
@@ -115,6 +120,10 @@ export const getSession = async (id: string): Promise<Session> => {
     hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
     locationName: data.location_name,
   };
+};
+
+export const useSession = (id: string) => {
+  return useQuery(['session', id], () => getSession(id));
 };
 
 export const endSession = async (id: string) => {

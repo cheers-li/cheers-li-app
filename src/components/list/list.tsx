@@ -47,6 +47,9 @@ export const List: FC<ListProps<ListItem>> = ({
         ))}
       </ul>
 
+      {/* Spacer */}
+      {!loading && items.length !== 0 && <div className="py-8"></div>}
+
       {!loading && items.length === 0 && (
         <div className="pb-64">
           <div

@@ -1,5 +1,5 @@
 import { ElementType, FC } from 'react';
-import { Loader } from '~/components/loader';
+import { RingLoader } from '~/components/loaders/ring';
 import { ListItem } from '~/types/List';
 
 export interface ListProps<T> {
@@ -28,7 +28,11 @@ export const List: FC<ListProps<ListItem>> = ({
       >
         <h2>
           {title}{' '}
-          {loading ? <Loader size={20} className="ml-2 pt-1" /> : `(${count})`}
+          {loading ? (
+            <RingLoader size={20} className="ml-2 pt-1" />
+          ) : (
+            `(${count})`
+          )}
         </h2>
         {titleContent}
       </div>

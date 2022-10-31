@@ -6,7 +6,7 @@ export type Props = {
   size?: number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const Loader = ({ size = 80, className, style }: Props) => {
+export const RingLoader = ({ size = 80, className, style }: Props) => {
   const [dark] = store.useState<boolean>('dark');
   const color = dark ? '#e5e5e5' : '#1f2937';
 

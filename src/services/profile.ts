@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
-import { Profile } from './friends';
+import { Profile } from '~/services/friends';
 import {
   FriendStatus,
   getFriendStatus,
   SearchProfile,
 } from '~/services/friends';
-import { supabase } from './supabase-client';
+import { supabase } from '~/services/supabase-client';
 
 export const getProfile = async (userId?: string) => {
   if (!userId) {

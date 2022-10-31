@@ -1,6 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
 import { Session, User } from '@supabase/supabase-js';
-import { supabase } from './supabase-client';
+import { supabase } from '~/services/supabase-client';
 
 export const getStoredSession = async (): Promise<Session | undefined> => {
   const { value } = await Preferences.get({ key: 'session' });

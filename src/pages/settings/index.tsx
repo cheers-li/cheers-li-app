@@ -11,7 +11,7 @@ import {
   MapPinIcon,
   PaintBrushIcon,
 } from '@heroicons/react/24/outline';
-import { List } from '~/components/list';
+import { SimpleList } from '~/components/simple-list';
 import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
 import { getProfile } from '~/services/profile';
@@ -96,14 +96,14 @@ const Settings = () => {
         <p className="my-1 text-sm uppercase text-gray-500 dark:text-neutral-300">
           App Settings
         </p>
-        <List listItems={settingsListItem} />
+        <SimpleList listItems={settingsListItem} />
       </div>
 
       <div className="px-4">
         <p className="my-1 text-sm uppercase text-gray-500 dark:text-neutral-300">
           About
         </p>
-        <List listItems={aboutListItem} />
+        <SimpleList listItems={aboutListItem} />
       </div>
 
       <div className="flex w-full flex-col gap-6 px-4">

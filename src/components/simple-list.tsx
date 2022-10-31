@@ -1,17 +1,17 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { FC, ReactNode } from 'react';
 
-interface ListProps {
-  listItems: ListItem[];
+interface SimpleListProps {
+  listItems: SimpleListItem[];
 }
 
-interface ListItem {
+interface SimpleListItem {
   label: string;
   icon: ReactNode;
   onClick: () => void;
 }
 
-export const List: FC<ListProps> = ({ listItems }) => {
+export const SimpleList: FC<SimpleListProps> = ({ listItems }) => {
   return (
     <ul className="rounded-md bg-white dark:bg-neutral-900">
       {listItems.map((item, i) => (

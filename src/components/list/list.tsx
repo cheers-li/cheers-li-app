@@ -1,7 +1,8 @@
 import { ElementType, FC } from 'react';
+import { RingLoader } from '~/components/loaders/ring';
 import { ListItem } from '~/types/List';
 
-interface ListProps<T> {
+export interface ListProps<T> {
   title: string;
   titleContent?: React.ReactNode;
   loading: boolean;
@@ -26,7 +27,12 @@ export const List: FC<ListProps<ListItem>> = ({
         className={`${horizontalPadding} flex items-center justify-between text-gray-800 dark:text-neutral-200`}
       >
         <h2>
-          {title} {!loading && `(${count})`}
+          {title}{' '}
+          {loading ? (
+            <RingLoader size={20} className="ml-2 pt-1" />
+          ) : (
+            `(${count})`
+          )}
         </h2>
         {titleContent}
       </div>
@@ -41,12 +47,17 @@ export const List: FC<ListProps<ListItem>> = ({
         ))}
       </ul>
 
+      {/* Spacer */}
+      {!loading && items.length !== 0 && <div className="py-8"></div>}
+
       {!loading && items.length === 0 && (
-        <div
-          className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center  text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
-        >
-          <div className="font-semibold">No {title} found</div>
-          <div>You do not have any {title}</div>
+        <div className="pb-64">
+          <div
+            className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center  text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
+          >
+            <div className="font-semibold">No {title} found</div>
+            <div>You do not have any {title}</div>
+          </div>
         </div>
       )}
       {loading && (

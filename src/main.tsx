@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from '~/App';
 import { useEffectOnce } from 'react-use';
-import { supabase } from './services/supabase-client';
-import { getStoredSession, getStoredUser, storeSession } from './services/auth';
+import { supabase } from '~/services/supabase-client';
+import { getStoredSession, getStoredUser, storeSession } from '~/services/auth';
 import { PushNotifications } from '@capacitor/push-notifications';
-import { addNewDevices } from './services/devices';
+import { addNewDevices } from '~/services/devices';
 import { Capacitor } from '@capacitor/core';
 
 import '~/index.css';

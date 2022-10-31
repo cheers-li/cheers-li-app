@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { Dialog } from '~/components/dialog';
 import { UserItem } from '~/components/friends/user-item';
+import { RefreshableList } from '~/components/list/refreshable-list';
+import { List } from '~/components/list/list';
 import {
   Profile,
   getRequests,
@@ -15,7 +17,6 @@ import {
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
 import { ElementList } from '~/types/List';
-import { List } from '../list/list';
 
 export const RequestList = () => {
   const [user] = store.useState<User>('user');
@@ -84,7 +85,7 @@ export const RequestList = () => {
 
   return (
     <>
-      <List
+      <RefreshableList
         title="Friend Requests"
         titleContent={
           <button
@@ -117,6 +118,7 @@ export const RequestList = () => {
             </button>
           </UserItem>
         )}
+        reload={loadRequests}
       />
       <Dialog
         isShowing={sentRequestDialog}

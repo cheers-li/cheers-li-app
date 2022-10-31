@@ -2,9 +2,9 @@ import { Provider } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
 import { supabase } from '~/services/supabase-client';
 import { Button } from '~/components/button';
-import { GoogleIcon } from './icons/google-icon';
-import { FacebookIcon } from './icons/facebook-icon';
-import { AppleIcon } from './icons/apple-icon';
+import { GoogleIcon } from '~/components/icons/google-icon';
+import { FacebookIcon } from '~/components/icons/facebook-icon';
+import { AppleIcon } from '~/components/icons/apple-icon';
 import { sendSuccessFeedback } from '~/services/haptics';
 
 interface ExternalProviderLoginProps {

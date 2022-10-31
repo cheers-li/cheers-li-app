@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { getLastActive } from '~/helper/time';
 import { ElementList } from '~/types/List';
-import { supabase } from './supabase-client';
+import { supabase } from '~/services/supabase-client';
 
 export const getFriends = async (
   userId?: string,

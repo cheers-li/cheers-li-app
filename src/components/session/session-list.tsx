@@ -1,20 +1,33 @@
-import { useAsync } from 'react-use';
-import { listSessions } from '~/services/session';
-import { List } from '../list/list';
-import { SessionListItem } from './session-list-item';
+import { useState } from 'react';
+import { useEffectOnce } from 'react-use';
+import { RefreshableList } from '~/components/list/refreshable-list';
+import { SessionListItem } from '~/components/session/session-list-item';
+import { listSessions, Session } from '~/services/session';
+import { ElementList } from '~/types/List';
 
 export const SessionList = () => {
-  const sessions = useAsync(() => listSessions(10));
+  const [sessions, setSessions] = useState<ElementList<Session>>();
+  const [loading, setLoading] = useState(false);
+
+  const reloadSessions = async () => {
+    setLoading(true);
+    const list = await listSessions(10);
+    setSessions(list);
+    setLoading(false);
+  };
+
+  useEffectOnce(() => {
+    reloadSessions();
+  });
 
   return (
-    <div>
-      <List
-        title="Sessions"
-        loading={sessions.loading}
-        items={sessions.value?.list || []}
-        count={sessions.value?.count || 0}
-        ItemComponent={SessionListItem}
-      />
-    </div>
+    <RefreshableList
+      title="Sessions"
+      loading={loading}
+      items={sessions?.list || []}
+      count={sessions?.count || 0}
+      ItemComponent={SessionListItem}
+      reload={reloadSessions}
+    />
   );
 };

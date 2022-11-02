@@ -132,7 +132,7 @@ const MessagesIndex = () => {
 
       {!searching && (
         <Tab.Group onChange={updateTabIndex}>
-          <Tab.List className="fixed bottom-24 left-1/2 -translate-x-1/2 transform rounded-full bg-sky-900 p-2 text-white dark:bg-neutral-900">
+          <Tab.List className="fixed bottom-24 left-1/2 z-10 -translate-x-1/2 transform rounded-full bg-sky-900 p-2 text-white dark:bg-neutral-900">
             <div ref={tabsParent} className="flex items-center justify-center">
               <div
                 className="fixed left-0 h-8 w-24 rounded-full bg-sky-700 transition-all duration-300 ease-in-out dark:bg-neutral-700"

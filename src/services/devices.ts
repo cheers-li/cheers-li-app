@@ -1,5 +1,5 @@
 import { Capacitor } from '@capacitor/core';
-import { supabase } from './supabase-client';
+import { supabase } from '~/services/supabase-client';
 
 export const getDevices = async (userId?: string) => {
   const { data, error } = await supabase

@@ -1,4 +1,4 @@
-import { Profile } from './friends';
+import { Profile } from '~/services/friends';
 
 export const sendCheersli = async (user: Profile, deviceToken: string[]) => {
   const baseUrl = import.meta.env.VITE_SUPABASE_FUNCTIONS_URL;

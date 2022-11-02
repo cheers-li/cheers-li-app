@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Navigation from './navigation';
+import Navigation from '~/components/navigation';
 
 interface PageProps {
   children: React.ReactNode;

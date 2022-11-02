@@ -39,6 +39,7 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
+    "react-simple-pull-to-refresh": "^1.3.3",
     "react-use": "^17.4.0",
     "state-pool": "^0.7.1"
   },

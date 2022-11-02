@@ -1,4 +1,4 @@
-import { Location } from './session';
+import { Location } from '~/services/session';
 
 export const getNearbyPlaces = async (type?: string, location?: Location) => {
   if (!location || !type) return [];

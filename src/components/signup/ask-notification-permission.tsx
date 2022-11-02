@@ -1,7 +1,7 @@
 import { PushNotifications } from '@capacitor/push-notifications';
 import { FC } from 'react';
-import { Button } from '../button';
-import { Dialog } from '../dialog';
+import { Button } from '~/components/button';
+import { Dialog } from '~/components/dialog';
 
 interface AskNotificationPermissionProps {
   complete: () => void;

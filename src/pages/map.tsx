@@ -4,14 +4,14 @@ import Navigation from '~/components/navigation';
 import MapContainer from '~/components/map/map-container';
 import TagList from '~/components/tag-list';
 import { useCallback, useState } from 'react';
-import { listSessions, Session, Tag } from '~/services/session';
+import { useSessions, Tag } from '~/services/session';
 import { useEffectOnce } from 'react-use';
 import { Geolocation } from '@capacitor/geolocation';
 
 const MapView = () => {
   const [activeTag, setActiveTag] = useState<Tag>();
   const [position, setPosition] = useState<[number, number]>();
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const { data: sessions } = useSessions(10, true);
   const [zoomCoords, setZoomCoords] = useState<[number, number]>();
 
   const updateActiveTag = (tag: Tag) => {
@@ -19,9 +19,10 @@ const MapView = () => {
   };
 
   const filteredSessions = useCallback(() => {
-    if (!activeTag) return sessions;
+    if (!sessions) return [];
+    if (!activeTag) return sessions.list;
 
-    return sessions.filter((s) => s.sessionTag === activeTag?.id);
+    return sessions.list.filter((s) => s.sessionTag === activeTag?.id);
   }, [activeTag, sessions]);
 
   const zoomOnSession = (sessionId: string) => {
@@ -30,7 +31,7 @@ const MapView = () => {
       return;
     }
 
-    const session = sessions.find((s) => s.id === sessionId);
+    const session = sessions?.list.find((s) => s.id === sessionId);
     if (!session || !session.location) return;
 
     setZoomCoords([
@@ -41,8 +42,6 @@ const MapView = () => {
 
   const fetchData = async () => {
     const pos = await Geolocation.getCurrentPosition();
-    const { list } = await listSessions(20, true);
-    setSessions(list);
     setPosition([pos.coords.longitude, pos.coords.latitude]);
   };
 

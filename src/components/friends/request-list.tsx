@@ -2,51 +2,33 @@ import { ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useEffectOnce } from 'react-use';
 import { Dialog } from '~/components/dialog';
 import { UserItem } from '~/components/friends/user-item';
 import { RefreshableList } from '~/components/list/refreshable-list';
 import { List } from '~/components/list/list';
 import {
   Profile,
-  getRequests,
+  useRequests,
   acceptRequest,
   FriendStatus,
   removeFriendShip,
 } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
-import { ElementList } from '~/types/List';
 
 export const RequestList = () => {
   const [user] = store.useState<User>('user');
-  const [loading, setLoading] = useState(false);
-  const [requests, setRequests] =
-    store.useState<ElementList<Profile>>('friendRequests');
-  const [sentRequests, setSentRequests] = useState<ElementList<Profile>>();
+  const {
+    data: requests,
+    isFetching: isFetchingRequests,
+    refetch: refetchRequests,
+  } = useRequests(user.id, false, true);
+  const {
+    data: sentRequests,
+    isFetching: isFetchingSentRequests,
+    refetch: refetchSentRequests,
+  } = useRequests(user.id, true);
   const [sentRequestDialog, setSentRequestDialog] = useState(false);
-
-  const loadRequests = async () => {
-    setLoading(true);
-    const req = await getRequests(user.id);
-    if (req) {
-      setRequests(req);
-    }
-    setLoading(false);
-  };
-
-  const loadSentRequests = async () => {
-    const req = await getRequests(user.id, true);
-    if (req) {
-      setSentRequests(req);
-    }
-  };
-
-  useEffectOnce(() => {
-    if (!requests) {
-      loadRequests();
-    }
-  });
 
   const acceptHandler = async (friend: Profile) => {
     if (!user) return;
@@ -54,7 +36,7 @@ export const RequestList = () => {
     const res = await acceptRequest(friend.id, user?.id);
     if (res) {
       sendSuccessFeedback();
-      loadRequests();
+      refetchRequests();
     }
   };
 
@@ -70,16 +52,15 @@ export const RequestList = () => {
       sendSuccessFeedback();
 
       if (sent) {
-        loadSentRequests();
+        refetchSentRequests();
       } else {
-        loadRequests();
+        refetchRequests();
       }
     }
   };
 
   const displaySentRequestDialog = async () => {
     sendSuccessFeedback();
-    await loadSentRequests();
     setSentRequestDialog(true);
   };
 
@@ -96,7 +77,7 @@ export const RequestList = () => {
             <ChevronRightIcon className="ml-1 h-4 w-4" />
           </button>
         }
-        loading={loading}
+        loading={isFetchingRequests}
         items={requests?.list || []}
         count={requests?.count || 0}
         ItemComponent={({ item }) => (
@@ -118,7 +99,7 @@ export const RequestList = () => {
             </button>
           </UserItem>
         )}
-        reload={loadRequests}
+        reload={refetchRequests}
       />
       <Dialog
         isShowing={sentRequestDialog}
@@ -127,7 +108,7 @@ export const RequestList = () => {
       >
         <List
           title="Sent Requests"
-          loading={loading}
+          loading={isFetchingSentRequests}
           items={sentRequests?.list || []}
           count={sentRequests?.count || 0}
           horizontalPadding="px-4"

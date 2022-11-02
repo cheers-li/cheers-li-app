@@ -67,6 +67,11 @@ const Settings = () => {
     return data;
   });
 
+  const logout = async () => {
+    await signOut();
+    navigate('/login');
+  };
+
   return (
     <Page>
       <PageHeader>Settings</PageHeader>
@@ -107,7 +112,7 @@ const Settings = () => {
       </div>
 
       <div className="flex w-full flex-col gap-6 px-4">
-        <Button danger onClick={signOut}>
+        <Button danger onClick={logout}>
           Logout
         </Button>
         {!appInfo.loading && appInfo.value && (

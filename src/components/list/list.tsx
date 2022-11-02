@@ -27,11 +27,11 @@ export const List: FC<ListProps<ListItem>> = ({
         className={`${horizontalPadding} flex items-center justify-between text-gray-800 dark:text-neutral-200`}
       >
         <h2>
-          {title}{' '}
+          {title}
           {loading ? (
-            <RingLoader size={20} className="ml-2 pt-1" />
+            <RingLoader size={18} className="ml-2 pt-1" />
           ) : (
-            `(${count})`
+            ` (${count})`
           )}
         </h2>
         {titleContent}
@@ -60,12 +60,12 @@ export const List: FC<ListProps<ListItem>> = ({
           </div>
         </div>
       )}
-      {loading && (
+      {loading && items.length === 0 && (
         <div
           className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
         >
           <div className="font-semibold">Loading {title}</div>
-          <div>Your {title} are loaded</div>
+          <div>Your {title} are loading</div>
         </div>
       )}
     </div>

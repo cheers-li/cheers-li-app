@@ -40,31 +40,44 @@ platform :android do
         merge_commit_filtering: "exclude_merges",
         quiet: true
         )
-      add_git_tag(tag: "android/latest", sign: true)
+      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: true)
       end
     # UI.message(changelog)
-    File.open("#{Dir.pwd}/metadata/android/en-US/changelogs/#{version_code}.txt", 'w') { |file| file.write("Git changelog:\n#{changelog}") }
+    if(!File.exists?("#{Dir.pwd}/metadata/android/en-US/changelogs/#{version_code}.txt"))
+      File.open("#{Dir.pwd}/metadata/android/en-US/changelogs/#{version_code}.txt", 'w') { |file| file.write("Git changelog:\n#{changelog}") }
+      UI.message("Changelog file created at #{Dir.pwd}/metadata/android/en-US/changelogs/#{version_code}.txt")
+    end
     if(git_tag_exists(tag: "android/#{version_code}"))
       UI.message("Tag already exists")
     else
       UI.message("Creating version tag (#{version_code})")
       add_git_tag(
         tag: "android/#{version_code}",
+        message: "Android release version #{version_code}",
         grouping: "android", 
         build_number: "#{version_code}",
         includes_lane: false,
         sign: true)
     end
-    push_git_tags
+    UI.success("Changelog and tags created") 
   end
 
-  lane :remove_tags do
+  desc "Remove remote latest and version tags. If run with local:true, only local tags will be removed"
+  lane :remove_tags do |options|
+    if(options[:local])
+      sh "git tag -d android/latest"
+      sh "git tag -d android/#{get_version_code}"
+      UI.message("Local tags removed")
+      next
+    end
+
     if(git_tag_exists(tag: "android/latest"))
       remove_git_tag(tag: "android/latest")
     end
     if(git_tag_exists(tag: "android/#{get_version_code}"))
       remove_git_tag(tag: "android/#{get_version_code}")
     end
+    UI.success("Remote tags removed")
   end
 
   desc "Build webapp and android app"
@@ -74,7 +87,6 @@ platform :android do
     end
     sh "pnpm install && pnpm sync android"
     increment_version_code
-    increment_version_number(bump_type: "patch")
     gradle(
       task: "clean bundleRelease",
       print_command: false,
@@ -85,8 +97,10 @@ platform :android do
         "android.injected.signing.key.password" => ENV["KEYSTORE_ALIAS_PASSWORD"],
       }
     )
-    changelog
+    # changelog
     upload_to_play_store(track: "beta")
+    push_git_tags
+    UI.header("Release created and uploaded to Play Store, version code: #{get_version_code}. Version tags pushed to remote: android/#{get_version_code} and android/latest")
   end
 
   desc "Build debug and test APK for screenshots"
@@ -108,5 +122,15 @@ platform :android do
   lane :deploy do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
+  end
+
+  error do |lane, exception|
+    UI.error("Error: #{exception}")
+    sh "git tag -d android/#{get_version_code}"
+    sh "git tag -d android/latest"
+    UI.message("Tags removed")
+    sh "git restore android/app/build.gradle"
+    UI.message("build.gradle restored")
+    UI.success("Restored git to previous state")
   end
 end

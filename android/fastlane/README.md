@@ -37,7 +37,7 @@ Get changelog from git and create a new versioned tag on the current branch
 [bundle exec] fastlane android remove_tags
 ```
 
-
+Remove remote latest and version tags. If run with local:true, only local tags will be removed
 
 ### android beta
 

@@ -7,9 +7,9 @@ import { Input } from '~/components/input';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   addFriend,
-  Profile,
   SearchProfile,
   searchUsers,
+  useRequests,
 } from '~/services/friends';
 import { useDebounce } from '~/helper/debounce';
 import { SearchedUserItem } from '~/components/friends/searched-user-item';
@@ -19,10 +19,9 @@ import { List } from '~/components/list/list';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { useEffectOnce } from 'react-use';
-import { ElementList } from '~/types/List';
 import { NotificationDot } from '~/components/notification-dot';
 
-const MessagesIndex = () => {
+const FriendsIndex = () => {
   const [user] = store.useState<User>('user');
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>('');
@@ -40,7 +39,7 @@ const MessagesIndex = () => {
     left: 0,
   });
 
-  const [requests] = store.useState<ElementList<Profile>>('friendRequests');
+  const { data: requests } = useRequests(user.id, false, true);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -154,7 +153,7 @@ const MessagesIndex = () => {
                 className="relative block rounded-full px-6 py-1 outline-none"
               >
                 Requests
-                {requests.count != null && requests.count > 0 && (
+                {requests?.count != null && requests.count > 0 && (
                   <div className="absolute right-0 top-0 mt-2 mr-2">
                     <NotificationDot />
                   </div>
@@ -178,4 +177,4 @@ const MessagesIndex = () => {
   );
 };
 
-export default MessagesIndex;
+export default FriendsIndex;

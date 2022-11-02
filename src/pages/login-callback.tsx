@@ -57,6 +57,11 @@ const LoginCallback = () => {
       case SignUpState.LOAD_USER: {
         setShowUserLoading(true);
 
+        if (user) {
+          setCurrentState(SignUpState.LOAD_USER_COMPLETE);
+          break;
+        }
+
         const session = supabase.auth.session();
         if (!session || !session.access_token) {
           console.error('No active session found');
@@ -65,6 +70,7 @@ const LoginCallback = () => {
         }
 
         const result = await supabase.auth.api.getUser(session.access_token);
+
         setGlobalUser(result.user);
         storeUser(result.user);
 

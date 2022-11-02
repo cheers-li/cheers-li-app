@@ -16,7 +16,6 @@ import { User } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const Application = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [_, setGlobalUser] = store.useState<User | null>('user');
 
@@ -25,11 +24,8 @@ const Application = () => {
   useEffectOnce(() => {
     supabase.auth.onAuthStateChange(async (_event, newSession) => {
       if (newSession != null) {
-        setIsAuthenticated(true);
         await storeSession(newSession);
         setGlobalUser(newSession.user);
-      } else {
-        setIsAuthenticated(false);
       }
     });
 
@@ -42,7 +38,6 @@ const Application = () => {
       currentSession &&
       parseInt(currentSession?.expires_at + '000') > Date.now()
     ) {
-      setIsAuthenticated(true);
       setGlobalUser(currentSession.user);
       setIsLoading(false);
       return;
@@ -52,7 +47,6 @@ const Application = () => {
       );
 
       if (!error && session) {
-        setIsAuthenticated(true);
         setGlobalUser(currentSession.user);
         setIsLoading(false);
         return;
@@ -65,18 +59,14 @@ const Application = () => {
         storedSession.refresh_token,
       );
       if (!error && session) {
-        setIsAuthenticated(true);
         setGlobalUser(session.user);
         setIsLoading(false);
         return;
       } else {
         console.log(session, error);
-        setIsAuthenticated(false);
         setIsLoading(false);
         return;
       }
-    } else {
-      setIsAuthenticated(false);
     }
     setIsLoading(false);
   };
@@ -113,9 +103,7 @@ const Application = () => {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          {!isLoading && <App isAuthenticated={isAuthenticated} />}
-        </Router>
+        <Router>{!isLoading && <App />}</Router>
       </QueryClientProvider>
     </React.StrictMode>
   );

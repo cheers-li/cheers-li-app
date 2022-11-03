@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc && vite build",
+    "build:prod": "tsc && VITE_ENVIRONMENT=Production vite build",
     "dev": "vite",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
     "format": "eslint --fix --ext .js,.ts,.jsx,.tsx --ignore-path .eslintignore .",
@@ -15,7 +16,7 @@
     "fastlane-android": "cd android && bundle exec fastlane",
     "fastlane-android:test": "pnpm fastlane-android test",
     "fastlane-android:beta": "pnpm fastlane-android beta",
-    "fastlane-android:deploy": "pnpm fastlane-android deploy"
+    "fastlane-android:release": "pnpm fastlane-android release"
   },
   "dependencies": {
     "@capacitor/android": "^4.1.0",

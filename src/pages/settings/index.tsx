@@ -6,19 +6,23 @@ import { PageHeader } from '~/components/page-header';
 import {
   BellAlertIcon,
   ChevronRightIcon,
+  ExclamationCircleIcon,
   InformationCircleIcon,
   LifebuoyIcon,
+  LockClosedIcon,
   MapPinIcon,
   PaintBrushIcon,
+  PencilIcon,
 } from '@heroicons/react/24/outline';
-import { SimpleList } from '~/components/simple-list';
+import { ListItemType, SimpleList } from '~/components/simple-list';
 import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
-import { getProfile } from '~/services/profile';
+import { deleteUser, getProfile } from '~/services/profile';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { Link, useNavigate } from 'react-router-dom';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
+import { supabase } from '~/services/supabase-client';
 
 const Settings = () => {
   const appInfo = useAsync(async () => {
@@ -30,12 +34,23 @@ const Settings = () => {
     {
       label: 'Help',
       icon: <LifebuoyIcon />,
-      onClick: () => sendErrorFeedback(),
+      isLink: true,
+      link: 'https://www.cheers.li/#faq',
+      type: ListItemType.Default,
+    },
+    {
+      label: 'Privacy',
+      icon: <LockClosedIcon />,
+      isLink: true,
+      link: 'https://www.cheers.li/privacy',
+      type: ListItemType.Default,
     },
     {
       label: 'About',
       icon: <InformationCircleIcon />,
-      onClick: () => sendErrorFeedback(),
+      isLink: true,
+      link: 'https://www.cheers.li/',
+      type: ListItemType.Default,
     },
   ];
 
@@ -44,11 +59,13 @@ const Settings = () => {
       label: 'Notifications',
       icon: <BellAlertIcon />,
       onClick: () => sendErrorFeedback(),
+      type: ListItemType.Default,
     },
     {
       label: 'Location',
       icon: <MapPinIcon />,
       onClick: () => sendErrorFeedback(),
+      type: ListItemType.Default,
     },
     {
       label: 'Theme',
@@ -57,6 +74,22 @@ const Settings = () => {
         navigate('/settings/darkmode');
         sendSuccessFeedback();
       },
+      type: ListItemType.Default,
+    },
+  ];
+
+  const accountListItem = [
+    {
+      label: 'Edit',
+      icon: <PencilIcon />,
+      type: ListItemType.Default,
+      onClick: () => navigate('/settings/edit-profile'),
+    },
+    {
+      label: 'Delete',
+      icon: <ExclamationCircleIcon />,
+      type: ListItemType.Error,
+      onClick: () => deleteAccount(),
     },
   ];
 
@@ -66,6 +99,21 @@ const Settings = () => {
     const { data } = await getProfile(user?.id);
     return data;
   });
+
+  const deleteAccount = async () => {
+    const confirmation = confirm(
+      `Are you sure you want to delete your account?`,
+    );
+    if (!confirmation) return;
+    const isDeleted = await deleteUser(user.id);
+
+    if (isDeleted) {
+      await signOut();
+      return;
+    }
+
+    alert('Something went wrong while deleting your user. Try again later.');
+  };
 
   return (
     <Page>
@@ -104,6 +152,13 @@ const Settings = () => {
           About
         </p>
         <SimpleList listItems={aboutListItem} />
+      </div>
+
+      <div className="px-4">
+        <p className="my-1 text-sm uppercase text-gray-500 dark:text-neutral-300">
+          Account
+        </p>
+        <SimpleList listItems={accountListItem} />
       </div>
 
       <div className="flex w-full flex-col gap-6 px-4">

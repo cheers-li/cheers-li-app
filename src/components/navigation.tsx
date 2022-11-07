@@ -5,15 +5,16 @@ import {
   Cog6ToothIcon,
   UsersIcon,
 } from '@heroicons/react/24/outline';
+import { User } from '@supabase/supabase-js';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import { NotificationDot } from '~/components/notification-dot';
-import { Profile } from '~/services/friends';
+import { useRequests } from '~/services/friends';
 import store from '~/store';
-import { ElementList } from '~/types/List';
 
 const Navigation = () => {
-  const [requests] = store.useState<ElementList<Profile>>('friendRequests');
+  const [user] = store.useState<User>('user');
+  const { data: requests } = useRequests(user.id);
 
   return (
     <>
@@ -63,7 +64,7 @@ const Navigation = () => {
               })
             }
           >
-            {requests.count != null && requests.count > 0 && (
+            {requests?.count != null && requests.count > 0 && (
               <div className="absolute right-0 top-0 mt-2 mr-2">
                 <NotificationDot />
               </div>

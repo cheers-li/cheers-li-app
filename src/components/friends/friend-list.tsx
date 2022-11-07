@@ -1,31 +1,14 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
-import { useState } from 'react';
-import { useEffectOnce } from 'react-use';
 import { UserItem } from '~/components/friends/user-item';
 import { RefreshableList } from '~/components/list/refreshable-list';
-import { getFriends, Profile, removeFriendShip } from '~/services/friends';
+import { useFriends, Profile, removeFriendShip } from '~/services/friends';
 import { sendSuccessFeedback } from '~/services/haptics';
 import store from '~/store';
-import { ElementList } from '~/types/List';
 
 export const FriendList = () => {
   const [user] = store.useState<User>('user');
-  const [friends, setFriends] = useState<ElementList<Profile>>();
-  const [loading, setLoading] = useState(false);
-
-  const loadFriends = async () => {
-    setLoading(true);
-    const res = await getFriends(user.id);
-    if (res) {
-      setFriends(res);
-    }
-    setLoading(false);
-  };
-
-  useEffectOnce(() => {
-    loadFriends();
-  });
+  const { data: friends, isFetching, refetch } = useFriends(user.id);
 
   const removeFriend = async (friend: Profile) => {
     const confirmation = confirm(
@@ -35,14 +18,14 @@ export const FriendList = () => {
     const data = await removeFriendShip(friend.id, user.id);
     if (data) {
       sendSuccessFeedback();
-      loadFriends();
+      refetch();
     }
   };
 
   return (
     <RefreshableList
       title="Friends"
-      loading={loading}
+      loading={isFetching}
       items={friends?.list || []}
       count={friends?.count || 0}
       ItemComponent={({ item }) => (
@@ -54,7 +37,7 @@ export const FriendList = () => {
           </button>
         </UserItem>
       )}
-      reload={loadFriends}
+      reload={refetch}
     />
   );
 };

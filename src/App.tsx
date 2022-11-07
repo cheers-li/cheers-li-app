@@ -1,55 +1,16 @@
-import { FC, Suspense, useEffect } from 'react';
-import { useNavigate, useRoutes } from 'react-router-dom';
-import routes from '~react-pages';
+import { Suspense, useEffect } from 'react';
 import AppUrlListener from '~/AppUrlListener';
 import { useTheme } from '~/helper/theme';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
-import { getRequests, Profile } from '~/services/friends';
-import { ElementList } from '~/types/List';
+import { useRequests } from '~/services/friends';
+import Routes from '~/Routes';
 
-const publicPages = [
-  '/welcome',
-  '/login',
-  '/register',
-  '/email-login',
-  '/login-callback',
-  '/confirm-email',
-];
-
-interface AppProps {
-  isAuthenticated: boolean | undefined;
-}
-
-const App: FC<AppProps> = ({ isAuthenticated }) => {
-  const navigate = useNavigate();
+const App = () => {
   const [user] = store.useState<User>('user');
-  const [_, setRequests] =
-    store.useState<ElementList<Profile>>('friendRequests');
 
-  useEffect(() => {
-    const path = location.pathname;
-    if (isAuthenticated === false && !publicPages.includes(path)) {
-      navigate('welcome');
-    }
-  }, [isAuthenticated, navigate]);
-
-  const isNotPublicPage = !publicPages.includes(location.pathname);
-
-  const loadGlobalData = async () => {
-    if (!user) return;
-    const req = await getRequests(user.id);
-    if (req) {
-      setRequests(req);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated === true && isNotPublicPage) {
-      loadGlobalData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isNotPublicPage]);
+  // Load Global State Data
+  useRequests(user?.id);
 
   const [isDark] = useTheme();
   useEffect(() => {
@@ -71,7 +32,7 @@ const App: FC<AppProps> = ({ isAuthenticated }) => {
         className="h-screen w-screen overflow-auto bg-gray-50 text-black dark:bg-black dark:text-white"
         style={{ WebkitTapHighlightColor: 'transparent' }}
       >
-        {useRoutes(routes)}
+        <Routes />
       </div>
     </Suspense>
   );

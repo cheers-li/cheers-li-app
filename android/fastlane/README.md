@@ -55,13 +55,13 @@ Build webapp and android app
 
 Build debug and test APK for screenshots
 
-### android deploy
+### android release
 
 ```sh
-[bundle exec] fastlane android deploy
+[bundle exec] fastlane android release
 ```
 
-Deploy a new version to the Google Play
+Release a new version to the Google Play on production track
 
 ----
 

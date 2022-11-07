@@ -2,10 +2,9 @@ import dayjs from 'dayjs';
 import { getLastActive } from '~/helper/time';
 import { ElementList } from '~/types/List';
 import { supabase } from '~/services/supabase-client';
+import { useQuery } from 'react-query';
 
-export const getFriends = async (
-  userId?: string,
-): Promise<ElementList<Profile>> => {
+const getFriends = async (userId?: string): Promise<ElementList<Profile>> => {
   const { data, error, count } = await supabase
     .from('friends')
     .select(
@@ -38,6 +37,10 @@ export const getFriends = async (
   });
 
   return { list: friendList || [], count };
+};
+
+export const useFriends = (userId?: string) => {
+  return useQuery('friends', () => getFriends(userId));
 };
 
 export const searchUsers = async (
@@ -84,10 +87,12 @@ export const addFriend = async (userId: string, friendId: string) => {
   return data;
 };
 
-export const getRequests = async (
+const getRequests = async (
   userId?: string,
   sent = false,
 ): Promise<ElementList<Profile>> => {
+  if (!userId) return { list: [], count: 0 };
+
   const { data, error, count } = await supabase
     .from('friends')
     .select(
@@ -116,6 +121,17 @@ export const getRequests = async (
   });
 
   return { list: requests || [], count };
+};
+
+export const useRequests = (
+  userId?: string,
+  sent = false,
+  forceRefetch = false,
+) => {
+  return useQuery(['requests', sent], () => getRequests(userId, sent), {
+    refetchOnWindowFocus: false,
+    refetchOnMount: forceRefetch,
+  });
 };
 
 export const acceptRequest = async (requestor: string, acceptor: string) => {

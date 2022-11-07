@@ -26,14 +26,17 @@ export const SimpleList: FC<SimpleListProps> = ({ listItems }) => {
       {listItems.map((item, i) => (
         <li
           key={i}
-          className={clsx('border-b border-gray-100 last:border-none', {
-            'text-red-500': item.type === ListItemType.Error,
-          })}
+          className={clsx(
+            'border-b border-gray-100 last:border-none dark:border-neutral-800',
+            {
+              'text-red-500': item.type === ListItemType.Error,
+            },
+          )}
         >
           <a
             href={item.isLink ? item.link : undefined}
             onClick={item.onClick}
-            className="flex justify-between  px-4 py-3 dark:border-neutral-800"
+            className="flex justify-between px-4 py-3 "
           >
             <span className="mr-2 h-6 w-6">{item.icon}</span>
             <span className="flex-1">{item.label}</span>

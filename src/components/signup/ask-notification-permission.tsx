@@ -35,9 +35,6 @@ export const AskNotificationPermission: FC<AskNotificationPermissionProps> = ({
         <Button primary onClick={setLocationPermission}>
           Enable Notification
         </Button>
-        <Button secondary onClick={complete}>
-          I do not want to receive notifications
-        </Button>
       </div>
     </Dialog>
   );

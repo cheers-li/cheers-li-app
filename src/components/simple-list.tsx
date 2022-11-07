@@ -1,4 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import { FC, ReactNode } from 'react';
 
 interface SimpleListProps {
@@ -8,7 +9,15 @@ interface SimpleListProps {
 interface SimpleListItem {
   label: string;
   icon: ReactNode;
-  onClick: () => void;
+  type: ListItemType;
+  isLink?: boolean;
+  link?: string;
+  onClick?: () => void;
+}
+
+export enum ListItemType {
+  Default,
+  Error,
 }
 
 export const SimpleList: FC<SimpleListProps> = ({ listItems }) => {
@@ -17,12 +26,24 @@ export const SimpleList: FC<SimpleListProps> = ({ listItems }) => {
       {listItems.map((item, i) => (
         <li
           key={i}
-          onClick={item.onClick}
-          className="flex justify-between border-b border-gray-100 px-4 py-3 last:border-none dark:border-neutral-800"
+          className={clsx(
+            'border-b border-gray-100 last:border-none dark:border-neutral-800',
+            {
+              'text-red-500': item.type === ListItemType.Error,
+            },
+          )}
         >
-          <span className="mr-2 h-6 w-6">{item.icon}</span>
-          <span className="flex-1">{item.label}</span>
-          <ChevronRightIcon className="h-6 w-6" />
+          <a
+            href={item.isLink ? item.link : undefined}
+            onClick={item.onClick}
+            className="flex justify-between px-4 py-3 "
+          >
+            <span className="mr-2 h-6 w-6">{item.icon}</span>
+            <span className="flex-1">{item.label}</span>
+            {item.type === ListItemType.Default && (
+              <ChevronRightIcon className="h-6 w-6" />
+            )}
+          </a>
         </li>
       ))}
     </ul>

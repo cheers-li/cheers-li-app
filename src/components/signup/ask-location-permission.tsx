@@ -30,9 +30,6 @@ export const AskLocationPermission: FC<AskLocationPermissionProps> = ({
         <Button primary onClick={setLocationPermission}>
           Enable Location
         </Button>
-        <Button secondary onClick={complete}>
-          I do not want to use locations
-        </Button>
       </div>
     </Dialog>
   );

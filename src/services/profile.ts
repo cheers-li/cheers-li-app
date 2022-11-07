@@ -128,3 +128,21 @@ export interface CompleteProfile extends SearchProfile {
   city: string;
   status: FriendStatus;
 }
+
+export const deleteUser = async (userId: string): Promise<boolean> => {
+  const baseUrl = import.meta.env.VITE_SUPABASE_FUNCTIONS_URL;
+  const anon = import.meta.env.VITE_SUPABASE_KEY;
+
+  const response = await fetch(`${baseUrl}/delete-user`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${anon}`,
+    },
+    body: JSON.stringify({
+      user_id: userId,
+    }),
+  });
+
+  return response.ok;
+};

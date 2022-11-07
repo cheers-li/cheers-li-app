@@ -155,7 +155,7 @@ export const useSessionTags = () => {
       return;
     }
 
-    setTags(data);
+    setTags(data.sort((a, b) => a.id - b.id));
   };
 
   useEffect(() => {

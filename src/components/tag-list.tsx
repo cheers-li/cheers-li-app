@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useState } from 'react';
 import { TagItem } from '~/components/tag-item';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { Tag, useSessionTags } from '~/services/session';
@@ -15,6 +16,7 @@ const TagList: React.FC<TagListProps> = ({
   setActiveTag,
 }) => {
   const tags = useSessionTags();
+  const [showMore, setShowMore] = useState(false);
 
   const tagClicked = (tag: Tag) => {
     setActiveTag(tag);
@@ -33,7 +35,7 @@ const TagList: React.FC<TagListProps> = ({
             inline,
         })}
       >
-        {tags.map((tag) => (
+        {tags.slice(0, showMore ? undefined : 4).map((tag) => (
           <li
             key={tag.id}
             className={clsx({
@@ -50,6 +52,13 @@ const TagList: React.FC<TagListProps> = ({
           </li>
         ))}
       </ul>
+
+      <a
+        className="text-sm text-sky-600"
+        onClick={() => setShowMore(!showMore)}
+      >
+        {showMore ? 'Show less' : 'Show more'}
+      </a>
     </>
   );
 };

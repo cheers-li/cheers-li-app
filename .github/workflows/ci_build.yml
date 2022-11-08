@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  Build:
     runs-on: ubuntu-latest
     env:
       VITE_SUPABASE_URL: https://ckiipzxuiudfldnxkxss.supabase.co

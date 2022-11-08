@@ -28,9 +28,11 @@ platform :android do
       changelog = changelog_from_git_commits(
         between: ["android/latest", "HEAD"],
         pretty: "- %s",
-        merge_commit_filtering: "exclude_merges",
+        merge_commit_filtering: "merges_only",
         quiet: true
       )
+      remove_git_tag(tag: "android/latest")
+      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: true)
     else
       UI.message("No previous tag found, creating a new one")
       UI.message("Creating changelog from last tag (#{last_git_tag})")
@@ -97,7 +99,7 @@ platform :android do
         "android.injected.signing.key.password" => ENV["KEYSTORE_ALIAS_PASSWORD"],
       }
     )
-    # changelog
+    changelog
     upload_to_play_store(track: "beta")
     push_git_tags
     UI.header("Release created and uploaded to Play Store, version code: #{get_version_code}. Version tags pushed to remote: android/#{get_version_code} and android/latest")

@@ -28,7 +28,7 @@ platform :android do
       changelog = changelog_from_git_commits(
         between: ["android/latest", "HEAD"],
         pretty: "- %s",
-        merge_commit_filtering: "merges_only",
+        merge_commit_filtering: "only_include_merges",
         quiet: true
       )
       remove_git_tag(tag: "android/latest")
@@ -144,10 +144,13 @@ platform :android do
 
   error do |lane, exception|
     UI.error("Error: #{exception}")
-    sh "git tag -d android/#{get_version_code}"
-    sh "git tag -d android/latest"
+    begin
+      sh "git tag -d android/#{get_version_code} &>/dev/null"
+      sh "git tag -d android/latest &>/dev/null"
+    rescue Exception
+    end
     UI.message("Tags removed")
-    sh "git restore android/app/build.gradle"
+    sh "git restore ../app/build.gradle"
     UI.message("build.gradle restored")
     UI.success("Restored git to previous state")
   end

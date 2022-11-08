@@ -22,7 +22,9 @@ platform :android do
   end
 
   desc "Get changelog from git and create a new versioned tag on the current branch"
-  lane :changelog do
+  lane :changelog do |options|
+    sign = !options[:no_sign]
+    UI.message "Signing tags: #{sign}"
     version_code = get_version_code
     if git_tag_exists(tag: "android/latest")
       changelog = changelog_from_git_commits(
@@ -32,7 +34,7 @@ platform :android do
         quiet: true
       )
       remove_git_tag(tag: "android/latest")
-      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: true)
+      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: sign)
     else
       UI.message("No previous tag found, creating a new one")
       UI.message("Creating changelog from last tag (#{last_git_tag})")
@@ -42,7 +44,7 @@ platform :android do
         merge_commit_filtering: "exclude_merges",
         quiet: true
         )
-      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: true)
+      add_git_tag(tag: "android/latest", message: "Latest Android release", sign: sign)
       end
     # UI.message(changelog)
     if(!File.exists?("#{Dir.pwd}/metadata/android/en-US/changelogs/#{version_code}.txt"))
@@ -59,7 +61,7 @@ platform :android do
         grouping: "android", 
         build_number: "#{version_code}",
         includes_lane: false,
-        sign: true)
+        sign: sign)
     end
     UI.success("Changelog and tags created") 
   end
@@ -99,7 +101,7 @@ platform :android do
         "android.injected.signing.key.password" => ENV["KEYSTORE_ALIAS_PASSWORD"],
       }
     )
-    changelog
+    # changelog(no_sign: options[:no_sign]) # TODO: Fix gpg signing not working
     upload_to_play_store(track: "beta")
     push_git_tags
     UI.header("Release created and uploaded to Play Store, version code: #{get_version_code}. Version tags pushed to remote: android/#{get_version_code} and android/latest")

@@ -10,7 +10,12 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    env:
+      VITE_SUPABASE_URL: https://ckiipzxuiudfldnxkxss.supabase.co
+      VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      VITE_SUPABASE_FUNCTIONS_URL: https://ckiipzxuiudfldnxkxss.functions.supabase.co
+      VITE_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      VITE_ENVIRONMENT: Production
     steps:
       - name: Setup repo
         uses: actions/checkout@v3

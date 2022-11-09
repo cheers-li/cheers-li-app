@@ -21,7 +21,7 @@ jobs:
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
       MATCH_GIT_BEARER_AUTHORIZATION: ${{ secrets.MATCH_GIT_BEARER_AUTHORIZATION }}
-      MATCH_GIT_PRIVATE_KEY: /id_rsa_certificate
+      MATCH_GIT_PRIVATE_KEY: ./id_rsa_certificate
     steps:
       - name: Setup repo
         uses: actions/checkout@v3

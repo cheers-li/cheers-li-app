@@ -20,15 +20,10 @@ jobs:
       FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+      MATCH_GIT_BEARER_AUTHORIZATION: ${{ secrets.MATCH_GIT_BEARER_AUTHORIZATION }}
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
-
-      - name: Setup certificate repo
-        uses: actions/checkout@v3
-        with:
-          repository: 'cheers-li/certificates'
-          ssh-key: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
@@ -40,10 +35,6 @@ jobs:
         with:
           version: 6.x.x
           run_install: true
-
-      - name: Add SSH Key
-        run: |
-          ssh-add - <<< "${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}"
           
       - name: Build
         run: |

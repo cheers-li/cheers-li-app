@@ -8,14 +8,14 @@ import { Session } from '~/services/session';
 
 interface FriendTooltipProps {
   session: Session;
-  center: mapboxgl.LngLat;
+  userPosition: [number, number];
 }
 
-const FriendTooltip = ({ session, center }: FriendTooltipProps) => {
+const FriendTooltip = ({ session, userPosition }: FriendTooltipProps) => {
   const distanceFromUser = formatDistance(
     distance(
-      center.lat,
-      center.lng,
+      userPosition[1],
+      userPosition[0],
       session.location?.coordinates[0],
       session.location?.coordinates[1],
     ),

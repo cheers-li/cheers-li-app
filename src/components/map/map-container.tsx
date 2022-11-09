@@ -69,7 +69,7 @@ const MapContainer = ({
       const tooltipNode = document.createElement('div');
       const tooltipRoot = createRoot(tooltipNode);
       tooltipRoot.render(
-        <FriendTooltip session={session} center={map.current.getCenter()} />,
+        <FriendTooltip session={session} userPosition={position} />,
       );
 
       // make a marker for each feature and add to the map

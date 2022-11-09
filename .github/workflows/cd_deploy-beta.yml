@@ -34,6 +34,10 @@ jobs:
         with:
           version: 6.x.x
           run_install: true
+
+      - name: Add SSH Key
+        run: |
+          ssh-add - <<< "${CERTIFICATE_ACCESS_PRIVATE_KEY}"
           
       - name: Build
         run: |

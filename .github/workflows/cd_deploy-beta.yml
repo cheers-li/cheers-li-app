@@ -53,4 +53,5 @@ jobs:
 
       - name: Push to Testflight
         run: |
+          ssh-add - <<< "${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}"
           pnpm fastlane-ios:beta

@@ -49,7 +49,9 @@ const listSessions = async (
 };
 
 export const useSessions = (top = 2, onlyActives = false) => {
-  return useQuery('sessions', () => listSessions(top, onlyActives));
+  return useQuery(['sessions', top, onlyActives], () =>
+    listSessions(top, onlyActives),
+  );
 };
 
 export const createNewSession = async (

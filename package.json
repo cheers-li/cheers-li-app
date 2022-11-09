@@ -16,7 +16,9 @@
     "fastlane-android": "cd android && bundle exec fastlane",
     "fastlane-android:test": "pnpm fastlane-android test",
     "fastlane-android:beta": "pnpm fastlane-android beta",
-    "fastlane-android:release": "pnpm fastlane-android release"
+    "fastlane-android:release": "pnpm fastlane-android release",
+    "fastlane-ios": "cd ios/App && bundle exec fastlane",
+    "fastlane-ios:beta": "pnpm fastlane-ios beta"
   },
   "dependencies": {
     "@capacitor/android": "^4.1.0",

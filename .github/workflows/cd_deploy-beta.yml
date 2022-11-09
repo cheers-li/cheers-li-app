@@ -24,10 +24,11 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v3
 
-      - name: Setup repo
+      - name: Setup certificate repo
         uses: actions/checkout@v3
-        repository: 'cheers-li/certificates'
-        ssh-key: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
+        with:
+          repository: 'cheers-li/certificates'
+          ssh-key: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1

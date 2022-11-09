@@ -37,7 +37,7 @@ jobs:
 
       - name: Add SSH Key
         run: |
-          ssh-add - <<< "${CERTIFICATE_ACCESS_PRIVATE_KEY}"
+          ssh-add - <<< "${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}"
           
       - name: Build
         run: |

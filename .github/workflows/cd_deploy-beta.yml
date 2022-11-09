@@ -1,0 +1,47 @@
+name: CD - Deploy TestFlight
+
+on:
+  push:
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+
+jobs:
+  Deploy:
+    runs-on: macos-latest
+    env:
+      VITE_SUPABASE_URL: https://ckiipzxuiudfldnxkxss.supabase.co
+      VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      VITE_SUPABASE_FUNCTIONS_URL: https://ckiipzxuiudfldnxkxss.functions.supabase.co
+      VITE_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      VITE_ENVIRONMENT: Production
+      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 14.x
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 6.x.x
+          run_install: true
+          
+      - name: Build
+        run: |
+          pnpm build
+          
+      - name: Sync
+        run: |
+          pnpm cap sync
+
+      - name: Push to Testflight
+        run: |
+          pnpm fastlane-ios:beta

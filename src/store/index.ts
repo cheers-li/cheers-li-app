@@ -8,5 +8,6 @@ store.setState('user', null);
 store.setState('friendRequests', []);
 store.setState('showMap', false);
 store.setState('userPosition', []);
+store.setState('zoomPosition', []);
 
 export default store;

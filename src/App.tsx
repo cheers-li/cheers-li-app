@@ -16,6 +16,7 @@ const App = () => {
   const [showMap] = store.useState<boolean>('showMap');
   const [position, setPosition] =
     store.useState<[number, number]>('userPosition');
+  const [zoomCoords] = store.useState<[number, number]>('zoomPosition');
   const { data: sessions } = useSessions(10, true);
 
   // Load Global State Data
@@ -60,6 +61,7 @@ const App = () => {
           {position && (
             <MapContainer
               position={position}
+              zoomCoords={zoomCoords}
               sessions={sessions?.list || []}
               showMap={showMap}
             />

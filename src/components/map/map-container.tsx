@@ -94,8 +94,10 @@ const MapContainer = ({
     addFriendsMarkers();
   }, [addFriendsMarkers, sessions]);
 
+  // Zoom on coords
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || zoomCoords?.length !== 2) return;
+    console.log('zoom coords', zoomCoords);
     map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
   }, [zoomCoords]);
 

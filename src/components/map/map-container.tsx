@@ -111,8 +111,10 @@ const MapContainer = ({
       pitch: 45,
       bearing: -17.6,
       attributionControl: false,
-      pitchWithRotate: false,
     });
+
+    map.current.setMinPitch(45);
+    map.current.setMaxPitch(45);
 
     map.current?.on('style.load', () => {
       map.current?.setFog({

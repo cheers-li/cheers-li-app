@@ -15,6 +15,12 @@ interface MapContainerProps {
   zoomCoords?: [number, number];
 }
 
+const mapDefaults = {
+  zoom: 13,
+  pitch: 45,
+  bearing: -17.6,
+};
+
 const MapContainer = ({
   showMap = false,
   position,
@@ -36,8 +42,11 @@ const MapContainer = ({
 
     setLoaded(false);
 
-    // Center map on user location
+    // Center map on user location + re-set defaults
     map.current.setCenter(position);
+    map.current.setBearing(mapDefaults.bearing);
+    map.current.setPitch(mapDefaults.pitch);
+    map.current.setZoom(mapDefaults.zoom);
 
     await map.current.once('idle');
     map.current.resize();
@@ -52,6 +61,7 @@ const MapContainer = ({
   const addFriendsMarkers = useCallback(() => {
     if (!map.current) return;
 
+    // Remove old markers
     markers.forEach((m) => m.remove());
     setMarkers([]);
 
@@ -107,10 +117,8 @@ const MapContainer = ({
       container: mapContainer.current,
       projection: { name: 'globe' },
       style: `mapbox://styles/mapbox/${style}`,
-      zoom: 13,
-      pitch: 45,
-      bearing: -17.6,
       attributionControl: false,
+      ...mapDefaults,
     });
 
     map.current.setMinPitch(45);
@@ -144,10 +152,17 @@ const MapContainer = ({
     setCurrentPosition();
   });
 
+  // Update position when map is displayed
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || !showMap) return;
     setCurrentPosition();
   }, [position, showMap, setCurrentPosition]);
+
+  // Unload map when not displayed anymore
+  useEffect(() => {
+    if (!map.current || showMap) return;
+    setLoaded(false);
+  }, [position, showMap]);
 
   return (
     <>

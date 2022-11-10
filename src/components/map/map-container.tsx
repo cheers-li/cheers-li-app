@@ -128,10 +128,15 @@ const MapContainer = ({
     });
 
     // Create user marker
+    const markerContainer = document.createElement('div');
+    markerContainer.className = 'user-marker-container';
     const userMarkerDiv = document.createElement('div');
     userMarkerDiv.className = 'user-marker';
+    markerContainer.appendChild(userMarkerDiv);
     setUserMarker(
-      new mapboxgl.Marker(userMarkerDiv).setLngLat(position).addTo(map.current),
+      new mapboxgl.Marker(markerContainer)
+        .setLngLat(position)
+        .addTo(map.current),
     );
 
     setCurrentPosition();

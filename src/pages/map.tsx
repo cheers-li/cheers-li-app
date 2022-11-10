@@ -15,8 +15,7 @@ const MapView = () => {
   const [activeSession, setActiveSession] = useState<Session>();
   const [zoomCoords, setZoomCoords] =
     store.useState<[number, number]>('zoomPosition');
-  const [position, setPosition] =
-    store.useState<[number, number]>('userPosition');
+  const [_p, setPosition] = store.useState<[number, number]>('userPosition');
   const [_m, setShowMap] = store.useState<boolean>('showMap');
 
   const updateActiveSession = (session: Session) => {
@@ -27,15 +26,17 @@ const MapView = () => {
   const zoomOnSession = (session: Session) => {
     if (!session.location) return;
 
-    // Zoom to user position if tag is unselected
-    const destination =
-      zoomCoords &&
-      session.location.coordinates[1] === zoomCoords[0] &&
-      session.location.coordinates[0] === zoomCoords[1]
-        ? position
-        : session.location.coordinates.slice().reverse();
+    // Don't move if tag is unselected
+    if (
+      session.location.coordinates[0] === zoomCoords[1] &&
+      session.location.coordinates[1] === zoomCoords[0]
+    ) {
+      setZoomCoords([]);
+      return;
+    }
 
-    setZoomCoords([destination[0], destination[1]]);
+    // Need to reverse the coords because mapbox use lat,long and we use long,lat
+    setZoomCoords(session.location.coordinates.slice().reverse());
   };
 
   const fetchData = async () => {

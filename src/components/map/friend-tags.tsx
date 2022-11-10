@@ -21,7 +21,7 @@ const FriendTags: React.FC<FriendTagsProps> = ({ active, setActive }) => {
 
   return (
     <>
-      <ul className="remove-scrollbar overflow-x-auto' flex items-center space-x-4">
+      <ul className="remove-scrollbar flex items-center space-x-4 overflow-x-auto">
         {sessions?.list.map((session) => (
           <li key={session.id}>
             <TagItem

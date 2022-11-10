@@ -9,7 +9,7 @@ platform :ios do
     build_app(
       workspace: "App.xcworkspace",
       scheme: "App",
-      export_method: "appstore",
+      export_method: "app-store",
       export_options: {
         provisioningProfiles: { 
           "li.cheers.app" => "match AppStore li.cheers.app",

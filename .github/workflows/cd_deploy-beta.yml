@@ -19,11 +19,13 @@ jobs:
       FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
-      CERTIFICATE_ACCESS_PRIVATE_KEY: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
-      MATCH_GIT_PRIVATE_KEY: ./id_rsa_certificate
     steps:
       - name: Setup repo
         uses: actions/checkout@v3
+
+      - uses: webfactory/ssh-agent@v0.6.0
+        with:
+          ssh-private-key: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
@@ -35,10 +37,6 @@ jobs:
         with:
           version: 6.x.x
           run_install: true
-
-      - name: Setup Certificate
-        run: |
-          echo $MATCH_GIT_BEARER_AUTHORIZATION >> $MATCH_GIT_PRIVATE_KEY
           
       - name: Build
         run: |

@@ -18,6 +18,7 @@ jobs:
       VITE_ENVIRONMENT: Production
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
     steps:
       - name: Setup repo
         uses: actions/checkout@v3

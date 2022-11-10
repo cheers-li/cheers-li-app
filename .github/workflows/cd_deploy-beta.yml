@@ -16,7 +16,6 @@ jobs:
       VITE_SUPABASE_FUNCTIONS_URL: https://ckiipzxuiudfldnxkxss.functions.supabase.co
       VITE_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
       VITE_ENVIRONMENT: Production
-      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
     steps:

@@ -4,15 +4,15 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     setup_ci
-    match(type: 'development', readonly: true)
+    match(type: 'appstore', readonly: true)
     increment_build_number(xcodeproj: "App.xcodeproj")
     build_app(
       workspace: "App.xcworkspace",
       scheme: "App",
-      export_method: "development",
+      export_method: "appstore",
       export_options: {
         provisioningProfiles: { 
-          "li.cheers.app" => "match Development li.cheers.app",
+          "li.cheers.app" => "match AppStore li.cheers.app",
         }
       }
     )

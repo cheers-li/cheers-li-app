@@ -39,8 +39,6 @@ const MapContainer = ({
     // Center map on user location
     map.current.setCenter(position);
 
-    console.log('set current position', position);
-
     await map.current.once('idle');
     map.current.resize();
     setLoaded(true);
@@ -97,7 +95,6 @@ const MapContainer = ({
   // Zoom on coords
   useEffect(() => {
     if (!map.current || zoomCoords?.length !== 2) return;
-    console.log('zoom coords', zoomCoords);
     map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
   }, [zoomCoords]);
 
@@ -142,7 +139,6 @@ const MapContainer = ({
 
   useEffect(() => {
     if (!map.current) return;
-    console.log('update pos');
     setCurrentPosition();
   }, [position, showMap, setCurrentPosition]);
 

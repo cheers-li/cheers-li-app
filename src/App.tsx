@@ -32,13 +32,16 @@ const App = () => {
   }, [isDark]);
 
   async function getPosition() {
+    if (!user) return;
+
     const pos = await Geolocation.getCurrentPosition();
     setPosition([pos.coords.longitude, pos.coords.latitude]);
   }
 
-  useEffectOnce(() => {
+  useEffect(() => {
     getPosition();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Suspense
@@ -58,7 +61,7 @@ const App = () => {
             'user-select-none pointer-events-none hidden': !showMap,
           })}
         >
-          {position && (
+          {user && position && (
             <MapContainer
               position={position}
               zoomCoords={zoomCoords}

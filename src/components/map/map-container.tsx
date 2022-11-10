@@ -105,7 +105,7 @@ const MapContainer = ({
   // Zoom on coords
   useEffect(() => {
     if (!map.current || zoomCoords?.length !== 2) return;
-    map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
+    map.current?.flyTo({ center: zoomCoords, zoom: 18, duration: 2000 });
   }, [zoomCoords]);
 
   useEffectOnce(() => {

@@ -4,7 +4,7 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     setup_ci
-    match(type: 'appstore', readonly: true)
+    match(type: 'appstore', readonly: is_ci)
     increment_build_number(xcodeproj: "App.xcodeproj")
     build_app(
       workspace: "App.xcworkspace",

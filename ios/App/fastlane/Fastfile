@@ -3,9 +3,10 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
+    setup_ci
     match(type: 'development', readonly: true)
     increment_build_number(xcodeproj: "App.xcodeproj")
-    build_app(workspace: "App.xcworkspace", scheme: "App")
+    build_app(workspace: "App.xcworkspace", scheme: "App", keychain_password=ENV['FASTLANE_KEYCHAIN_PASSWORD'])
     upload_to_testflight
   end
 end

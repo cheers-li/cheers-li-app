@@ -6,7 +6,7 @@ platform :ios do
     setup_ci
     match(type: 'development', readonly: true)
     increment_build_number(xcodeproj: "App.xcodeproj")
-    build_app(workspace: "App.xcworkspace", scheme: "App", export_method: "development", xcargs: "-allowProvisioningUpdates")
+    build_app(workspace: "App.xcworkspace", scheme: "App", export_method: "development")
     upload_to_testflight
   end
 end

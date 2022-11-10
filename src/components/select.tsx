@@ -14,7 +14,7 @@ interface SelectProps {
 }
 
 export const Select: React.FC<SelectProps> = ({
-  customClasses,
+  customClasses = '',
   label,
   defaultValue,
   leftIcon,

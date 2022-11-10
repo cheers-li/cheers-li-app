@@ -1,6 +1,5 @@
 import { MapPinIcon } from '@heroicons/react/24/outline';
 import { ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
-import mapboxgl from 'mapbox-gl';
 import { Badge } from '~/components/badge';
 import { LocationTag } from '~/components/location-tag';
 import { distance, formatDistance } from '~/helper/distance';
@@ -8,16 +7,16 @@ import { Session } from '~/services/session';
 
 interface FriendTooltipProps {
   session: Session;
-  center: mapboxgl.LngLat;
+  userPosition: [number, number];
 }
 
-const FriendTooltip = ({ session, center }: FriendTooltipProps) => {
+const FriendTooltip = ({ session, userPosition }: FriendTooltipProps) => {
   const distanceFromUser = formatDistance(
     distance(
-      center.lat,
-      center.lng,
-      session.location?.coordinates[0],
+      userPosition[0],
+      userPosition[1],
       session.location?.coordinates[1],
+      session.location?.coordinates[0],
     ),
   );
 

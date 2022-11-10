@@ -6,14 +6,17 @@ import { createRoot } from 'react-dom/client';
 import FriendMarker from '~/components/map/friend-marker';
 import clsx from 'clsx';
 import { Session } from '~/services/session';
+import { useEffectOnce } from 'react-use';
 
 interface MapContainerProps {
+  showMap?: boolean;
   position: [number, number];
   sessions: Session[];
   zoomCoords?: [number, number];
 }
 
 const MapContainer = ({
+  showMap = false,
   position,
   sessions,
   zoomCoords,
@@ -24,36 +27,29 @@ const MapContainer = ({
   const mapContainer = useRef(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
+  const [userMarker, setUserMarker] = useState<mapboxgl.Marker | null>(null);
   const [loaded, setLoaded] = useState(false);
-  // const [animated, setAnimated] = useState(true);
 
   // User location
-  const setCurrentPosition = async () => {
+  const setCurrentPosition = useCallback(async () => {
     if (!map.current) return;
 
-    // TODO: removed animation for now
-    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // // @ts-ignore
-    // map.current?.flyTo({ center: coords, preloadOnly: true });
+    setLoaded(false);
 
     // Center map on user location
     map.current.setCenter(position);
+
+    console.log('set current position', position);
+
     await map.current.once('idle');
+    map.current.resize();
     setLoaded(true);
 
-    // // Zoom in
-    // map.current?.flyTo({ center: coords, zoom: 12, duration: 5000 });
+    // Move User marker
+    userMarker?.setLngLat(position);
 
-    // setTimeout(() => {
-    //   setAnimated(false);
-    // }, 2000);
-    // TODO: end of TODO
-
-    // Add User marker
-    const userMarker = document.createElement('div');
-    userMarker.className = 'user-marker';
-    new mapboxgl.Marker(userMarker).setLngLat(position).addTo(map.current);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [position]);
 
   const addFriendsMarkers = useCallback(() => {
     if (!map.current) return;
@@ -73,7 +69,7 @@ const MapContainer = ({
       const tooltipNode = document.createElement('div');
       const tooltipRoot = createRoot(tooltipNode);
       tooltipRoot.render(
-        <FriendTooltip session={session} center={map.current.getCenter()} />,
+        <FriendTooltip session={session} userPosition={position} />,
       );
 
       // make a marker for each feature and add to the map
@@ -98,12 +94,14 @@ const MapContainer = ({
     addFriendsMarkers();
   }, [addFriendsMarkers, sessions]);
 
+  // Zoom on coords
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || zoomCoords?.length !== 2) return;
+    console.log('zoom coords', zoomCoords);
     map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
   }, [zoomCoords]);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (map.current || !mapContainer.current) return;
 
     const style = dark ? 'dark-v10' : 'streets-v11';
@@ -112,10 +110,11 @@ const MapContainer = ({
       container: mapContainer.current,
       projection: { name: 'globe' },
       style: `mapbox://styles/mapbox/${style}`,
-      zoom: 13, // TODO: put something like 3 if animated
+      zoom: 13,
       pitch: 45,
       bearing: -17.6,
       attributionControl: false,
+      pitchWithRotate: false,
     });
 
     map.current?.on('style.load', () => {
@@ -131,8 +130,21 @@ const MapContainer = ({
       }
     });
 
+    // Create user marker
+    const userMarkerDiv = document.createElement('div');
+    userMarkerDiv.className = 'user-marker';
+    setUserMarker(
+      new mapboxgl.Marker(userMarkerDiv).setLngLat(position).addTo(map.current),
+    );
+
     setCurrentPosition();
   });
+
+  useEffect(() => {
+    if (!map.current) return;
+    console.log('update pos');
+    setCurrentPosition();
+  }, [position, showMap, setCurrentPosition]);
 
   return (
     <>
@@ -142,7 +154,7 @@ const MapContainer = ({
           'h-full w-full transform transition-opacity duration-300',
           {
             'pointer-events-none opacity-0': !loaded,
-            // 'pointer-events-none': animated,
+            hidden: !showMap,
           },
         )}
       ></div>

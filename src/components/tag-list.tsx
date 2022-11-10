@@ -6,12 +6,14 @@ import { Tag, useSessionTags } from '~/services/session';
 
 interface TagListProps {
   inline?: boolean;
+  displayAll?: boolean;
   activeTag?: Tag;
   setActiveTag: (tag: Tag) => void;
 }
 
 const TagList: React.FC<TagListProps> = ({
   inline,
+  displayAll = false,
   activeTag,
   setActiveTag,
 }) => {
@@ -35,7 +37,7 @@ const TagList: React.FC<TagListProps> = ({
             inline,
         })}
       >
-        {tags.slice(0, showMore ? undefined : 4).map((tag) => (
+        {tags.slice(0, showMore || displayAll ? undefined : 4).map((tag) => (
           <li
             key={tag.id}
             className={clsx({
@@ -53,12 +55,14 @@ const TagList: React.FC<TagListProps> = ({
         ))}
       </ul>
 
-      <a
-        className="text-sm text-sky-600"
-        onClick={() => setShowMore(!showMore)}
-      >
-        {showMore ? 'Show less' : 'Show more'}
-      </a>
+      {!displayAll && (
+        <a
+          className="text-sm text-sky-600"
+          onClick={() => setShowMore(!showMore)}
+        >
+          {showMore ? 'Show less' : 'Show more'}
+        </a>
+      )}
     </>
   );
 };

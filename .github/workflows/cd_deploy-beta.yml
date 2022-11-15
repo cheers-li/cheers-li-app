@@ -70,3 +70,13 @@ jobs:
       - name: Push to Testflight
         run: |
           pnpm fastlane-ios:beta
+
+      - name: Debug Output
+        if: always()
+        run: |
+          security find-identity -v -p codesigning fastlane_tmp_keychain
+
+      - name: Debug Output 2
+        if: always()
+        run: |
+          security find-certificate -a -c 'Apple Worldwide Developer Relations'

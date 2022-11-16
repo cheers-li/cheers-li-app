@@ -91,15 +91,6 @@ export const CreateSessionReaction: FC<SessionReactionsProps> = ({
 
   return (
     <div>
-      {/* <button
-        className="rounded-full bg-sky-400 p-2 text-white"
-        onTouchStart={() => setIsOpen(true)}
-        onTouchEnd={capture}
-        onTouchMove={(e) => moved(e)}
-      >
-        <FaceSmileIcon className="h-10 w-10" />
-      </button> */}
-
       <div
         onTouchStart={() => setIsOpen(true)}
         onTouchEnd={capture}

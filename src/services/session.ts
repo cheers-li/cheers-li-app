@@ -8,7 +8,6 @@ import { supabase } from '~/services/supabase-client';
 import { useQuery } from 'react-query';
 
 const listSessions = async (
-  top = 2,
   onlyActives = false,
 ): Promise<ElementList<Session>> => {
   let query = supabase
@@ -17,10 +16,10 @@ const listSessions = async (
       'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatarUrl:avatar_url)',
       { count: 'exact' },
     )
-    .order('ended_at', { ascending: false })
-    .range(0, top - 1);
+    .gt('ended_at', dayjs().add(-1, 'days'))
+    .order('ended_at', { ascending: false });
 
-  if (onlyActives) query = query.gte('ended_at', new Date().toISOString());
+  if (onlyActives) query = query.gte('ended_at', dayjs());
 
   const { data, error, count } = await query;
 
@@ -48,10 +47,8 @@ const listSessions = async (
   return { list: sessions || [], count };
 };
 
-export const useSessions = (top = 2, onlyActives = false) => {
-  return useQuery(['sessions', top, onlyActives], () =>
-    listSessions(top, onlyActives),
-  );
+export const useSessions = (onlyActives = false) => {
+  return useQuery(['sessions', onlyActives], () => listSessions(onlyActives));
 };
 
 export const createNewSession = async (

@@ -5,6 +5,7 @@ import { Session } from '~/services/session';
 import { Avatar } from '~/components/avatar';
 import { Badge } from '~/components/badge';
 import { LocationTag } from '~/components/location-tag';
+import dayjs from 'dayjs';
 
 interface SessionListItemProps {
   item: Session;
@@ -36,7 +37,11 @@ export const SessionListItem: FC<SessionListItemProps> = ({
         {session.hasEnded ? (
           <>
             <div className="flex gap-2">
-              <Badge red>Ended</Badge>
+              {dayjs(session.endedAt).isAfter(dayjs().add(-2, 'hours')) ? (
+                <Badge yellow>Recently</Badge>
+              ) : (
+                <Badge red>Ended</Badge>
+              )}
               <span className="text-sm text-gray-500 dark:text-neutral-400">
                 Ended {getLastActive(session.endedAt)}
               </span>

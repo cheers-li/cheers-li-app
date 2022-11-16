@@ -28,6 +28,7 @@ export const FriendList = () => {
       loading={isFetching}
       items={friends?.list || []}
       count={friends?.count || 0}
+      hasSpacer={true}
       ItemComponent={({ item }) => (
         <UserItem item={item}>
           <button onClick={() => removeFriend(item)} className="-mr-2 p-2">

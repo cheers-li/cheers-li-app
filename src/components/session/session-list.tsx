@@ -3,7 +3,7 @@ import { SessionListItem } from '~/components/session/session-list-item';
 import { useSessions } from '~/services/session';
 
 export const SessionList = () => {
-  const { data: sessions, refetch, isFetching } = useSessions(10);
+  const { data: sessions, refetch, isFetching } = useSessions();
 
   return (
     <RefreshableList
@@ -13,6 +13,7 @@ export const SessionList = () => {
       count={sessions?.count || 0}
       ItemComponent={SessionListItem}
       reload={refetch}
+      noItemMessage="There is no active session at the moment. Be the first today to start a session."
     />
   );
 };

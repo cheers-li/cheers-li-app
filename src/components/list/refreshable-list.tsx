@@ -15,7 +15,7 @@ export const RefreshableList: React.FC<RefreshableListProps<ListItem>> = ({
   items,
   ItemComponent,
   reload,
-  horizontalPadding,
+  ...rest
 }) => {
   return (
     <PullToRefresh
@@ -32,7 +32,7 @@ export const RefreshableList: React.FC<RefreshableListProps<ListItem>> = ({
         items={items}
         count={count}
         ItemComponent={ItemComponent}
-        horizontalPadding={horizontalPadding}
+        {...rest}
       />
     </PullToRefresh>
   );

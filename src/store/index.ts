@@ -5,6 +5,7 @@ store.setState('theme', 'system');
 store.setState('dark', false);
 store.setState('sessionTags', []);
 store.setState('user', null);
+store.setState('profile', null);
 store.setState('friendRequests', []);
 store.setState('showMap', false);
 store.setState('userPosition', []);

@@ -10,8 +10,8 @@ import { LocationTag } from '~/components/location-tag';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import { sendCheersli } from '~/services/cheersli';
+import { Profile } from '~/services/friends';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import { getProfile } from '~/services/profile';
 import { endSession, useSession, updateSession } from '~/services/session';
 import store from '~/store';
 
@@ -19,6 +19,7 @@ const ActiveSession = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [user] = store.useState<User>('user');
+  const [profile] = store.useState<Profile>('profile');
   const { data: session, isLoading: sessionLoading } = useSession(
     params.id || '',
   );
@@ -76,12 +77,11 @@ const ActiveSession = () => {
 
   const cheersli = async () => {
     setLoadCheersli(true);
-    const profile = await getProfile(user.id);
     const devices = session?.user?.devices?.map(
       (device) => device.device_token,
     );
 
-    await sendCheersli(profile.data, devices || []);
+    await sendCheersli(profile, devices || []);
     setSentCheersli(true);
     setLoadCheersli(false);
   };

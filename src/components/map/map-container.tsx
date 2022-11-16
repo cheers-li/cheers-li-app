@@ -15,6 +15,12 @@ interface MapContainerProps {
   zoomCoords?: [number, number];
 }
 
+const mapDefaults = {
+  zoom: 13,
+  pitch: 45,
+  bearing: -17.6,
+};
+
 const MapContainer = ({
   showMap = false,
   position,
@@ -36,8 +42,11 @@ const MapContainer = ({
 
     setLoaded(false);
 
-    // Center map on user location
+    // Center map on user location + re-set defaults
     map.current.setCenter(position);
+    map.current.setBearing(mapDefaults.bearing);
+    map.current.setPitch(mapDefaults.pitch);
+    map.current.setZoom(mapDefaults.zoom);
 
     await map.current.once('idle');
     map.current.resize();
@@ -52,6 +61,7 @@ const MapContainer = ({
   const addFriendsMarkers = useCallback(() => {
     if (!map.current) return;
 
+    // Remove old markers
     markers.forEach((m) => m.remove());
     setMarkers([]);
 
@@ -95,7 +105,7 @@ const MapContainer = ({
   // Zoom on coords
   useEffect(() => {
     if (!map.current || zoomCoords?.length !== 2) return;
-    map.current?.flyTo({ center: zoomCoords, zoom: 12, duration: 2000 });
+    map.current?.flyTo({ center: zoomCoords, zoom: 18, duration: 2000 });
   }, [zoomCoords]);
 
   useEffectOnce(() => {
@@ -107,12 +117,12 @@ const MapContainer = ({
       container: mapContainer.current,
       projection: { name: 'globe' },
       style: `mapbox://styles/mapbox/${style}`,
-      zoom: 13,
-      pitch: 45,
-      bearing: -17.6,
       attributionControl: false,
-      pitchWithRotate: false,
+      ...mapDefaults,
     });
+
+    map.current.setMinPitch(45);
+    map.current.setMaxPitch(45);
 
     map.current?.on('style.load', () => {
       map.current?.setFog({
@@ -128,19 +138,31 @@ const MapContainer = ({
     });
 
     // Create user marker
+    const markerContainer = document.createElement('div');
+    markerContainer.className = 'user-marker-container';
     const userMarkerDiv = document.createElement('div');
     userMarkerDiv.className = 'user-marker';
+    markerContainer.appendChild(userMarkerDiv);
     setUserMarker(
-      new mapboxgl.Marker(userMarkerDiv).setLngLat(position).addTo(map.current),
+      new mapboxgl.Marker(markerContainer)
+        .setLngLat(position)
+        .addTo(map.current),
     );
 
     setCurrentPosition();
   });
 
+  // Update position when map is displayed
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current || !showMap) return;
     setCurrentPosition();
   }, [position, showMap, setCurrentPosition]);
+
+  // Unload map when not displayed anymore
+  useEffect(() => {
+    if (!map.current || showMap) return;
+    setLoaded(false);
+  }, [position, showMap]);
 
   return (
     <>

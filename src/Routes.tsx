@@ -1,7 +1,10 @@
 import { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ProtectedRoute } from '~/components/protected-route';
+import { ProtectedRoute } from '~/components/routes/protected-route';
 
+const LoadAuthStateRoute = lazy(
+  () => import('~/components/routes/load-auth-state-route'),
+);
 const Index = lazy(() => import('~/pages'));
 const ConfirmEmail = lazy(() => import('~/pages/confirm-email'));
 const EmailLogin = lazy(() => import('~/pages/email-login'));
@@ -25,17 +28,19 @@ const MainRoutes = () => (
   <Routes>
     {/** Protected Routes */}
     <Route path="/" element={<ProtectedRoute />}>
-      <Route path="/" element={<Index />} />
-      <Route path="/messages" element={<MessagesIndex />} />
-      <Route path="/profiles/:id" element={<ProfileView />} />
-      <Route path="/sessions/:id" element={<ActiveSession />} />
-      <Route path="/sessions/new" element={<NewSession />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="/settings/darkmode" element={<DarkMode />} />
-      <Route path="/settings/edit-profile" element={<EditProfile />} />
-      <Route path="/friends" element={<FriendsIndex />} />
-      <Route path="/map" element={<MapView />} />
-      <Route path="/search" element={<Search />} />
+      <Route path="/" element={<LoadAuthStateRoute />}>
+        <Route path="/" element={<Index />} />
+        <Route path="/messages" element={<MessagesIndex />} />
+        <Route path="/profiles/:id" element={<ProfileView />} />
+        <Route path="/sessions/:id" element={<ActiveSession />} />
+        <Route path="/sessions/new" element={<NewSession />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings/darkmode" element={<DarkMode />} />
+        <Route path="/settings/edit-profile" element={<EditProfile />} />
+        <Route path="/friends" element={<FriendsIndex />} />
+        <Route path="/map" element={<MapView />} />
+        <Route path="/search" element={<Search />} />
+      </Route>
     </Route>
 
     {/** Public Routes */}

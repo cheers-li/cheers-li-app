@@ -19,6 +19,7 @@
     "fastlane-android:release": "pnpm fastlane-android release"
   },
   "dependencies": {
+    "@capacitor-community/camera-preview": "^4.0.0",
     "@capacitor/android": "^4.1.0",
     "@capacitor/app": "^4.0.1",
     "@capacitor/camera": "^4.1.1",

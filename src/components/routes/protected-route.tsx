@@ -5,7 +5,9 @@ import store from '~/store';
 
 export const ProtectedRoute = () => {
   const [user] = store.useState<User>('user');
-  const [profile] = store.useState<Profile | null>('profile');
+  const [profile] = store.useState<Profile>('profile');
+
+  // console.log({ profile, user });
 
   if (user && profile) {
     return <Outlet />;

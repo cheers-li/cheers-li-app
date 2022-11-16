@@ -11,6 +11,7 @@ install! 'cocoapods', :disable_input_output_paths => true
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/.pnpm/@capacitor+ios@4.1.0_@capacitor+core@4.1.0/node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/.pnpm/@capacitor+ios@4.1.0_@capacitor+core@4.1.0/node_modules/@capacitor/ios'
+  pod 'CapacitorCommunityCameraPreview', :path => '../../node_modules/.pnpm/@capacitor-community+camera-preview@4.0.0/node_modules/@capacitor-community/camera-preview'
   pod 'CapacitorApp', :path => '../../node_modules/.pnpm/@capacitor+app@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/app'
   pod 'CapacitorCamera', :path => '../../node_modules/.pnpm/@capacitor+camera@4.1.1_@capacitor+core@4.1.0/node_modules/@capacitor/camera'
   pod 'CapacitorGeolocation', :path => '../../node_modules/.pnpm/@capacitor+geolocation@4.0.1_@capacitor+core@4.1.0/node_modules/@capacitor/geolocation'

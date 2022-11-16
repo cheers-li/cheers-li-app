@@ -1,4 +1,4 @@
-import { PencilSquareIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
@@ -9,6 +9,7 @@ import { Input } from '~/components/input';
 import { LocationTag } from '~/components/location-tag';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
+import { SessionReactionList } from '~/components/reaction/session-reaction-list';
 import { sendCheersli } from '~/services/cheersli';
 import { Profile } from '~/services/friends';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
@@ -116,21 +117,30 @@ const ActiveSession = () => {
             </LinkButton>
           </>
         )}
-        {!sessionLoading && !session?.hasEnded && user.id !== session?.user.id && (
-          <>
-            <p className="text-sm text-gray-500">
-              {session?.user.username} has started a new session. It will end
-              automatically at {dayjs(session?.endedAt).format('HH:MM')}.
-            </p>
-            <Button
-              primary
-              onClick={cheersli}
-              disabled={sentCheersli || loadCheersli}
-            >
-              {sentCheersli ? 'Sent Cheersli' : 'Cheersli 🍻'}
-            </Button>
-          </>
-        )}
+        {!sessionLoading &&
+          session &&
+          !session?.hasEnded &&
+          user.id !== session?.user.id && (
+            <>
+              <p className="text-sm text-gray-500">
+                {session?.user.username} has started a new session. It will end
+                automatically at {dayjs(session?.endedAt).format('HH:MM')}.
+              </p>
+              <hr className="dark:border-neutral-800" />
+              <SessionReactionList
+                sessionId={session.id}
+                profileId={profile.id}
+              />
+              <hr className="dark:border-neutral-800" />
+              <Button
+                primary
+                onClick={cheersli}
+                disabled={sentCheersli || loadCheersli}
+              >
+                {sentCheersli ? 'Sent Cheersli' : 'Cheersli 🍻'}
+              </Button>
+            </>
+          )}
         {!sessionLoading && !session?.hasEnded && user.id === session?.user.id && (
           <>
             <p className="text-sm text-gray-500 dark:text-neutral-400">
@@ -138,13 +148,12 @@ const ActiveSession = () => {
               {dayjs(session.endedAt).format('HH:MM')}.
             </p>
             <hr className="dark:border-neutral-800" />
-            <p className="text-sm text-gray-500 dark:text-neutral-400">
-              Looks like you are alone. Invite some of your friends to join you
-              or go home now.
-            </p>
-            <Button disabled={true} icon={<UserGroupIcon />}>
-              Invite Friends
-            </Button>
+            <SessionReactionList
+              showAddButton={false}
+              sessionId={session.id}
+              profileId={profile.id}
+            />
+            <hr className="dark:border-neutral-800" />
             <Button
               disabled={loading}
               primary

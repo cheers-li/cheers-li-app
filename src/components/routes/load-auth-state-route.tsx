@@ -14,7 +14,7 @@ const LoadAuthStateRoute = () => {
   const [position, setPosition] =
     store.useState<[number, number]>('userPosition');
   const [zoomCoords] = store.useState<[number, number]>('zoomPosition');
-  const { data: sessions } = useSessions(10, true);
+  const { data: sessions } = useSessions(true);
 
   async function getPosition() {
     const pos = await Geolocation.getCurrentPosition();

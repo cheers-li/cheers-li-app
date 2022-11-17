@@ -59,8 +59,8 @@ const MapView = () => {
       <Navigation />
       <div className="fixed top-safe-top z-10 w-full">
         <div
-          className={clsx('space-y-3 px-6 pt-0', {
-            'mt-2': safePadTop < 40,
+          className={clsx('pt-0', {
+            'mt-4': safePadTop < 40,
           })}
         >
           <FriendTags active={activeSession} setActive={updateActiveSession} />

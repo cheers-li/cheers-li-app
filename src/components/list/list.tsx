@@ -10,6 +10,8 @@ export interface ListProps<T> {
   count: number;
   ItemComponent: ElementType;
   horizontalPadding?: string;
+  hasSpacer?: boolean;
+  noItemMessage?: string;
 }
 
 export const List: FC<ListProps<ListItem>> = ({
@@ -19,6 +21,8 @@ export const List: FC<ListProps<ListItem>> = ({
   count,
   items,
   ItemComponent,
+  hasSpacer,
+  noItemMessage,
   horizontalPadding = 'px-8',
 }) => {
   return (
@@ -48,7 +52,9 @@ export const List: FC<ListProps<ListItem>> = ({
       </ul>
 
       {/* Spacer */}
-      {!loading && items.length !== 0 && <div className="py-8"></div>}
+      {!loading && items.length !== 0 && hasSpacer && (
+        <div className="py-8"></div>
+      )}
 
       {!loading && items.length === 0 && (
         <div className="pb-64">
@@ -56,7 +62,11 @@ export const List: FC<ListProps<ListItem>> = ({
             className={`${horizontalPadding} mx-4 rounded-2xl bg-gray-100 py-3 text-center  text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}
           >
             <div className="font-semibold">No {title} found</div>
-            <div>You do not have any {title}</div>
+            {noItemMessage ? (
+              <div>{noItemMessage}</div>
+            ) : (
+              <div>You do not have any {title}</div>
+            )}
           </div>
         </div>
       )}

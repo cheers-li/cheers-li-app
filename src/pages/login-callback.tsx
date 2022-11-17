@@ -13,6 +13,7 @@ import { User } from '@supabase/supabase-js';
 import { signOut, storeUser } from '~/services/auth';
 import { Button } from '~/components/button';
 import store from '~/store';
+import { Profile } from '~/services/friends';
 
 enum SignUpState {
   USER_NOT_LOADED,
@@ -32,6 +33,7 @@ const LoginCallback = () => {
   const navigate = useNavigate();
 
   const [user, setGlobalUser] = store.useState<User | null>('user');
+  const [, setGlobalProfile] = store.useState<Profile | null>('profile');
 
   const [showUserLoading, setShowUserLoading] = useState(false);
   const [showProfileDialog, setShowProfileDialog] = useState(false);
@@ -39,10 +41,13 @@ const LoginCallback = () => {
   const [showLocationDialog, setShowLocationDialog] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const [currentState, setCurrentState] = useState<SignUpState>();
+  const [currentState, setCurrentState] = useState<SignUpState>(
+    SignUpState.USER_NOT_LOADED,
+  );
 
   const hasProfile = async () => {
-    const { error } = await getProfile(user?.id);
+    const { data, error } = await getProfile(user?.id);
+    setGlobalProfile(data);
     return !error;
   };
 
@@ -158,14 +163,6 @@ const LoginCallback = () => {
         break;
     }
   };
-
-  useEffect(() => {
-    const wait = setTimeout(() => {
-      setCurrentState(SignUpState.LOAD_USER);
-    }, 500);
-
-    return () => clearTimeout(wait);
-  }, []);
 
   useEffect(() => {
     onStateChange();

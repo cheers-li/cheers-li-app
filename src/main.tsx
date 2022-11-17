@@ -17,7 +17,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 const Application = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [_, setGlobalUser] = store.useState<User | null>('user');
+  const [, setGlobalUser] = store.useState<User | null>('user');
 
   const queryClient = new QueryClient();
 

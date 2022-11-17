@@ -7,17 +7,15 @@ import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import TagList from '~/components/tag-list';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
-import { getProfile } from '~/services/profile';
 import { createNewSession, Location, Tag } from '~/services/session';
 import { LocationList } from '~/components/location-list';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
+import { Profile } from '~/services/friends';
 
 const NewSession = () => {
   const [user] = store.useState<User>('user');
-  const profile = useAsync(async () => {
-    return getProfile(user.id);
-  });
+  const [profile] = store.useState<Profile>('profile');
   const [locationTag, setLocationTag] = useState<Tag>();
   const [tag, setTag] = useState<Tag>();
 
@@ -61,7 +59,7 @@ const NewSession = () => {
       }
 
       const { id, error: errorMessage } = await createNewSession(
-        `${profile.value?.data.username} is drinking ${tag.name} ${tag.emoji}`,
+        `${profile.username} is drinking ${tag.name} ${tag.emoji}`,
         tag.id,
         user.id,
         coordinates,

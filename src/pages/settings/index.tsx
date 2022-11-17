@@ -17,14 +17,15 @@ import {
 import { ListItemType, SimpleList } from '~/components/simple-list';
 import { signOut } from '~/services/auth';
 import { Avatar } from '~/components/avatar';
-import { deleteUser, getProfile } from '~/services/profile';
+import { deleteUser } from '~/services/profile';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { Link, useNavigate } from 'react-router-dom';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
-import { supabase } from '~/services/supabase-client';
+import { Profile } from '~/services/friends';
 
 const Settings = () => {
+  const [profile] = store.useState<Profile>('profile');
   const appInfo = useAsync(async () => {
     return await App.getInfo();
   });
@@ -95,11 +96,6 @@ const Settings = () => {
 
   const [user] = store.useState<User>('user');
 
-  const profile = useAsync(async () => {
-    const { data } = await getProfile(user?.id);
-    return data;
-  });
-
   const deleteAccount = async () => {
     const confirmation = confirm(
       `Are you sure you want to delete your account?`,
@@ -126,22 +122,18 @@ const Settings = () => {
 
       <div className="px-4">
         <div className="h-24 rounded-md bg-white p-4 dark:bg-neutral-900">
-          {!profile.loading && profile.value && (
-            <Link
-              onClick={() => sendSuccessFeedback()}
-              to="/settings/edit-profile"
-              className="flex h-full items-center justify-center gap-4"
-            >
-              <Avatar profile={profile.value} customClasses="flex-shrink-0" />
-              <div className="flex max-w-full flex-1 flex-col overflow-hidden">
-                <span className="text-md font-bold">
-                  {profile.value.username}
-                </span>
-                <span className="truncate">{user.email}</span>
-              </div>
-              <ChevronRightIcon className="h-6 w-6" />
-            </Link>
-          )}
+          <Link
+            onClick={() => sendSuccessFeedback()}
+            to="/settings/edit-profile"
+            className="flex h-full items-center justify-center gap-4"
+          >
+            <Avatar profile={profile} customClasses="flex-shrink-0" />
+            <div className="flex max-w-full flex-1 flex-col overflow-hidden">
+              <span className="text-md font-bold">{profile.username}</span>
+              <span className="truncate">{user.email}</span>
+            </div>
+            <ChevronRightIcon className="h-6 w-6" />
+          </Link>
         </div>
       </div>
 

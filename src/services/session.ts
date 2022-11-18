@@ -13,7 +13,7 @@ const listSessions = async (
   let query = supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatarUrl:avatar_url)',
+      'id, name, created_at, ended_at, location, location_name, image_url, session_tag, user:user_id (id, username, avatarUrl:avatar_url)',
       { count: 'exact' },
     )
     .gt('ended_at', dayjs().add(-1, 'days'))
@@ -39,6 +39,7 @@ const listSessions = async (
       lastActive: getLastActive(item.created_at),
       hasEnded: dayjs().isAfter(dayjs(item.ended_at)),
       locationName: item.location_name,
+      imageUrl: item.image_url,
     };
 
     return newSession;
@@ -55,6 +56,7 @@ export const createNewSession = async (
   name: string,
   tagId: number,
   userId: string,
+  sessionStartTime: dayjs.Dayjs,
   location?: Location,
   locationName?: string,
 ) => {
@@ -62,9 +64,10 @@ export const createNewSession = async (
     name: name,
     session_tag: tagId,
     user_id: userId,
-    ended_at: dayjs().add(2, 'hours'),
+    ended_at: sessionStartTime.add(2, 'hours'),
     location: location,
     location_name: locationName,
+    created_at: sessionStartTime,
   });
 
   if (error) {
@@ -97,7 +100,7 @@ const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, location_name, session_tag, user:user_id (id, username, avatar_url, devices(device_token))',
+      'id, name, created_at, ended_at, location, location_name, image_url, session_tag, user:user_id (id, username, avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();
@@ -118,6 +121,7 @@ const getSession = async (id: string): Promise<Session> => {
     lastActive: getLastActive(data.created_at),
     hasEnded: dayjs().isAfter(dayjs(data.ended_at)),
     locationName: data.location_name,
+    imageUrl: data.image_url,
   };
 };
 
@@ -177,6 +181,7 @@ export interface Session extends ListItem {
   hasEnded?: boolean;
   isYourSession?: boolean;
   locationName?: string;
+  imageUrl?: string;
 }
 
 export interface Location {

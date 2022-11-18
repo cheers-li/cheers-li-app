@@ -14,10 +14,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { getProfile } from '~/services/profile';
+import { Profile } from '~/services/friends';
 
 const Application = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [, setGlobalUser] = store.useState<User | null>('user');
+  const [, setGlobalProfile] = store.useState<Profile | null>('profile');
 
   const queryClient = new QueryClient();
 
@@ -39,6 +42,8 @@ const Application = () => {
       parseInt(currentSession?.expires_at + '000') > Date.now()
     ) {
       setGlobalUser(currentSession.user);
+      const { data: profile } = await getProfile(currentSession.user?.id);
+      setGlobalProfile(profile);
       setIsLoading(false);
       return;
     } else if (currentSession && currentSession.refresh_token) {
@@ -48,6 +53,8 @@ const Application = () => {
 
       if (!error && session) {
         setGlobalUser(currentSession.user);
+        const { data: profile } = await getProfile(currentSession.user?.id);
+        setGlobalProfile(profile);
         setIsLoading(false);
         return;
       }
@@ -60,6 +67,8 @@ const Application = () => {
       );
       if (!error && session) {
         setGlobalUser(session.user);
+        const { data: profile } = await getProfile(session.user?.id);
+        setGlobalProfile(profile);
         setIsLoading(false);
         return;
       } else {

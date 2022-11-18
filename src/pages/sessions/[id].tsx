@@ -1,5 +1,9 @@
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { CameraIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import {
+  CameraIcon,
+  ChevronDownIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
@@ -22,9 +26,11 @@ const ActiveSession = () => {
   const navigate = useNavigate();
   const [user] = store.useState<User>('user');
   const [profile] = store.useState<Profile>('profile');
-  const { data: session, isLoading: sessionLoading } = useSession(
-    params.id || '',
-  );
+  const {
+    data: session,
+    isLoading: sessionLoading,
+    refetch,
+  } = useSession(params.id || '');
 
   const [name, setName] = useState('');
   const [loading, setIsLoading] = useState(false);
@@ -86,6 +92,7 @@ const ActiveSession = () => {
     }
 
     await uploadSessionImage(session.id, image.base64String);
+    refetch();
   };
 
   const endCurrentSession = async () => {
@@ -134,22 +141,34 @@ const ActiveSession = () => {
   return (
     <Page noPadding>
       <div
-        className="flex w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black dark:text-white"
+        className="flex h-full w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black dark:text-white"
         style={{
           backgroundImage: `${gradient},
               linear-gradient(0deg, rgba(0,0,0,0) 80%, rgba(0,0,0,0.4) 100%),
               url(${session?.imageUrl || '/splash.png'})`,
           height: 'calc(100vh / 3)',
         }}
-      ></div>
+      >
+        <div className="flex items-center justify-between px-4 pt-2 text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="rounded-full bg-gray-800 bg-opacity-50 p-2"
+          >
+            <ChevronDownIcon className="h-6 w-6" />
+          </button>
+        </div>
+      </div>
       <div className="flex w-full flex-col gap-4 px-8">
         {sessionLoading && (
           <p className="text-sm text-gray-500">Loading Session...</p>
         )}
         {!sessionLoading && session && (
           <>
-            <h2 className="flex items-center text-xl font-medium">
-              {session.name}{' '}
+            <h2 className="flex flex-col items-start justify-center text-xl font-medium">
+              {session.name}
+              <p className="text-sm text-gray-500">
+                Created by {session.user.username}
+              </p>
             </h2>
             {session.location && (
               <LocationTag

@@ -31,6 +31,7 @@
                 <data android:scheme="io.supabase.cheersli" android:host="login-callback" />
                 <data android:scheme="io.supabase.cheersli" android:host="login" />
                 <data android:scheme="io.supabase.cheersli" android:host="home" />
+                <data android:scheme="io.supabase.cheersli" android:host="messages" />
             </intent-filter>
 
         </activity>

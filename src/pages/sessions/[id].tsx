@@ -8,6 +8,8 @@ import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Avatar } from '~/components/avatar';
 import { Button, LinkButton } from '~/components/button';
 import { Dialog } from '~/components/dialog';
 import { Input } from '~/components/input';
@@ -166,10 +168,14 @@ const ActiveSession = () => {
           <>
             <h2 className="flex flex-col items-start justify-center text-xl font-medium">
               {session.name}
-              <p className="text-sm text-gray-500">
-                Created by {session.user.username}
-              </p>
             </h2>
+            <Link
+              to={`/profiles/${session.user.id}`}
+              className="flex items-center gap-2 text-sm text-gray-500"
+            >
+              <Avatar profile={session.user} size={9} />
+              Created by {session.user.username}
+            </Link>
             {session.location && (
               <LocationTag
                 location={session.location}

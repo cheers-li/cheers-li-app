@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getLastActive } from '~/helper/time';
 import { Session } from '~/services/session';
 import { Avatar } from '~/components/avatar';
@@ -14,13 +14,6 @@ interface SessionListItemProps {
 export const SessionListItem: FC<SessionListItemProps> = ({
   item: session,
 }) => {
-  const navigate = useNavigate();
-
-  const redirectToProfile = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    navigate(`/profiles/${session.user.id}`);
-  };
-
   return (
     <Link
       to={`/sessions/${session.id}`}
@@ -33,9 +26,7 @@ export const SessionListItem: FC<SessionListItemProps> = ({
           className="block h-16 w-16 flex-shrink-0 rounded-full object-cover"
         />
       ) : (
-        <button onClick={redirectToProfile} className="flex-shrink-0">
-          <Avatar profile={session.user} size={16} />
-        </button>
+        <Avatar profile={session.user} size={16} />
       )}
 
       <div className="flex flex-col items-start justify-start gap-1 overflow-hidden">

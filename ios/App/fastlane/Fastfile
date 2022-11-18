@@ -1,0 +1,21 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    setup_ci
+    match(type: 'appstore', readonly: is_ci)
+    increment_build_number(xcodeproj: "App.xcodeproj")
+    build_app(
+      workspace: "App.xcworkspace",
+      scheme: "App",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+          "li.cheers.app" => "match AppStore li.cheers.app",
+        }
+      }
+    )
+    upload_to_testflight
+  end
+end

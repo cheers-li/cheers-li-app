@@ -1,0 +1,82 @@
+name: CD - Deploy TestFlight
+
+on:
+  push:
+    branches:
+      - '**'
+
+permissions: read-all
+
+jobs:
+  Deploy:
+    runs-on: macos-latest
+    env:
+      VITE_SUPABASE_URL: https://ckiipzxuiudfldnxkxss.supabase.co
+      VITE_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      VITE_SUPABASE_FUNCTIONS_URL: https://ckiipzxuiudfldnxkxss.functions.supabase.co
+      VITE_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      VITE_ENVIRONMENT: Production
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      MATCH_PASSWORD: ${{ secrets.FASTLANE_MATCH_PASSWORD }}
+      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v3
+
+      - uses: webfactory/ssh-agent@v0.6.0
+        with:
+          ssh-private-key: ${{ secrets.CERTIFICATE_ACCESS_PRIVATE_KEY }}
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 14.x
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 6.x.x
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+          
+      - name: Build
+        run: |
+          pnpm build
+          
+      - name: Sync
+        run: |
+          pnpm cap sync ios
+
+      - name: Update Bundle
+        run: |
+          cd ios/App && bundle update
+
+      - name: Push to Testflight
+        run: |
+          pnpm fastlane-ios:beta
+
+      - name: Debug Output
+        if: always()
+        run: |
+          security find-identity -v -p codesigning fastlane_tmp_keychain
+
+      - name: Debug Output 2
+        if: always()
+        run: |
+          security find-certificate -a -c 'Apple Worldwide Developer Relations'

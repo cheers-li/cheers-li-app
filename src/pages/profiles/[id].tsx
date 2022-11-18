@@ -114,7 +114,10 @@ const ProfileView = () => {
             }}
           >
             <div className="flex items-center justify-between px-4 pt-2 text-white">
-              <button onClick={() => navigate(-1)}>
+              <button
+                onClick={() => navigate(-1)}
+                className="rounded-full bg-gray-800 bg-opacity-50 p-2"
+              >
                 <ChevronDownIcon className="h-6 w-6" />
               </button>
               <Dropdown button={<EllipsisHorizontalIcon className="h-6 w-6" />}>

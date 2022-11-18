@@ -5,18 +5,26 @@ interface BadgeProps {
   green?: boolean;
   red?: boolean;
   yellow?: boolean;
+  blue?: boolean;
   children: React.ReactNode;
 }
 
-export const Badge: FC<BadgeProps> = ({ children, red, green, yellow }) => {
+export const Badge: FC<BadgeProps> = ({
+  children,
+  red,
+  green,
+  yellow,
+  blue,
+}) => {
   return (
     <span
       className={clsx(
         'inline-flex items-center rounded px-2 py-0.5 text-xs font-medium',
-        { 'bg-red-100 text-red-800 dark:bg-red-200': red },
-        { 'bg-yellow-100 text-yellow-800 dark:bg-yellow-200': yellow },
         {
+          'bg-red-100 text-red-800 dark:bg-red-200': red,
+          'bg-yellow-100 text-yellow-800 dark:bg-yellow-200': yellow,
           'bg-green-100 text-green-800 dark:bg-green-200': green,
+          'bg-blue-100 text-blue-800 dark:bg-blue-200': blue,
         },
       )}
     >

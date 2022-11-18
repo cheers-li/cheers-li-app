@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAsync } from 'react-use';
 import { Geolocation } from '@capacitor/geolocation';
@@ -12,6 +12,8 @@ import { LocationList } from '~/components/location-list';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { Profile } from '~/services/friends';
+import { Input } from '~/components/input';
+import dayjs from 'dayjs';
 
 const NewSession = () => {
   const [user] = store.useState<User>('user');
@@ -19,9 +21,28 @@ const NewSession = () => {
   const [locationTag, setLocationTag] = useState<Tag>();
   const [tag, setTag] = useState<Tag>();
 
+  const [timeNow] = useState(dayjs());
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  const [startTime, setStartTime] = useState(dayjs().format('HH:mm'));
+  const [startTimeError, setStartTimeError] = useState('');
+
+  useEffect(() => {
+    setStartTimeError('');
+    const valid = startTime.match(/^[0-9]{1,2}:[0-9]{2}$/g);
+    if (!valid) {
+      setStartTimeError('Start time is not valid use hh:mm format.');
+    }
+
+    const [hour, minute] = startTime.split(':');
+    const timeSession = dayjs().hour(parseInt(hour)).minute(parseInt(minute));
+
+    if (timeSession.isBefore(timeNow)) {
+      setStartTimeError('Start time needs to be now or later today.');
+    }
+  }, [startTime]);
 
   const location = useAsync(async () => {
     const point = await Geolocation.getCurrentPosition();
@@ -58,10 +79,16 @@ const NewSession = () => {
         locationName = 'at a nice place.';
       }
 
+      const [hour, minute] = startTime.split(':');
+      const sessionStartTime = dayjs()
+        .hour(parseInt(hour))
+        .minute(parseInt(minute));
+
       const { id, error: errorMessage } = await createNewSession(
         `${profile.username} is drinking ${tag.name} ${tag.emoji}`,
         tag.id,
         user.id,
+        sessionStartTime,
         coordinates,
         locationName,
       );
@@ -111,13 +138,27 @@ const NewSession = () => {
             />
           </>
         )}
+        <hr className="dark:border-neutral-800" />
+        <span className="text-sm text-gray-500 dark:text-neutral-400">
+          Add a start time if you plan a session.
+        </span>
+        <Input
+          placeholder="hh:mm"
+          label="Start Time"
+          value={startTime}
+          error={startTimeError}
+          onUpdate={setStartTime}
+          disabled={false}
+        />
+        <hr className="dark:border-neutral-800" />
         <Button
           primary
           disabled={
             isLoading ||
             location.loading ||
             tag === undefined ||
-            locationTag === undefined
+            locationTag === undefined ||
+            startTimeError !== ''
           }
         >
           Start Session

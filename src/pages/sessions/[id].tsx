@@ -1,18 +1,26 @@
-import { PencilSquareIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import {
+  CameraIcon,
+  ChevronDownIcon,
+  PencilSquareIcon,
+} from '@heroicons/react/24/outline';
 import { User } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import { SyntheticEvent, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
+import { Avatar } from '~/components/avatar';
 import { Button, LinkButton } from '~/components/button';
 import { Dialog } from '~/components/dialog';
 import { Input } from '~/components/input';
 import { LocationTag } from '~/components/location-tag';
 import { Page } from '~/components/page';
-import { PageHeader } from '~/components/page-header';
+import { SessionReactionList } from '~/components/reaction/session-reaction-list';
 import { sendCheersli } from '~/services/cheersli';
 import { Profile } from '~/services/friends';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { endSession, useSession, updateSession } from '~/services/session';
+import { uploadSessionImage } from '~/services/session-image';
 import store from '~/store';
 
 const ActiveSession = () => {
@@ -20,9 +28,11 @@ const ActiveSession = () => {
   const navigate = useNavigate();
   const [user] = store.useState<User>('user');
   const [profile] = store.useState<Profile>('profile');
-  const { data: session, isLoading: sessionLoading } = useSession(
-    params.id || '',
-  );
+  const {
+    data: session,
+    isLoading: sessionLoading,
+    refetch,
+  } = useSession(params.id || '');
 
   const [name, setName] = useState('');
   const [loading, setIsLoading] = useState(false);
@@ -67,6 +77,26 @@ const ActiveSession = () => {
     }
   };
 
+  const setSessionImage = async () => {
+    if (!session) {
+      return;
+    }
+
+    const image = await Camera.getPhoto({
+      quality: 50,
+      width: 500,
+      height: 500,
+      resultType: CameraResultType.Base64,
+    });
+
+    if (!image.base64String) {
+      return;
+    }
+
+    await uploadSessionImage(session.id, image.base64String);
+    refetch();
+  };
+
   const endCurrentSession = async () => {
     setIsLoading(true);
     await endSession(params.id || '');
@@ -86,18 +116,66 @@ const ActiveSession = () => {
     setLoadCheersli(false);
   };
 
+  const hasStarted =
+    !sessionLoading &&
+    !session?.hasEnded &&
+    user.id === session?.user.id &&
+    dayjs().isAfter(dayjs(session.createdAt));
+  const hasNotStarted =
+    !sessionLoading &&
+    !session?.hasEnded &&
+    user.id === session?.user.id &&
+    dayjs().isBefore(dayjs(session.createdAt));
+  const hasEnded = !sessionLoading && session?.hasEnded;
+  const ownsSession = !(
+    !sessionLoading &&
+    session &&
+    !session?.hasEnded &&
+    user.id !== session?.user.id
+  );
+
+  const [dark] = store.useState<boolean>('dark');
+
+  const gradient = dark
+    ? 'linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 62%)'
+    : 'linear-gradient(0deg, rgba(249,250,251,1) 5%, rgba(249,250,251,0) 62%)';
+
   return (
-    <Page>
-      <PageHeader truncate={false}>Session</PageHeader>
+    <Page noPadding>
+      <div
+        className="flex h-full w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black dark:text-white"
+        style={{
+          backgroundImage: `${gradient},
+              linear-gradient(0deg, rgba(0,0,0,0) 80%, rgba(0,0,0,0.4) 100%),
+              url(${session?.imageUrl || '/splash.png'})`,
+          height: 'calc(100vh / 3)',
+        }}
+      >
+        <div className="flex items-center justify-between px-4 pt-2 text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="rounded-full bg-gray-800 bg-opacity-50 p-2"
+          >
+            <ChevronDownIcon className="h-6 w-6" />
+          </button>
+        </div>
+      </div>
       <div className="flex w-full flex-col gap-4 px-8">
         {sessionLoading && (
           <p className="text-sm text-gray-500">Loading Session...</p>
         )}
         {!sessionLoading && session && (
           <>
-            <h2 className="flex items-center text-xl font-medium">
-              {session.name}{' '}
+            <h2 className="flex flex-col items-start justify-center text-xl font-medium">
+              {session.name}
             </h2>
+            <Link
+              to={`/profiles/${session.user.id}`}
+              className="flex items-center gap-2 text-sm text-gray-500"
+            >
+              <Avatar profile={session.user} size={9} />
+              Created by {session.user.username}
+            </Link>
             {session.location && (
               <LocationTag
                 location={session.location}
@@ -106,7 +184,7 @@ const ActiveSession = () => {
             )}
           </>
         )}
-        {!sessionLoading && session?.hasEnded && (
+        {hasEnded && (
           <>
             <p className="text-sm text-red-500">
               This session has already ended
@@ -116,12 +194,18 @@ const ActiveSession = () => {
             </LinkButton>
           </>
         )}
-        {!sessionLoading && !session?.hasEnded && user.id !== session?.user.id && (
+        {!ownsSession && (
           <>
             <p className="text-sm text-gray-500">
               {session?.user.username} has started a new session. It will end
               automatically at {dayjs(session?.endedAt).format('HH:MM')}.
             </p>
+            <hr className="dark:border-neutral-800" />
+            <SessionReactionList
+              sessionId={session.id}
+              profileId={profile.id}
+            />
+            <hr className="dark:border-neutral-800" />
             <Button
               primary
               onClick={cheersli}
@@ -131,23 +215,59 @@ const ActiveSession = () => {
             </Button>
           </>
         )}
-        {!sessionLoading && !session?.hasEnded && user.id === session?.user.id && (
+        {hasNotStarted && (
+          <>
+            <p className="text-sm text-gray-500 dark:text-neutral-400">
+              This session has not started yet. It will start today at{' '}
+              {dayjs(session.createdAt).format('HH:MM')} and will end
+              automatically at {dayjs(session.endedAt).format('HH:MM')}.
+            </p>
+            <hr className="dark:border-neutral-800" />
+            <Button
+              disabled={loading}
+              secondary
+              onClick={setSessionImage}
+              icon={<CameraIcon />}
+            >
+              Add Image
+            </Button>
+            <Button
+              disabled={loading}
+              secondary
+              onClick={() => setIsEditing(true)}
+              icon={<PencilSquareIcon />}
+            >
+              Change Session Name
+            </Button>
+            <Button disabled={loading} danger onClick={endCurrentSession}>
+              Cancel Session
+            </Button>
+          </>
+        )}
+        {hasStarted && (
           <>
             <p className="text-sm text-gray-500 dark:text-neutral-400">
               You started this session. It will end automatically at{' '}
               {dayjs(session.endedAt).format('HH:MM')}.
             </p>
             <hr className="dark:border-neutral-800" />
-            <p className="text-sm text-gray-500 dark:text-neutral-400">
-              Looks like you are alone. Invite some of your friends to join you
-              or go home now.
-            </p>
-            <Button disabled={true} icon={<UserGroupIcon />}>
-              Invite Friends
+            <SessionReactionList
+              showAddButton={false}
+              sessionId={session.id}
+              profileId={profile.id}
+            />
+            <hr className="dark:border-neutral-800" />
+            <Button
+              disabled={loading}
+              secondary
+              onClick={setSessionImage}
+              icon={<CameraIcon />}
+            >
+              Add Image
             </Button>
             <Button
               disabled={loading}
-              primary
+              secondary
               onClick={() => setIsEditing(true)}
               icon={<PencilSquareIcon />}
             >

@@ -36,7 +36,10 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
               key={reaction.sessionId + reaction.profile.id}
               className="flex flex-col items-center justify-center gap-1"
             >
-              <img className="h-20 w-20 rounded-full" src={reaction.imageUrl} />
+              <img
+                className="h-20 w-20 rounded-full object-cover"
+                src={reaction.imageUrl}
+              />
               <span className="rounded-full bg-gray-200 px-3 dark:bg-gray-800">
                 {reaction.profile.username}
               </span>

@@ -17,11 +17,15 @@ export const uploadReaction = async (
 ) => {
   const { data, error } = await supabase.storage
     .from('reactions')
-    .upload(`public/${sessionId}_${profileId}.jpeg`, decode(fileBase64), {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: 'image/jpeg',
-    });
+    .upload(
+      `public/${sessionId}_${profileId}_${Date.now()}.jpeg`,
+      decode(fileBase64),
+      {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/jpeg',
+      },
+    );
 
   if (error || !data) {
     return { data, error };

@@ -1,6 +1,7 @@
 import { FC, useCallback } from 'react';
 import { useSessionReactions } from '~/services/reactions';
 import { CreateSessionReaction } from '~/components/reaction/create-session-reactions';
+import { Link } from 'react-router-dom';
 
 interface SessionReactionListProps {
   sessionId: string;
@@ -34,26 +35,28 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
           reactions.map((reaction) => (
             <div
               key={reaction.sessionId + reaction.profile.id}
-              className="flex flex-col items-center justify-center gap-1"
+              className="flex w-20 flex-shrink-0  flex-col items-center justify-center gap-1"
             >
               <img
                 className="h-20 w-20 rounded-full object-cover"
                 src={reaction.imageUrl}
               />
-              <span className="rounded-full bg-gray-200 px-3 dark:bg-gray-800">
+              <Link
+                className="w-20 truncate rounded-full px-3 text-center"
+                to={`/profiles/${reaction.profile.id}`}
+              >
                 {reaction.profile.username}
-              </span>
+              </Link>
             </div>
           ))}
-
-        {showAddButton && !hasSubmittedReaction() && (
-          <CreateSessionReaction
-            sessionId={sessionId}
-            profileId={profileId}
-            refetch={refetch}
-          />
-        )}
       </div>
+      {showAddButton && !hasSubmittedReaction() && (
+        <CreateSessionReaction
+          sessionId={sessionId}
+          profileId={profileId}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

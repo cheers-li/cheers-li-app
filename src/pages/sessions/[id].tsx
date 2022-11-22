@@ -153,7 +153,7 @@ const ActiveSession = () => {
       >
         <div className="flex items-center justify-between px-4 pt-2 text-white">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="rounded-full bg-gray-800 bg-opacity-50 p-2"
           >
             <ChevronDownIcon className="h-6 w-6" />

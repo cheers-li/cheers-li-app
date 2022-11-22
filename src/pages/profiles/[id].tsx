@@ -171,7 +171,7 @@ const ProfileView = () => {
           </div>
           <div className="mt-4 px-8">
             {profile.status === FriendStatus.NEW && (
-              <Button dark onClick={addFriendHandler}>
+              <Button primary onClick={addFriendHandler}>
                 <div className="flex items-center justify-center space-x-3">
                   <UserPlusIcon className="h-5 w-5" />
                   <span>Add</span>

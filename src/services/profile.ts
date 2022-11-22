@@ -97,6 +97,16 @@ export const updateProfile = async (profile: Profile) => {
     console.error(error);
   }
 
+  if (data && data.length > 0) {
+    const updatedProfile = {
+      username: data[0].username,
+      bio: data[0].bio,
+      city: data[0].city,
+      avatarUrl: data[0].avatar_url,
+    };
+
+    return { updatedProfile, error };
+  }
   return { data, error };
 };
 

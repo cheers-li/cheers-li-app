@@ -16,9 +16,9 @@ export const CreateSessionReaction: FC<SessionReactionsProps> = ({
 }) => {
   const createReaction = async () => {
     const image = await Camera.getPhoto({
-      quality: 50,
-      width: 500,
-      height: 500,
+      quality: 75,
+      width: 1000,
+      height: 1000,
       resultType: CameraResultType.Base64,
       source: CameraSource.Camera,
     });

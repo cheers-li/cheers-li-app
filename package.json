@@ -1,7 +1,7 @@
 {
   "name": "cheers.li",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.1.0",
   "scripts": {
     "build": "tsc && vite build",
     "build:prod": "tsc && VITE_ENVIRONMENT=Production vite build",

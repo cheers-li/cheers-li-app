@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { Profile } from '~/services/friends';
 
 export interface Reaction {
+  id: string;
   profile: Profile;
   createdAt: string;
   sessionId: string;
@@ -58,6 +59,7 @@ const getSessionReactions = async (id: string): Promise<Reaction[]> => {
   }
 
   return data.map((item) => ({
+    id: item.id,
     profile: {
       id: item.profile.id,
       username: item.profile.username,

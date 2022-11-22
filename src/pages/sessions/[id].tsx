@@ -23,6 +23,11 @@ import { endSession, useSession, updateSession } from '~/services/session';
 import { uploadSessionImage } from '~/services/session-image';
 import store from '~/store';
 
+enum ImageHeight {
+  Small = 'calc(100vh/3)',
+  Tall = '500px',
+}
+
 const ActiveSession = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -83,9 +88,9 @@ const ActiveSession = () => {
     }
 
     const image = await Camera.getPhoto({
-      quality: 50,
-      width: 500,
-      height: 500,
+      quality: 75,
+      width: 1000,
+      height: 1000,
       resultType: CameraResultType.Base64,
     });
 
@@ -140,20 +145,31 @@ const ActiveSession = () => {
     ? 'linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 62%)'
     : 'linear-gradient(0deg, rgba(249,250,251,1) 5%, rgba(249,250,251,0) 62%)';
 
+  const [imageHeight, setImageHeight] = useState(ImageHeight.Small);
+
+  const toggleHeight = () => {
+    if (imageHeight === ImageHeight.Tall) {
+      setImageHeight(ImageHeight.Small);
+    } else {
+      setImageHeight(ImageHeight.Tall);
+    }
+  };
+
   return (
     <Page noPadding>
       <div
-        className="flex h-full w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black dark:text-white"
+        className="flex h-full w-full flex-col justify-between bg-cover bg-center pt-safe-top pb-2 text-black transition-all dark:text-white"
         style={{
           backgroundImage: `${gradient},
               linear-gradient(0deg, rgba(0,0,0,0) 80%, rgba(0,0,0,0.4) 100%),
               url(${session?.imageUrl || '/splash.png'})`,
-          height: 'calc(100vh / 3)',
+          height: imageHeight,
         }}
+        onClick={toggleHeight}
       >
         <div className="flex items-center justify-between px-4 pt-2 text-white">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="rounded-full bg-gray-800 bg-opacity-50 p-2"
           >
             <ChevronDownIcon className="h-6 w-6" />

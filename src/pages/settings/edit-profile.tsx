@@ -15,7 +15,7 @@ import { Profile } from '~/services/friends';
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const [profile] = store.useState<Profile>('profile');
+  const [profile, setGlobalProfile] = store.useState<Profile>('profile');
 
   const [userName, setUserName] = useState('');
   const [bio, setBio] = useState('');
@@ -31,12 +31,13 @@ const EditProfile = () => {
 
   const save = async () => {
     setLoading(true);
-    await updateProfile({
+    const { updatedProfile } = await updateProfile({
       id: profile.id,
       username: userName,
       bio,
       city: location,
     });
+    setGlobalProfile(updatedProfile);
     setLoading(false);
     navigate(-1);
   };
@@ -56,13 +57,14 @@ const EditProfile = () => {
         `${profile.id}-${key}.${image.format}`,
       );
       if (publicURL) {
-        await updateProfile({
+        const { updatedProfile } = await updateProfile({
           id: profile.id,
           username: userName,
           bio,
           city: location,
           avatarUrl: publicURL,
         });
+        setGlobalProfile(updatedProfile);
       }
     }
 

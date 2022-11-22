@@ -30,7 +30,10 @@ export const getNearbyAddress = async (location?: Location) => {
 
     const payload = await response.json();
     const places = payload.features
-      .slice(0, 3)
+      .filter(
+        (feature: Feature) =>
+          feature.id.includes('poi') || feature.id.includes('place'),
+      )
       .map((feature: Feature, i: number) => ({
         id: i + 3,
         name: feature.place_name,
@@ -68,6 +71,7 @@ const getEmojiFromFeature = (feature: Feature) => {
 };
 
 interface Feature {
+  id: string;
   text: string;
   place_name: string;
   place_type: string[];

@@ -16,7 +16,7 @@ export const Switch: FC<SwitchProps> = ({ checked, label, onUpdate }) => {
   };
 
   return (
-    <SwitchUI.Group as="div" className="flex items-center">
+    <SwitchUI.Group as="div" className="flex items-center justify-between">
       {label && (
         <SwitchUI.Label as="span">
           <span className="text-base text-gray-900 dark:text-neutral-200">

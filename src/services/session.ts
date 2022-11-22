@@ -100,7 +100,7 @@ const getSession = async (id: string): Promise<Session> => {
   const { data, error } = await supabase
     .from('sessions')
     .select(
-      'id, name, created_at, ended_at, location, location_name, image_url, session_tag, user:user_id (id, username, avatar_url, devices(device_token))',
+      'id, name, created_at, ended_at, location, location_name, image_url, session_tag, user:user_id (id, username, avatarUrl:avatar_url, devices(device_token))',
     )
     .eq('id', id)
     .single();

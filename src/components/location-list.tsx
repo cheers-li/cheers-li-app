@@ -1,9 +1,12 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { TagItem } from '~/components/tag-item';
 import { sendSuccessFeedback } from '~/services/haptics';
 import { getNearbyAddress, getNearbyPlaces } from '~/services/locations';
 import { Location, Tag } from '~/services/session';
+import { Dialog } from '~/components/dialog';
+import { Button } from '~/components/button';
+import { Input } from '~/components/input';
 
 interface LocationListProp {
   selectedDrink?: Tag;
@@ -20,8 +23,32 @@ export const LocationList: React.FC<LocationListProp> = ({
   location,
   setActiveTag,
 }) => {
-  const [tags, setTags] = useState<Tag[]>();
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [error, setError] = useState('');
+  const [customLocationName, setCustomLocationName] = useState('');
+  const useCustomLocation = (e: SyntheticEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!customLocationName || customLocationName === '') {
+      setError('The location name cannot be empty.');
+      return;
+    }
+
+    const customLocation: Tag = {
+      id: Date.now(),
+      type: 'custom',
+      emoji: '📍',
+      name: customLocationName,
+    };
+
+    setTags([customLocation, ...tags]);
+    setActiveTag(customLocation);
+    setIsDialogOpen(false);
+  };
 
   const loadTags = async () => {
     let placesNearby = [];
@@ -34,16 +61,7 @@ export const LocationList: React.FC<LocationListProp> = ({
       setLoading(false);
     }
 
-    const data = [
-      ...placesNearby,
-      ...addressesNearby,
-      {
-        id: 12,
-        name: 'Hide',
-        emoji: '🫣',
-        type: 'hidden',
-      },
-    ];
+    const data = [...placesNearby, ...addressesNearby];
 
     setTags(data);
   };
@@ -100,6 +118,40 @@ export const LocationList: React.FC<LocationListProp> = ({
             </li>
           ))}
       </ul>
+      <a
+        className="text-sm text-sky-600"
+        onClick={() => setIsDialogOpen(!isDialogOpen)}
+      >
+        Enter Manually
+      </a>
+
+      <Dialog
+        isShowing={isDialogOpen}
+        closeModal={() => setIsDialogOpen(false)}
+      >
+        <div className="flex w-full flex-col gap-6 pt-8 pb-24">
+          <h2 className="text-2xl font-bold">Enter Location Name</h2>
+          <span className="text-sm text-gray-500 dark:text-neutral-400">
+            Your friends will see your custom location name. On the map they
+            will see your current GPS location.
+          </span>
+          <div className="flex flex-col gap-6">
+            <Input
+              placeholder="Here or there"
+              label="Location Name"
+              value={customLocationName}
+              error={error}
+              onUpdate={setCustomLocationName}
+            />
+            <Button primary onClick={useCustomLocation}>
+              Set Location Name
+            </Button>
+          </div>
+          <Button secondary onClick={() => setIsDialogOpen(false)}>
+            Cancel
+          </Button>
+        </div>
+      </Dialog>
     </>
   );
 };

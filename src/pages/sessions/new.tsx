@@ -1,58 +1,41 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useAsync } from 'react-use';
-import { Geolocation } from '@capacitor/geolocation';
 import { Button } from '~/components/button';
 import { Page } from '~/components/page';
 import { PageHeader } from '~/components/page-header';
 import TagList from '~/components/tag-list';
 import { sendErrorFeedback, sendSuccessFeedback } from '~/services/haptics';
 import { createNewSession, Location, Tag } from '~/services/session';
-import { LocationList } from '~/components/location-list';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { Profile } from '~/services/friends';
-import { Input } from '~/components/input';
 import dayjs from 'dayjs';
+import { ChooseLocation } from '~/components/session/choose-location';
+import { ChooseStartTime } from '~/components/session/choose-start-time';
+import { ChooseTitle } from '~/components/session/choose-title';
+import { BackButton } from '~/components/header/back-button';
 
 const NewSession = () => {
-  const [user] = store.useState<User>('user');
-  const [profile] = store.useState<Profile>('profile');
-  const [locationTag, setLocationTag] = useState<Tag>();
-  const [tag, setTag] = useState<Tag>();
-
-  const [timeNow] = useState(dayjs());
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const [user] = store.useState<User>('user');
+  const [profile] = store.useState<Profile>('profile');
+
+  const [selectedLocation, selectLocation] = useState<Tag>();
+  const [coordinates, setCoordinates] = useState<Location>();
+  const [selectedDrink, selectDrink] = useState<Tag>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [startTime, setStartTime] = useState(dayjs().format('HH:mm'));
-  const [startTimeError, setStartTimeError] = useState('');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
-    setStartTimeError('');
-    const valid = startTime.match(/^[0-9]{1,2}:[0-9]{2}$/g);
-    if (!valid) {
-      setStartTimeError('Start time is not valid use hh:mm format.');
+    if (profile && selectedDrink) {
+      setTitle(
+        `${profile.username} is drinking ${selectedDrink.name} ${selectedDrink.emoji}`,
+      );
     }
-
-    const [hour, minute] = startTime.split(':');
-    const timeSession = dayjs().hour(parseInt(hour)).minute(parseInt(minute));
-
-    if (timeSession.isBefore(timeNow)) {
-      setStartTimeError('Start time needs to be now or later today.');
-    }
-  }, [startTime]);
-
-  const location = useAsync(async () => {
-    const point = await Geolocation.getCurrentPosition();
-    const loc: Location = {
-      type: 'Point',
-      coordinates: [point.coords.latitude, point.coords.longitude],
-    };
-
-    return loc;
-  });
+  }, [selectedDrink, profile]);
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -60,23 +43,13 @@ const NewSession = () => {
     setError('');
 
     try {
-      if (!tag || tag.id <= 0) {
+      if (!selectedDrink || selectedDrink.id <= 0) {
         throw 'Select a drink';
       }
-      if (!locationTag || locationTag.id < 0) {
-        throw 'Select a location';
-      }
 
-      let coordinates;
-      if (location.value && locationTag && locationTag.type !== 'hidden') {
-        coordinates = location.value;
-      }
-      let locationName;
-      if (locationTag && locationTag.type !== 'other') {
-        locationName = locationTag.name;
-      }
-      if (locationTag && locationTag.type === 'hidden') {
-        locationName = 'at a nice place.';
+      let locationName = 'at a nice place.';
+      if (selectedLocation && selectedLocation.type !== 'other') {
+        locationName = selectedLocation.name;
       }
 
       const [hour, minute] = startTime.split(':');
@@ -85,8 +58,8 @@ const NewSession = () => {
         .minute(parseInt(minute));
 
       const { id, error: errorMessage } = await createNewSession(
-        `${profile.username} is drinking ${tag.name} ${tag.emoji}`,
-        tag.id,
+        title,
+        selectedDrink.id,
         user.id,
         sessionStartTime,
         coordinates,
@@ -109,8 +82,10 @@ const NewSession = () => {
   };
 
   return (
-    <Page>
-      <PageHeader>New Session</PageHeader>
+    <Page hideNavigation>
+      <PageHeader LeftComponent={<BackButton disabled={false} />}>
+        New Session
+      </PageHeader>
       <form onSubmit={submit} className="flex flex-col gap-4 px-8">
         {error && error !== '' && (
           <span className="text-sm text-red-500">{error}</span>
@@ -118,49 +93,20 @@ const NewSession = () => {
         <span className="text-sm text-gray-500 dark:text-neutral-400">
           Let your friends know what you are drinking
         </span>
-        <TagList activeTag={tag} setActiveTag={setTag} />
+        <TagList activeTag={selectedDrink} setActiveTag={selectDrink} />
         <hr className="dark:border-neutral-800" />
-        {location.loading && (
-          <span className="text-sm text-gray-500 dark:text-neutral-400">
-            Loading locations nearby...
-          </span>
-        )}
-        {!location.loading && (
-          <>
-            <span className="text-sm text-gray-500 dark:text-neutral-400">
-              Choose the location you want to share with your friends
-            </span>
-            <LocationList
-              location={location.value}
-              selectedDrink={tag}
-              activeTag={locationTag}
-              setActiveTag={setLocationTag}
-            />
-          </>
-        )}
-        <hr className="dark:border-neutral-800" />
-        <span className="text-sm text-gray-500 dark:text-neutral-400">
-          Add a start time if you plan a session.
-        </span>
-        <Input
-          placeholder="hh:mm"
-          label="Start Time"
-          value={startTime}
-          error={startTimeError}
-          onUpdate={setStartTime}
-          disabled={false}
+        <ChooseLocation
+          selectedDrink={selectedDrink}
+          selectLocation={selectLocation}
+          selectedLocation={selectedLocation}
+          setCoordinates={setCoordinates}
         />
         <hr className="dark:border-neutral-800" />
-        <Button
-          primary
-          disabled={
-            isLoading ||
-            location.loading ||
-            tag === undefined ||
-            locationTag === undefined ||
-            startTimeError !== ''
-          }
-        >
+        <ChooseStartTime startTime={startTime} setStartTime={setStartTime} />
+        <hr className="dark:border-neutral-800" />
+        <ChooseTitle sessionTitle={title} setSessionTitle={setTitle} />
+        <hr className="dark:border-neutral-800" />
+        <Button primary disabled={isLoading || selectedDrink === undefined}>
           Start Session
         </Button>
       </form>

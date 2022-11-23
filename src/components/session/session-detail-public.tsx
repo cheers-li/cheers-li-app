@@ -5,6 +5,7 @@ import { SessionReactionList } from '~/components/reaction/session-reaction-list
 import { Profile } from '~/services/friends';
 import dayjs from 'dayjs';
 import { sendCheersli } from '~/services/cheersli';
+import { ParticipantList } from '~/components/session/participant-list';
 
 interface SessionDetailPublicProps {
   session: Session;
@@ -28,22 +29,38 @@ export const SessionDetailPublic: FC<SessionDetailPublicProps> = ({
     setSentCheersli(true);
     setLoadCheersli(false);
   };
+
+  const hasStarted =
+    !session.hasEnded && dayjs().isAfter(dayjs(session.createdAt));
+
   return (
     <>
-      <p className="text-sm text-gray-500">
-        {session.user.username} has started a new session. It will end
-        automatically at {dayjs(session.endedAt).format('HH:mm')}.
-      </p>
+      {hasStarted && (
+        <>
+          <p className="text-sm text-gray-500">
+            {session.user.username} has started a new session. It will end
+            automatically at {dayjs(session.endedAt).format('HH:mm')}.
+          </p>
+          <Button
+            primary
+            onClick={cheersli}
+            disabled={sentCheersli || loadCheersli}
+          >
+            {sentCheersli ? 'Sent Cheersli' : 'Send Cheersli 🍻'}
+          </Button>
+        </>
+      )}
+      {!hasStarted && (
+        <p className="text-sm text-gray-500">
+          {session.user.username} has planned a new session. It will start today
+          at {dayjs(session.createdAt).format('HH:mm')} and will end
+          automatically at {dayjs(session.endedAt).format('HH:mm')}.
+        </p>
+      )}
       <hr className="dark:border-neutral-800" />
       <SessionReactionList sessionId={session.id} profileId={profile.id} />
       <hr className="dark:border-neutral-800" />
-      <Button
-        primary
-        onClick={cheersli}
-        disabled={sentCheersli || loadCheersli}
-      >
-        {sentCheersli ? 'Sent Cheersli' : 'Cheersli 🍻'}
-      </Button>
+      <ParticipantList sessionId={session.id} isSessionOwner={false} />
     </>
   );
 };

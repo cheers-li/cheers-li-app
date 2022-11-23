@@ -27,7 +27,7 @@ const ActiveSession = () => {
   );
 
   return (
-    <Page noPadding>
+    <Page noPadding hideNavigation>
       {session && <SessionTitle session={session} />}
 
       <div className="flex w-full flex-col gap-4 px-8">

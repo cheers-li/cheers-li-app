@@ -13,6 +13,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 import { uploadSessionImage } from '~/services/session-image';
 import store from '~/store';
 import { User } from '@supabase/supabase-js';
+import { ParticipantList } from '~/components/session/participant-list';
 
 interface SessionDetailOwnerProps {
   session: Session;
@@ -114,6 +115,8 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
             automatically at {dayjs(session.endedAt).format('HH:MM')}.
           </p>
           <hr className="dark:border-neutral-800" />
+          <ParticipantList isSessionOwner={true} sessionId={session.id} />
+          <hr className="dark:border-neutral-800" />
           <Button
             disabled={loading}
             secondary
@@ -147,6 +150,8 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
             sessionId={session.id}
             profileId={profile.id}
           />
+          <hr className="dark:border-neutral-800" />
+          <ParticipantList isSessionOwner={true} sessionId={session.id} />
           <hr className="dark:border-neutral-800" />
           <Button
             disabled={loading}

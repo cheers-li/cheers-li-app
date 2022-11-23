@@ -101,7 +101,7 @@ const ProfileView = () => {
   });
 
   return (
-    <Page noPadding noGap>
+    <Page noPadding noGap hideNavigation>
       {profile && (
         <>
           <div

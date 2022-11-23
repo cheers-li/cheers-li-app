@@ -32,9 +32,9 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
           <div>There are no reactions yet</div>
         </div>
       )}
-      <div className="flex w-full gap-4 overflow-x-auto">
-        {reactions &&
-          reactions.map((reaction) => (
+      {reactions && reactions.length > 0 && (
+        <div className="flex w-full gap-4 overflow-x-auto">
+          {reactions.map((reaction) => (
             <div
               key={reaction.id}
               className="flex h-20 w-20 flex-shrink-0  flex-col items-center justify-center gap-1 transition-all"
@@ -53,7 +53,8 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
               </Link>
             </div>
           ))}
-      </div>
+        </div>
+      )}
 
       <Transition appear show={openReaction !== undefined} as={Fragment}>
         <Transition.Child

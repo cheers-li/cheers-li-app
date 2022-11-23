@@ -30,7 +30,7 @@ export const Dialog: FC<DialogProps> = ({
           <div className="fixed inset-0 bg-sky-800 bg-opacity-30 dark:bg-neutral-800 dark:bg-opacity-30 dark:backdrop-blur-sm" />
         </Transition.Child>
 
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
             enter="transform ease-out duration-200 transition delay-100"

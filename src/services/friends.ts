@@ -4,7 +4,9 @@ import { ElementList } from '~/types/List';
 import { supabase } from '~/services/supabase-client';
 import { useQuery } from 'react-query';
 
-const getFriends = async (userId?: string): Promise<ElementList<Profile>> => {
+export const getFriends = async (
+  userId?: string,
+): Promise<ElementList<Profile>> => {
   const { data, error, count } = await supabase
     .from('friends')
     .select(

@@ -22,9 +22,9 @@ const FriendTooltip = ({ session, userPosition }: FriendTooltipProps) => {
 
   return (
     <>
-      <div className="px-4 py-2 text-black">
+      <div className="px-4 py-2 text-black dark:text-neutral-100">
         <div className="text-base font-medium">{session.name}</div>
-        <div className="text-gray-500">
+        <div className="text-gray-500 dark:text-neutral-300">
           {!session.name.includes(session.user.username) && (
             <p>By {session.user.username}</p>
           )}
@@ -44,13 +44,13 @@ const FriendTooltip = ({ session, userPosition }: FriendTooltipProps) => {
           )}
           <div className="mt-4 flex gap-2">
             <Badge green>Active</Badge>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-neutral-300">
               Started {session.lastActive}
             </span>
           </div>
         </div>
       </div>
-      <div className="mt-2 flex items-center justify-between rounded-b-lg border-t border-t-gray-200 bg-gray-100 px-4 py-2 text-xs">
+      <div className="mt-2 flex items-center justify-between rounded-b-lg border-t border-t-gray-200 bg-gray-100 px-4 py-2 text-xs dark:border-t-gray-700 dark:bg-neutral-800">
         <a
           href={`/sessions/${session.id}`}
           className="inline-flex items-center justify-between space-x-1 rounded-md border border-sky-600 bg-sky-700 px-4 py-2 text-white active:bg-sky-800"

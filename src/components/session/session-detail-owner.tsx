@@ -115,7 +115,7 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
             automatically at {dayjs(session.endedAt).format('HH:MM')}.
           </p>
           <hr className="dark:border-neutral-800" />
-          <ParticipantList isSessionOwner={true} sessionId={session.id} />
+          <ParticipantList isSessionOwner={true} session={session} />
           <hr className="dark:border-neutral-800" />
           <Button
             disabled={loading}
@@ -147,11 +147,11 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
           <hr className="dark:border-neutral-800" />
           <SessionReactionList
             showAddButton={false}
-            sessionId={session.id}
+            session={session}
             profileId={profile.id}
           />
           <hr className="dark:border-neutral-800" />
-          <ParticipantList isSessionOwner={true} sessionId={session.id} />
+          <ParticipantList isSessionOwner={true} session={session} />
           <hr className="dark:border-neutral-800" />
           <Button
             disabled={loading}

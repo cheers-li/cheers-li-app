@@ -37,7 +37,7 @@ const TagList: React.FC<TagListProps> = ({
             inline,
         })}
       >
-        {tags.slice(0, showMore || displayAll ? undefined : 4).map((tag) => (
+        {tags.slice(0, showMore || displayAll ? undefined : 6).map((tag) => (
           <li
             key={tag.id}
             className={clsx({

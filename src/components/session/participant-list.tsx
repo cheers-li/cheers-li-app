@@ -11,10 +11,11 @@ import store from '~/store';
 import { User } from '@supabase/supabase-js';
 import { Avatar } from '~/components/avatar';
 import { Link } from 'react-router-dom';
+import { Session } from '~/services/session';
 
 interface ParticipantListProps {
   isSessionOwner: boolean;
-  sessionId: string;
+  session: Session;
 }
 
 enum ParticipationRequestStatus {
@@ -26,11 +27,11 @@ enum ParticipationRequestStatus {
 
 export const ParticipantList: FC<ParticipantListProps> = ({
   isSessionOwner,
-  sessionId,
+  session,
 }) => {
   const [user] = store.useState<User>('user');
   const { data: participants, refetch } = useParticipants(
-    sessionId,
+    session.id,
     user.id,
     true,
   );
@@ -79,7 +80,11 @@ export const ParticipantList: FC<ParticipantListProps> = ({
           ).length === 0) && (
           <div className="rounded-2xl bg-gray-100 py-3 text-center text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
             <div className="font-semibold">Participants</div>
-            <div>There are no participants yet</div>
+            <div>
+              {session.hasEnded
+                ? 'There were no participants'
+                : 'There are no participants yet'}
+            </div>
           </div>
         )}
 
@@ -99,33 +104,38 @@ export const ParticipantList: FC<ParticipantListProps> = ({
         </div>
       )}
 
-      {isSessionOwner && (
-        <ParticipantInvite sessionId={sessionId} refetchList={refetch} />
+      {!session.hasEnded && (
+        <>
+          {isSessionOwner && (
+            <ParticipantInvite sessionId={session.id} refetchList={refetch} />
+          )}
+          {!isSessionOwner &&
+            participationRequestStatus() ===
+              ParticipationRequestStatus.NONE && (
+              <Button
+                primary
+                onClick={() => sendParticipationRequest(session.id, user.id)}
+              >
+                Ask to join
+              </Button>
+            )}
+          {!isSessionOwner &&
+            request() &&
+            participationRequestStatus() ===
+              ParticipationRequestStatus.RECEIVED && (
+              <Button primary onClick={() => accept()}>
+                Accept Invitation
+              </Button>
+            )}
+          {!isSessionOwner &&
+            participationRequestStatus() ===
+              ParticipationRequestStatus.REQUESTED && (
+              <p className="text-sm text-gray-500">
+                You requested to join, we are awaiting a response from the host.
+              </p>
+            )}
+        </>
       )}
-      {!isSessionOwner &&
-        participationRequestStatus() === ParticipationRequestStatus.NONE && (
-          <Button
-            primary
-            onClick={() => sendParticipationRequest(sessionId, user.id)}
-          >
-            Ask to join
-          </Button>
-        )}
-      {!isSessionOwner &&
-        request() &&
-        participationRequestStatus() ===
-          ParticipationRequestStatus.RECEIVED && (
-          <Button primary onClick={() => accept()}>
-            Accept Invitation
-          </Button>
-        )}
-      {!isSessionOwner &&
-        participationRequestStatus() ===
-          ParticipationRequestStatus.REQUESTED && (
-          <p className="text-sm text-gray-500">
-            You requested to join, we are awaiting a response from the host.
-          </p>
-        )}
     </div>
   );
 };

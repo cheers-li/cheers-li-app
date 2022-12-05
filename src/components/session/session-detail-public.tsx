@@ -58,9 +58,13 @@ export const SessionDetailPublic: FC<SessionDetailPublicProps> = ({
         </p>
       )}
       <hr className="dark:border-neutral-800" />
-      <SessionReactionList sessionId={session.id} profileId={profile.id} />
+      <SessionReactionList
+        showAddButton={!session.hasEnded}
+        session={session}
+        profileId={profile.id}
+      />
       <hr className="dark:border-neutral-800" />
-      <ParticipantList sessionId={session.id} isSessionOwner={false} />
+      <ParticipantList session={session} isSessionOwner={false} />
     </>
   );
 };

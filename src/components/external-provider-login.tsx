@@ -26,7 +26,7 @@ export const ExternalProviderLogin: React.FC<ExternalProviderLoginProps> = ({
       sendSuccessFeedback();
 
       const redirectTo = Capacitor.isNativePlatform()
-        ? 'io.supabase.cheersli://login-callback'
+        ? 'io.supabase.cheersli://app/login-callback'
         : 'http://localhost:5173/login-callback';
 
       const { error: loginError } = await supabase.auth.signIn(

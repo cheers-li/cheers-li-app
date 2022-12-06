@@ -12,6 +12,7 @@ specifiers:
   '@capacitor/preferences': ^4.0.1
   '@capacitor/push-notifications': ^4.1.0
   '@capacitor/status-bar': ^4.0.1
+  '@capacitor/toast': ^4.1.0
   '@headlessui/react': ^1.6.6
   '@heroicons/react': ^2.0.12
   '@julr/vite-plugin-validate-env': ^0.1.2
@@ -63,6 +64,7 @@ dependencies:
   '@capacitor/preferences': 4.0.1_@capacitor+core@4.1.0
   '@capacitor/push-notifications': 4.1.0_@capacitor+core@4.1.0
   '@capacitor/status-bar': 4.0.1_@capacitor+core@4.1.0
+  '@capacitor/toast': 4.1.0_@capacitor+core@4.1.0
   '@headlessui/react': 1.6.6_biqbaboplfbrettd7655fr4n2y
   '@heroicons/react': 2.0.12_react@18.2.0
   '@supabase/supabase-js': 1.35.6
@@ -484,6 +486,14 @@ packages:
 
   /@capacitor/status-bar/4.0.1_@capacitor+core@4.1.0:
     resolution: {integrity: sha512-BmEyOf3m/hAf8bO4hCX0m5gpQPSgd05mGYl+9E841WUZeJjcYlmiG/EBshAUb2uGCVtyNaG36yPXB0r0Ypg+rw==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.0
+    dependencies:
+      '@capacitor/core': 4.1.0
+    dev: false
+
+  /@capacitor/toast/4.1.0_@capacitor+core@4.1.0:
+    resolution: {integrity: sha512-hU3GoA1dT+dsMuDOlEeiaU2mdd4VCLvIzgbp7Vk0Mqy9tbg++W4t7hcewlawzJGs6FxH59rIekf2lz7m4ir33w==}
     peerDependencies:
       '@capacitor/core': ^4.0.0
     dependencies:

@@ -1,6 +1,5 @@
 import { User } from '@supabase/supabase-js';
 import { useParams } from 'react-router';
-import { LinkButton } from '~/components/button';
 import { Page } from '~/components/page';
 import { SessionDetailOwner } from '~/components/session/session-detail-owner';
 import { SessionDetailPublic } from '~/components/session/session-detail-public';
@@ -20,11 +19,7 @@ const ActiveSession = () => {
   } = useSession(params.id || '');
 
   const hasEnded = !sessionLoading && session?.hasEnded;
-  const ownsSession = !(
-    !sessionLoading &&
-    !session?.hasEnded &&
-    user.id !== session?.user.id
-  );
+  const ownsSession = !(!sessionLoading && user.id !== session?.user.id);
 
   return (
     <Page noPadding hideNavigation>
@@ -34,16 +29,11 @@ const ActiveSession = () => {
         {sessionLoading && (
           <p className="text-sm text-gray-500">Loading Session...</p>
         )}
+
         {hasEnded && (
-          <>
-            <p className="text-sm text-red-500">
-              This session has already ended
-            </p>
-            <LinkButton secondary href="/">
-              Go Home
-            </LinkButton>
-          </>
+          <p className="text-sm text-red-500">This session has already ended</p>
         )}
+
         {session && !ownsSession && (
           <SessionDetailPublic session={session} profile={profile} />
         )}

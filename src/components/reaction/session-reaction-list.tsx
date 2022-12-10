@@ -2,21 +2,21 @@ import { FC, Fragment, useCallback, useState } from 'react';
 import { Reaction, useSessionReactions } from '~/services/reactions';
 import { CreateSessionReaction } from '~/components/reaction/create-session-reactions';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 import { Transition } from '@headlessui/react';
+import { Session } from '~/services/session';
 
 interface SessionReactionListProps {
-  sessionId: string;
+  session: Session;
   profileId: string;
   showAddButton?: boolean;
 }
 
 export const SessionReactionList: FC<SessionReactionListProps> = ({
-  sessionId,
+  session,
   profileId,
   showAddButton = true,
 }) => {
-  const { data: reactions, refetch } = useSessionReactions(sessionId);
+  const { data: reactions, refetch } = useSessionReactions(session.id);
   const [openReaction, setOpenReaction] = useState<Reaction | undefined>();
 
   const hasSubmittedReaction = useCallback(() => {
@@ -29,15 +29,20 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
       {reactions && reactions.length === 0 && (
         <div className="rounded-2xl bg-gray-100 py-3 text-center text-sm text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
           <div className="font-semibold">Reactions</div>
-          <div>There are no reactions yet</div>
+          <div>
+            {' '}
+            {session.hasEnded
+              ? 'There were no reactions'
+              : 'There are no reactions yet'}
+          </div>
         </div>
       )}
       {reactions && reactions.length > 0 && (
-        <div className="flex w-full gap-4 overflow-x-auto">
+        <div className="flex w-full gap-4 overflow-x-auto py-1">
           {reactions.map((reaction) => (
             <div
               key={reaction.id}
-              className="flex h-20 w-20 flex-shrink-0  flex-col items-center justify-center gap-1 transition-all"
+              className="flex h-20 w-20 shrink-0 flex-col items-center justify-center gap-1 transition-all"
               onTouchStart={() => setOpenReaction(reaction)}
               onTouchEnd={() => setOpenReaction(undefined)}
             >
@@ -72,7 +77,13 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
           >
             {openReaction && (
               <>
-                <img className="w-full" src={openReaction.imageUrl} />
+                <img
+                  className="w-full object-cover"
+                  src={openReaction.imageUrl}
+                  style={{
+                    maxHeight: '80vh',
+                  }}
+                />
                 <p className="py-4 text-white">
                   Reaction from {openReaction.profile.username}
                 </p>
@@ -84,7 +95,7 @@ export const SessionReactionList: FC<SessionReactionListProps> = ({
 
       {showAddButton && !hasSubmittedReaction() && (
         <CreateSessionReaction
-          sessionId={sessionId}
+          sessionId={session.id}
           profileId={profileId}
           refetch={refetch}
         />

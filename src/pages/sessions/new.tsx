@@ -86,7 +86,7 @@ const NewSession = () => {
       <PageHeader LeftComponent={<BackButton disabled={false} />}>
         New Session
       </PageHeader>
-      <form onSubmit={submit} className="flex flex-col gap-4 px-8">
+      <form onSubmit={submit} className="flex flex-col gap-4 px-4">
         {error && error !== '' && (
           <span className="text-sm text-red-500">{error}</span>
         )}

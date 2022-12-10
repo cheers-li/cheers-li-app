@@ -111,8 +111,8 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
         <>
           <p className="text-sm text-gray-500 dark:text-neutral-400">
             This session has not started yet. It will start today at{' '}
-            {dayjs(session.createdAt).format('HH:MM')} and will end
-            automatically at {dayjs(session.endedAt).format('HH:MM')}.
+            {dayjs(session.createdAt).format('HH:mm')} and will end
+            automatically at {dayjs(session.endedAt).format('HH:mm')}.
           </p>
           <hr className="dark:border-neutral-800" />
           <ParticipantList isSessionOwner={true} sessionId={session.id} />
@@ -142,7 +142,7 @@ export const SessionDetailOwner: FC<SessionDetailOwnerProps> = ({
         <>
           <p className="text-sm text-gray-500 dark:text-neutral-400">
             You started this session. It will end automatically at{' '}
-            {dayjs(session.endedAt).format('HH:MM')}.
+            {dayjs(session.endedAt).format('HH:mm')}.
           </p>
           <hr className="dark:border-neutral-800" />
           <SessionReactionList
